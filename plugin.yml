@@ -5,6 +5,9 @@ api: 4.0.0
 main: juqn\hcf\HCFLoader
 
 permissions:
+  god.command:
+    description: Permission nested for /god
+    default: op
   crate.command:
     description: Permission nested for /crate
     default: op

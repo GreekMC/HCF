@@ -64,7 +64,7 @@ class SotwCommand extends Command
                     return;
                 }
                 HCFLoader::getInstance()->getEventManager()->getSotw()->setActive(true);
-                HCFLoader::getInstance()->getEventManager()->getSotw()->setTime($time);
+                HCFLoader::getInstance()->getEventManager()->getSotw()->setTime((int) $time);
                 $sender->sendMessage(TextFormat::colorize('&aThe sotw has started!'));
                 break;
             

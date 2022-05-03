@@ -64,7 +64,7 @@ class EotwCommand extends Command
                     return;
                 }
                 HCFLoader::getInstance()->getEventManager()->getEotw()->setActive(true);
-                HCFLoader::getInstance()->getEventManager()->getEotw()->setTime($time);
+                HCFLoader::getInstance()->getEventManager()->getEotw()->setTime((int) $time);
                 $sender->sendMessage(TextFormat::colorize('&aThe eotw has started!'));
                 break;
             
