@@ -44,6 +44,7 @@ class HomeSubCommand implements FactionSubCommand
         
         $xuid = $sender->getXuid();
         $position = $sender->getPosition();
+        /** @var TaskHandler */
         $handler = null;
         $handler = HCFLoader::getInstance()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function () use (&$handler, &$sender, &$xuid, &$position): void {
             $s = HCFLoader::getInstance()->getSessionManager()->getSession($xuid);
