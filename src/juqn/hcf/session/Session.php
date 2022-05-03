@@ -35,6 +35,9 @@ class Session
     private array $cooldowns = [];
     /** @var SessionEnergy[] */
     private array $energies = [];
+
+    /** @var bool */
+    private bool $autoFeed = false;
     
     /**
      * Session construct.
@@ -153,6 +156,14 @@ class Session
     {
         return $this->energies[$key] ?? null;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasAutoFeed(): bool
+    {
+        return $this->autoFeed;
+    }
     
     /**
      * @param string|null $factionName
@@ -262,6 +273,14 @@ class Session
     public function removeEnergy(string $key): void
     {
         unset($this->energies[$key]);
+    }
+
+    /**
+     * @param bool $value
+     */
+    public function setAutoFeed(bool $value): void
+    {
+        $this->autoFeed = $value;
     }
     
     public function onUpdate(): void

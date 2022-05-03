@@ -39,7 +39,7 @@ class Player extends BasePlayer
     
     /** @var bool */
     private bool $god = false;
-    
+
     /**
      * Player construct.
      * @param Server $server

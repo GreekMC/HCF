@@ -12,6 +12,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
@@ -144,6 +145,36 @@ class HCFListener implements Listener
                 $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
         }
         $event->setDeathMessage(TextFormat::colorize($message));
+    }
+
+    /**
+     * @param PlayerExhaustEvent $event
+     */
+    public function handleExhaust(PlayerExhaustEvent $event): void
+    {
+        $player = $event->getPlayer();
+
+        if ($player instanceof Player) {
+            if ($player->getCurrentClaim() !== null) {
+                $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
+
+                if ($claim->getType() === 'spawn') {
+                    $event->cancel();
+
+                    if ($player->getHungerManager()->getFood() !== $player->getHungerManager()->getMaxFood())
+                        $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
+                    return;
+                }
+            }
+
+            if ($player->getSession()->hasAutoFeed()) {
+                $event->cancel();
+
+                if ($player->getHungerManager()->getFood() !== $player->getHungerManager()->getMaxFood())
+                    $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
+                return;
+            }
+        }
     }
     
     /**
