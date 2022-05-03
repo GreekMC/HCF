@@ -19,7 +19,7 @@ class EventSotw
      */
     public function __construct(
         private int $time = 60 * 60,
-        private string $format = '&l&cEOTW end in: &r&7:',
+        private string $format = '&l&bSOTW end in: &r&7:',
         private bool $active = false
     ) {}
     
@@ -61,5 +61,17 @@ class EventSotw
     public function setActive(bool $value): void
     {
         $this->active = $value;
+    }
+
+    public function update(): void
+    {
+        if ($this->active) {
+            $this->time--;
+
+            if ($this->time <= 0) {
+                $this->active = false;
+                $this->time = 60 * 60;
+            }
+        }
     }
 }

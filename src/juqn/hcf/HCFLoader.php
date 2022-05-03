@@ -105,6 +105,10 @@ class HCFLoader extends PluginBase
                 else
                     $this->getKothManager()->setKothActive(null);
             }
+
+            # Events
+            $this->getEventManager()->getSotw()->update();
+            $this->getEventManager()->getEotw()->update();
                 
             # Sessions
             foreach ($this->getSessionManager()->getSessions() as $session)
