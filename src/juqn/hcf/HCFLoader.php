@@ -11,6 +11,7 @@ use juqn\hcf\crate\CrateManager;
 use juqn\hcf\enchantment\EnchantmentManager;
 use juqn\hcf\event\EventManager;
 use juqn\hcf\faction\FactionManager;
+use juqn\hcf\item\ItemManager;
 use juqn\hcf\kit\KitManager;
 use juqn\hcf\koth\KothManager;
 use juqn\hcf\reclaim\ReclaimManager;
@@ -52,6 +53,8 @@ class HCFLoader extends PluginBase
     private EventManager $eventManager;
     /** @var FactionManager */
     private FactionManager $factionManager;
+    /** @var ItemManager */
+    private ItemManager $itemManager;
     /** @var KitManager */
     private KitManager $kitManager;
     /** @var KothManager */
@@ -86,6 +89,7 @@ class HCFLoader extends PluginBase
         $this->enchantmentManager = new EnchantmentManager;
         $this->eventManager = new EventManager;
         $this->factionManager = new FactionManager;
+        $this->itemManager = new ItemManager;
         $this->kitManager = new KitManager;
         $this->kothManager = new KothManager;
         $this->reclaimManager = new ReclaimManager;
@@ -196,6 +200,14 @@ class HCFLoader extends PluginBase
     public function getFactionManager(): FactionManager
     {
         return $this->factionManager;
+    }
+    
+    /**
+     * @return ItemManager
+     */
+    public function getItemManager(): ItemManager
+    {
+        return $this->itemManager;
     }
     
     /**
