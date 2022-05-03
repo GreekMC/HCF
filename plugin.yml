@@ -5,6 +5,12 @@ api: 4.0.0
 main: juqn\hcf\HCFLoader
 
 permissions:
+  feed.command:
+    description: Permission nested for /feed
+    default: op
+  player.feed.command:
+    description: Permission for /feed player
+    default: op
   god.command:
     description: Permission nested for /god
     default: op
