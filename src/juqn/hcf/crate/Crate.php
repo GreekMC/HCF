@@ -135,7 +135,7 @@ class Crate
 			TextFormat::GRAY . TextFormat::ITALIC . 'Left click to view crate rewards.',
 			TextFormat::GRAY . TextFormat::ITALIC . 'Right click to open the crate.',
 			'',
-			TextFormat::RESET . TextFormat::YELLOW . 'Available for purchase at store.premian.net'
+			TextFormat::RESET . TextFormat::YELLOW . 'Available for purchase at store.greekmc.net'
         ]);
         $item->setNamedTag($item->getNamedTag()->setString('crate_name', $this->getName()));
         

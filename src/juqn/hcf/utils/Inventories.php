@@ -132,7 +132,7 @@ final class Inventories
             }
             return $transaction->discard();
         });
-        $menu->send($player, TextFormat::colorize('&9Premian vKits'));
+        $menu->send($player, TextFormat::colorize('&6Greek vKits'));
     }
     
     /**
@@ -187,7 +187,7 @@ final class Inventories
             }
             return $transaction->discard();
         });
-        $menu->send($player, TextFormat::colorize('&ePremian Kits'));
+        $menu->send($player, TextFormat::colorize('&6Greek Kits'));
     }
     
     /**

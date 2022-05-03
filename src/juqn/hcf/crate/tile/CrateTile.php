@@ -73,7 +73,7 @@ class CrateTile extends Chest
             if ($crate !== null) {
                 $nbt = $this->saveNBT();
                 $this->text = new TextEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 1.3, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $nbt);
-                $this->text->setNameTag(TextFormat::colorize($crate->getNameFormat(). PHP_EOL . '&fLeft click for reward'. PHP_EOL . '&fRight click to open' . PHP_EOL . '&r' . PHP_EOL . '&o&7play.premian.net'));
+                $this->text->setNameTag(TextFormat::colorize($crate->getNameFormat(). PHP_EOL . '&fLeft click for reward'. PHP_EOL . '&fRight click to open' . PHP_EOL . '&r' . PHP_EOL . '&o&7play.greekmc.net'));
                 $this->text->spawnToAll();
             }
         }
@@ -143,7 +143,7 @@ class CrateTile extends Chest
                     $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
                     
                     if ($crate !== null) {
-                        $this->getText()->setNameTag(TextFormat::colorize($crate->getNameFormat(). PHP_EOL . '&fLeft click for reward'. PHP_EOL . '&fRight click to open' . PHP_EOL . '&r' . PHP_EOL . '&o&7play.premian.net'));
+                        $this->getText()->setNameTag(TextFormat::colorize($crate->getNameFormat(). PHP_EOL . '&fLeft click for reward'. PHP_EOL . '&fRight click to open' . PHP_EOL . '&r' . PHP_EOL . '&o&7play.greekmc.net'));
                         $player->sendMessage(TextFormat::colorize('&aThe text of the crate ' . $this->getCrateName() . ' has been updated'));
                     } else $player->sendMessage(TextFormat::colorize('&cThere is no crate that is defined in the Tile'));
                 }

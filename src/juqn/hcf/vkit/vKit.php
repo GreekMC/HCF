@@ -98,7 +98,7 @@ class vKit
             '&r&o&7Your chance to unlock the vKit will',
             '&r&o&7increase by 35% for each attempt.',
             '    ',
-            '&r&ePurchase at &fstore.premian.net'
+            '&r&ePurchase at &fstore.greekmc.net'
         ];
         $item->setLore(array_map(function (mixed $text) {
             return TextFormat::colorize($text);
