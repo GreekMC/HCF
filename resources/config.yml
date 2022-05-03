@@ -1,0 +1,19 @@
+# Plugin for Premian MC
+# Lead developer && Main Developer: JuqnGOOD (https://github.com/JqkzDev)
+
+# Plugin private. Copyright © Juqn Organization
+
+# Main config
+version: 1.0
+prefix: '&8(&6GreekMC&8)'
+
+# Scoreboard Config
+scoreboard.title: '&6GreekMC &7| &9First'
+
+# Join and quit
+join.message: '&a[+] {player}'
+quit.message: '&c[-] {player}'
+
+# Factions
+faction.max.members: 8
+facion.regeneration.offline: true

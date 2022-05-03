@@ -1,0 +1,118 @@
+name: HCF
+version: 0.1
+author: JuqnGOOD
+api: 4.0.0
+main: juqn\hcf\HCFLoader
+
+permissions:
+  crate.command:
+    description: Permission nested for /crate
+    default: op
+  crate.command.create:
+    description: Permission for /crate create
+    default: op
+  crate.command.delete:
+    description: Permission for /crate delete
+    default: op
+  crate.command.edit:
+    description: Permission for /crate edit
+    default: op
+  crate.command.giveKey:
+    description: Permission for /crate giveKey
+    default: op
+  crate.command.itemConfiguration:
+    description: Permission for /crate itemConfiguration
+    default: op
+  crate.break:
+    description: Permission for break tile
+    default: op
+  fix.command:
+    description: Permission nested for /fix
+    default: op
+  fix.player.command:
+    description: Permission for /fix player
+    default: op
+  sotw.command:
+    description: Permission nested for /sotw
+    default: op
+  eotw.command:
+    description: Permission nested for /eotw
+    default: op
+  custom.enchant.command:
+    description: Permission nested for /customenchant
+    default: op
+  custom.enchant.command.add:
+    description: Permission for /customenchant add
+    default: op
+  custom.enchant.command.remove:
+    description: Permission for /customenchant remove
+    default: op
+  faction.command.claimfor:
+    description: Permission for /faction claimfor
+    default: op
+  kit.command.create:
+    description: Permission for /kit create
+    default: op
+  kit.command.delete:
+    description: Permission for /kit delete
+    default: op
+  kit.command.edit:
+    description: Permission for /kit edit
+    default: op
+  koth.command:
+    description: Permission nested for /koth
+    default: op
+  koth.command.addkey:
+    description: Permission for /koth addkey
+    default: op
+  koth.command.claim:
+    description: Permission for /koth claim
+    default: op
+  koth.command.create:
+    description: Permission for /koth create
+    default: op
+  koth.command.delete:
+    description: Permission for /koth delete
+    default: op
+  koth.command.setcapzone:
+    description: Permission for /koth capzone
+    default: op
+  koth.command.setcoords:
+    description: Permission for /koth setcoords
+    default: op
+  koth.command.setpoints:
+    description: Permission for /koth setpoints
+    default: op
+  koth.command.start:
+    description: Permission for /koth start
+    default: op
+  koth.command.stop:
+    description: Permission for /koth stop
+    default: op
+  reclaim.command.create:
+    description: Permission for /reclaim create
+    default: op
+  reclaim.command.delete:
+    description: Permission for /reclaim delete
+    default: op
+  reclaim.command.edit:
+    description: Permission for /reclaim edit
+    default: op
+  rename.command:
+    description: Permission nested for /rename
+    default: op
+  shop.sign.create:
+    description: Permission for create shop
+    default: op
+  vkit.command.create:
+    description: Permission for /vkit create
+    default: op
+  vkit.command.delete:
+    description: Permission for /vkit delete
+    default: op
+  vkit.command.edit:
+    description: Permission for /vkit edit
+    default: op
+  vkit.command.give:
+    description: Permission for /vkit give
+    default: op
