@@ -199,6 +199,12 @@ class ClaimListener implements Listener
                             }
                             return;
                         }
+
+                        if ($creator->calculateClaim($creator->getFirst(), $block->getPosition())) {
+                            $player->sendMessage(TextFormat::colorize('&cERROR: The position was selected in other faction'));
+                            return;
+                        }
+
                         $player->sendMessage(TextFormat::colorize('&aYou have selected the second position.'));
                         
                         if ($creator->getType() === 'faction') {

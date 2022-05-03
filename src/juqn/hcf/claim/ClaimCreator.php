@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace juqn\hcf\claim;
 
+use juqn\hcf\HCFLoader;
 use pocketmine\world\Position;
 
 /**
@@ -105,6 +106,30 @@ class ClaimCreator extends Claim
             return (int) round(abs($minValue));
         }
         return 0;
+    }
+
+    /**
+     * @param Position $first
+     * @param Position $second
+     * @return bool
+     */
+    public function calculateClaim(Position $first, Position $second): bool
+    {
+        $minX = min($first->getX(), $second->getX());
+        $maxX = max($first->getX(), $second->getX());
+
+        $minZ = min($first->getZ(), $second->getZ());
+        $maxZ = max($first->getZ(), $second->getZ());
+
+        for ($x = $minX; $x <= $maxX; $x++) {
+            for ($z = $minZ; $z <= $maxZ; $z++) {
+                $position = new Position($x, 0, $z, $first->getWorld());
+
+                if (HCFLoader::getInstance()->getClaimManager()->insideClaim($position) !== null)
+                    return true;
+            }
+        }
+        return false;
     }
     
     /**
