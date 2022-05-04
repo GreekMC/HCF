@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace juqn\hcf\faction\command\subcommand;
 
 use juqn\hcf\faction\command\FactionSubCommand;
+use juqn\hcf\faction\Faction;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
@@ -65,7 +66,7 @@ class CreateSubCommand implements FactionSubCommand
        }
        HCFLoader::getInstance()->getFactionManager()->createFaction($factionName, [
            'roles' => [
-               $sender->getXuid() => 'leader'
+               $sender->getXuid() => Faction::LEADER
            ],
            'dtr' => 1.00,
            'balance' => 0,

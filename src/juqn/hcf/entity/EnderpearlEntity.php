@@ -80,5 +80,4 @@ class EnderpearlEntity extends EnderPearl
         $this->getWorld()->addSound($vector3, new EndermanTeleportSound());
         $entity->attack(new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_FALL, 5));
     }
-
 }

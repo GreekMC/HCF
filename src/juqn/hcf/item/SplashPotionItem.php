@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace juqn\practice\item;
+namespace juqn\hcf\item;
 
-use juqn\hcf\entity\SplashPotion;
+use juqn\hcf\entity\SplashPotionEntity;
 use pocketmine\data\bedrock\PotionTypeIdMap;
 use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Throwable;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
-use pocketmine\item\ItemUseResult;
 use pocketmine\item\PotionType;
 use pocketmine\item\ProjectileItem;
-use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 
 class SplashPotionItem extends ProjectileItem

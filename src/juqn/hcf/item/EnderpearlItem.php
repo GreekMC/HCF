@@ -11,7 +11,10 @@ use pocketmine\entity\projectile\Throwable;
 use pocketmine\item\EnderPearl as PMEnderPearl;
 use pocketmine\item\ItemIdentifier;
 use pocketmine\item\ItemIds;
+use pocketmine\item\ItemUseResult;
+use pocketmine\math\Vector3;
 use pocketmine\player\Player;
+use pocketmine\utils\TextFormat;
 
 class EnderPearlItem extends PMEnderPearl
 {

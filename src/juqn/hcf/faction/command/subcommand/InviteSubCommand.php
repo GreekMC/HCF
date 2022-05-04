@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace juqn\hcf\faction\command\subcommand;
 
 use juqn\hcf\faction\command\FactionSubCommand;
+use juqn\hcf\faction\Faction;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
@@ -33,8 +34,13 @@ class InviteSubCommand implements FactionSubCommand
         }
         $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
         
-        if (!in_array($faction->getRole($sender->getXuid()), ['leader', 'co-leader'])) {
-            $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader or co-leader of the faction to set home'));
+        if (!in_array($faction->getRole($sender->getXuid()), [Faction::LEADER, Faction::CO_LEADER, Faction::CAPTAIN])) {
+            $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader, co-leader or captain of the invite member'));
+            return;
+        }
+
+        if (count($faction->getRoles()) === HCFLoader::getInstance()->getConfig()->get('faction.max.members', 8)) {
+            $sender->sendMessage(TextFormat::colorize('&cYour faction have max players'));
             return;
         }
         

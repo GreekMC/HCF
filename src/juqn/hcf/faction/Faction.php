@@ -27,6 +27,15 @@ class Faction
         'East Road' => 'road',
         'West Road' => 'road'
     ];
+
+    /** @var string */
+    const LEADER = 'leader';
+    /** @var string */
+    const CO_LEADER = 'co-leader';
+    /** @var string */
+    const CAPTAIN = 'captain';
+    /** @var string */
+    const MEMBER = 'member';
     
     /** @var string */
     private string $name;
