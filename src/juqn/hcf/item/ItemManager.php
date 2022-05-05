@@ -15,7 +15,7 @@ class ItemManager
      */
     public function __construct()
     {
-        ItemFactory::getInstance()->register(new EnderPearlItem());
+        ItemFactory::getInstance()->register(new EnderpearlItem());
         
         foreach(PotionType::getAll() as $type)
             ItemFactory::getInstance()->register(new SplashPotionItem($type), true);

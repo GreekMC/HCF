@@ -16,7 +16,7 @@ use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-class EnderPearlItem extends PMEnderPearl
+class EnderpearlItem extends PMEnderPearl
 {
     
     /**
