@@ -16,7 +16,7 @@ use juqn\hcf\faction\command\subcommand\SetHomeSubCommand;
 use juqn\hcf\faction\command\subcommand\TopSubCommand;
 use juqn\hcf\faction\command\subcommand\UnfocusSubCommand;
 use juqn\hcf\faction\command\subcommand\UnrallySubCommand;
-
+use juqn\hcf\faction\command\subcommand\WhoSubCommand;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
@@ -53,6 +53,7 @@ class FactionCommand extends Command
         $this->subCommands['top'] = new TopSubCommand;
         $this->subCommands['unfocus'] = new UnfocusSubCommand;
         $this->subCommands['unrally'] = new UnrallySubCommand;
+        $this->subCommands['who'] = new WhoSubCommand;
     }
     
     /**
