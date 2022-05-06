@@ -78,6 +78,10 @@ class FactionManager
         $this->invites[$target->getXuid()][$player->getName()] = new FactionInvite($player, $player->getSession()->getFaction(), time() + 60);
     }
 
+    /**
+     * @param Player $player
+     * @param string $target
+     */
     public function removeInvite(Player $player, string $target): void
     {
         unset($this->invites[$player->getXuid()][$target]);

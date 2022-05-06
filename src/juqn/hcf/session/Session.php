@@ -14,6 +14,11 @@ use juqn\hcf\kit\classes\HCFClass;
 class Session
 {
     
+    /** @var string */
+    private string $xuid;
+    /** @var string */
+    private string $name;
+    
     /** @var string|null */
     private ?string $faction = null;
     
@@ -41,11 +46,13 @@ class Session
     
     /**
      * Session construct.
+     * @param string $xuid
      * @param array $data
      * @param bool $firstTime
      */
-    public function __construct(array $data, bool $firstTime)
+    public function __construct(string $xuid, array $data, bool $firstTime)
     {
+        $this->name = $data['name'];
         if ($data['faction'] !== null && HCFLoader::getInstance()->getFactionManager()->getFaction($data['faction']) !== null)
             $this->faction = $data['faction'];
         
@@ -65,6 +72,22 @@ class Session
         
         if ($firstTime)
             $this->addCooldown('starting.timer', '&l&aStarting Timer: &r&7', 60 * 60);
+    }
+    
+    /**
+     * @return string
+     */
+    public function getXuid(): string
+    {
+        return $this->xuid;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
     
     /**
@@ -163,6 +186,14 @@ class Session
     public function hasAutoFeed(): bool
     {
         return $this->autoFeed;
+    }
+    
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
     }
     
     /**
@@ -299,6 +330,7 @@ class Session
     public function getData(): array
     {
         $data = [
+            'name' => $this->getName(),
             'faction' => $this->getFaction(),
             'balance' => $this->getBalance(),
             'crystals' => $this->getCrystals(),

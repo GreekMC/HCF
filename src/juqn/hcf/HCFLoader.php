@@ -32,6 +32,9 @@ use pocketmine\scheduler\ClosureTask;
  */
 class HCFLoader extends PluginBase
 {
+    
+    /** @var string[] */
+    private array $players = [];
 
     /** @var HCFLoader */
     private static HCFLoader $instance;

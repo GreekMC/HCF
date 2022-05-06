@@ -50,6 +50,6 @@ class SessionManager
      */
     public function addSession(string $xuid, array $data, bool $firstTime = true): void
     {
-        $this->sessions[$xuid] = new Session($data, $firstTime);
+        $this->sessions[$xuid] = new Session($xuid, $data, $firstTime);
     }
 }

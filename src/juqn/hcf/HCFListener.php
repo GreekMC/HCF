@@ -223,9 +223,11 @@ class HCFListener implements Listener
     public function handleLogin(PlayerLoginEvent $event): void
     {
         $player = $event->getPlayer();
+        $session = HCFLoader::getInstance()->getSessionManager()->getSession($player->getXuid());
         
-        if (HCFLoader::getInstance()->getSessionManager()->getSession($player->getXuid()) === null)
+        if ($session === null)
             HCFLoader::getInstance()->getSessionManager()->addSession($player->getXuid(), [
+                'name' => $player->getName(),
                 'faction' => null,
                 'balance' => 0,
                 'crystals' => 0,
@@ -238,6 +240,10 @@ class HCFListener implements Listener
                     'highestKillStreak' => 0
                 ]
             ]);
+        else {
+            if ($player->getName() !== $session->getName())
+                $session->setName($player->getName());
+        }
     }
     
     /**

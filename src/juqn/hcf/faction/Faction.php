@@ -104,12 +104,12 @@ class Faction
     }
     
     /**
-     * @param string $name
+     * @param string $member
      * @return string|null
      */
-    public function getRole(string $name): ?string
+    public function getRole(string $member): ?string
     {
-        return $this->roles[$name] ?? null;
+        return $this->roles[$member] ?? null;
     }
     
     /**
@@ -118,6 +118,14 @@ class Faction
     public function getDtr(): float
     {
         return $this->dtr;
+    }
+    
+    /**
+     * @return float
+     */
+    public function getMaxDtr(): float
+    {
+        return 0.01 + (count($this->getMembers()) * 1.00);
     }
     
     /**
@@ -274,6 +282,16 @@ class Faction
     {
         return array_filter(Server::getInstance()->getOnlinePlayers(), function (\pocketmine\player\Player $player): bool {
             return $player instanceof Player && $player->getSession()->getFaction() === $this->getName();
+        });
+    }
+    
+    /**
+     * @return Session[]
+     */
+    public function getMembersByRole(string $role): array
+    {
+        return array_filter($this->getMembers(), function (Session $session) use ($role): bool {
+            return $this->getRole($session->getXuid()) === $role;
         });
     }
 
