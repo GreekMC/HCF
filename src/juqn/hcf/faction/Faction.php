@@ -276,6 +276,16 @@ class Faction
             return $player instanceof Player && $player->getSession()->getFaction() === $this->getName();
         });
     }
+
+    /**
+     * @param string $message
+     */
+    public function announce(string $message): void
+    {
+        foreach ($this->getOnlineMembers() as $member) {
+            $member->sendMessage($message);
+        }
+    }
     
     public function onUpdate(): void
     {

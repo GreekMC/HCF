@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace juqn\hcf\faction\command;
 
+use juqn\hcf\faction\command\subcommand\AcceptInviteSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimSubCommand;
@@ -38,6 +39,7 @@ class FactionCommand extends Command
         parent::__construct('faction', 'Faction commands');
         $this->setAliases(['f']);
         
+        $this->subCommands['accept'] = new AcceptInviteSubCommand;
         $this->subCommands['create'] = new CreateSubCommand;
         $this->subCommands['claimfor'] = new ClaimForSubCommand;
         $this->subCommands['claim'] = new ClaimSubCommand;
