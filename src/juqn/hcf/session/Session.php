@@ -52,6 +52,7 @@ class Session
      */
     public function __construct(string $xuid, array $data, bool $firstTime)
     {
+        $this->xuid = $xuid;
         $this->name = $data['name'];
         if ($data['faction'] !== null && HCFLoader::getInstance()->getFactionManager()->getFaction($data['faction']) !== null)
             $this->faction = $data['faction'];
