@@ -22,26 +22,27 @@ class WhoSubCommand implements FactionSubCommand
     {
         if (!$sender instanceof Player)
             return;
+        $faction = null;
         
         if (!isset($args[0])) {
             if ($sender->getSession()->getFaction() === null) {
                 $sender->sendMessage(TextFormat::colorize('&cYou don\'t have faction'));
                 return;
             }
-            return;
-        }
-        $faction = null;
-        $target = $sender->getServer()->getPlayerByPrefix($args[0]);
-
-        if ($target instanceof Player) {
-            if ($target->getSession()->getFaction() === null) {
-                $sender->sendMessage(TextFormat::colorize('Player dont have faction'));
-                return;
-            }
-            $faction = $target->getSession()->getFaction();
+            $faction = $sender->getSession()->getFaction();
         } else {
-            if (HCFLoader::getInstance()->getFactionManager()->getFaction($args[0])) {
-                $faction = $args[0];
+            $target = $sender->getServer()->getPlayerByPrefix($args[0]);
+
+            if ($target instanceof Player) {
+                if ($target->getSession()->getFaction() === null) {
+                    $sender->sendMessage(TextFormat::colorize('Player dont have faction'));
+                    return;
+                }
+                $faction = $target->getSession()->getFaction();
+            } else {
+                if (HCFLoader::getInstance()->getFactionManager()->getFaction($args[0])) {
+                    $faction = $args[0];
+                }
             }
         }
 
