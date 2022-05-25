@@ -32,8 +32,16 @@ final class Inventories
         $menu = InvMenu::create(InvMenu::TYPE_CHEST);
         $menu->setInventoryCloseListener(function (Player $player, Inventory $inventory) use ($data): void {
             $data['items'] = $inventory->getContents();
-            HCFLoader::getInstance()->getCrateManager()->addCreator($player->getName(), $data);
-            $player->sendMessage(TextFormat::colorize('&aNow touch the chest where the crate will be found'));
+            HCFLoader::getInstance()->getCrateManager()->addCrate($data['crateName'], $data['keyId'], $data['keyFormat'], $data['nameFormat'], (array) $data['items']);
+            
+            $chest = ItemFactory::getInstance()->get(54, 0);
+            $chest->setCustomName(TextFormat::colorize('Crate ' . $data['crateName']));
+            $namedtag = $chest->getNamedTag();
+            $namedtag->setString('crate_place', $data['crateName']);
+            $chest->setNamedTag($namedtag);
+            
+            $player->getInventory()->addItem($chest);
+            $player->sendMessage(TextFormat::colorize('&aYou have successfully created the crate ' . $data['crateName']));
         });
         $menu->send($player, TextFormat::colorize('&dCrate content'));
     }

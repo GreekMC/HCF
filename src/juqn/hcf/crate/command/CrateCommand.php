@@ -7,6 +7,7 @@ namespace juqn\hcf\crate\command;
 use juqn\hcf\crate\command\subcommand\CreateSubCommand;
 use juqn\hcf\crate\command\subcommand\DeleteSubCommand;
 use juqn\hcf\crate\command\subcommand\EditSubCommand;
+use juqn\hcf\crate\command\subcommand\GiveSubCommand;
 use juqn\hcf\crate\command\subcommand\GiveKeySubCommand;
 use juqn\hcf\crate\command\subcommand\ItemConfigurationSubCommand;
 
@@ -35,6 +36,7 @@ class CrateCommand extends Command
         $this->subCommands['create'] = new CreateSubCommand;
         $this->subCommands['delete'] = new DeleteSubCommand;
         $this->subCommands['edit'] = new EditSubCommand;
+        $this->subCommands['give'] = new GiveSubCommand;
         $this->subCommands['giveKey'] = new GiveKeySubCommand;
         $this->subCommands['itemConfiguration'] = new ItemConfigurationSubCommand;
     }

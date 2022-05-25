@@ -43,6 +43,7 @@ class CrateListener implements Listener
         $action = $event->getAction();
         $block = $event->getBlock();
         $player = $event->getPlayer();
+        $item = $player->getInventory()->getItemInHand();
         
         if ($block->getId() == BlockLegacyIds::CHEST) {
             $tile = $player->getWorld()->getTile($block->getPosition()->asVector3());
@@ -51,9 +52,9 @@ class CrateListener implements Listener
                 $event->cancel();
                 
                 if ($player->getInventory()->getItemInHand()->getId() !== 286 && $player->getInventory()->getItemInHand()->getNamedTag()->getTag('crate_configuration') === null) {
-                    if ($action == PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                         $tile->openCratePreview($player);
-                    } elseif ($action == PlayerInteractEvent::LEFT_CLICK_BLOCK) {
+                    } elseif ($action === PlayerInteractEvent::LEFT_CLICK_BLOCK) {
                         $tile->reedemKey($player);
                     }
                 } else $tile->openCrateConfiguration($player);
@@ -61,28 +62,27 @@ class CrateListener implements Listener
             }
             
             if ($tile instanceof Chest) {
-                if (($creator = HCFLoader::getInstance()->getCrateManager()->getCreator($player->getName())) !== null) {
-                    $event->cancel();
-                    
-                    $tilePosition = $block->getPosition()->asVector3();
-                    $tile->close();
-                    
-                    HCFLoader::getInstance()->getCrateManager()->removeCreator($player->getName());
-                    HCFLoader::getInstance()->getCrateManager()->addCrate($creator['crateName'], $creator['keyId'], $creator['keyFormat'], $creator['nameFormat'], (array) $creator['items']);
-                    
-                    $newTile = new CrateTile($player->getWorld(), $tilePosition);
-                    $newTile->setCrateName($creator['crateName']);
-                    $player->getWorld()->addTile($newTile);
-                    
-                    $player->sendMessage(TextFormat::colorize('&aYou have created the crate ' . $creator['crateName'] . ' successfully'));
-                }
-                
                 if ($player->getInventory()->getItemInHand()->getId() === 286 && $player->getInventory()->getItemInHand()->getNamedTag()->getTag('crate_configuration') !== null) {
                     $event->cancel();
-                    
                     Forms::createCreateTile($player, $block->getPosition());
+                    return;
                 }
-                return;
+                
+                if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK && $item->getNamedTag()->getTag('crate_place') !== null) {
+                    $crateName = $item->getNamedTag()->getString('crate_place');
+                    $event->cancel();
+                    
+                    if (HCFLoader::getInstance()->getCrateManager()->getCrate($crateName) === null) return;
+                
+                    $tilePosition = $block->getPosition()->asVector3();
+                    $tile->close();
+                        
+                    $newTile = new CrateTile($player->getWorld(), $tilePosition);
+                    $newTile->setCrateName($crateName);
+                    $player->getWorld()->addTile($newTile);
+                    
+                    $player->sendMessage(TextFormat::colorize('&aYou have created the crate ' . $crateName . ' successfully'));
+                }
             }
         }
     }
