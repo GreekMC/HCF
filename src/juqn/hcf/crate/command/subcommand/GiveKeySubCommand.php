@@ -41,18 +41,32 @@ class GiveKeySubCommand implements CrateSubCommand
             $sender->sendMessage(TextFormat::colorize('&cThis crate does not exist'));
             return;
         }
-        $player = HCFLoader::getInstance()->getServer()->getPlayerExact($playerName);
         
-        if ($player === null) {
-            $sender->sendMessage(TextFormat::colorize('&cThis player does not exist. Please enter the full nickname'));
-            return;
-        }
+        if ($playerName === 'all') {
+            if (!is_numeric($amount)) {
+                $sender->sendMessage(TextFormat::colorize('&cAmount invalid'));
+                return;
+            }
+            
+            foreach ($sender->getServer()->getOnlinePlayers() as $player) {
+                $crate->giveKey($player, (int) $amount);
+                $player->sendMessage(TextFormat::colorize('&aYou have received ' . $amount . 'x of ' . $crate->getKeyFormat() . 'keys'));
+            }
+        } else {
+            $player = HCFLoader::getInstance()->getServer()->getPlayerExact($playerName);
         
-        if (!is_numeric($amount)) {
-            $sender->sendMessage(TextFormat::colorize('&cAmount invalid'));
-            return;
+            if ($player === null) {
+                $sender->sendMessage(TextFormat::colorize('&cThis player does not exist. Please enter the full nickname'));
+                return;
+            }
+        
+            if (!is_numeric($amount)) {
+                $sender->sendMessage(TextFormat::colorize('&cAmount invalid'));
+                return;
+            }
+            $crate->giveKey($player, (int) $amount);
+            $player->sendMessage(TextFormat::colorize('&aYou have received ' . $amount . 'x of ' . $crate->getKeyFormat() . 'keys'));
+            $sender->sendMessage(TextFormat::colorize('&aYou have given ' . $player->getName() . ' ' . $amount . 'x amount of ' . $crate->getKeyFormat() . ' keys'));
         }
-        $crate->giveKey($player, (int) $amount);
-        $sender->sendMessage(TextFormat::colorize('&aYou have given ' . $player->getName() . ' ' . $amount . 'x amount of ' . $crate->getKeyFormat() . ' keys'));
     }
 }
