@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace juqn\hcf\koth;
 
+use CortexPE\DiscordWebhookAPI\Embed;
+use CortexPE\DiscordWebhookAPI\Message;
+use CortexPE\DiscordWebhookAPI\Webhook;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
@@ -215,11 +218,24 @@ class Koth
                     $crate->giveKey($this->capturer, $this->getKeyCount());
                     $this->capturer->sendMessage(TextFormat::colorize('&8[&6KOTH&r&8] &6You have received &e' . $this->getKey() . ' Key'));
                 }
+                $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
+
+                $msg = new Message();
+
+                $embed = new Embed();
+                $embed->setTitle("KotH " . "{$this->getName()}" . " has finished");
+                $embed->setColor(0x9AD800);
+                $embed->addField("Was captured by ", "{$this->capturer->getName()}");
+                $embed->setFooter("greekmc.net");
+                $msg->addEmbed($embed);
+
+                $webHook->send($msg);
                 HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize('&8[&l&6KOTH&r&8] &e' . $this->getName() . ' &6has been controlled by&e ' . $this->capturer->getName()));
                 $this->progress = $this->time;
                 $this->capturer = null;
                 
                 HCFLoader::getInstance()->getKothManager()->setKothActive(null);
+
                 return;
             }
             $this->progress--;

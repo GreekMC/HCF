@@ -336,7 +336,7 @@ class HCFListener implements Listener
                 $item->pop();
                 $player->getInventory()->setItemInHand($item);
                 $player->getSession()->addCooldown('speed.cooldown', '&l&bSpeed&r&7: &r&c', 60);
-                $player->sendMessage("§eYou have used your §dSpeed Buff");
+                $player->sendMessage("§eYou have used your §dSpeed IV Buff");
             }
             if ($item->getId() === VanillaItems::FEATHER()->getId()) {
                 if ($player->getSession()->getCooldown('jump.cooldown') !== null) {
@@ -347,7 +347,7 @@ class HCFListener implements Listener
                 $item->pop();
                 $player->getInventory()->setItemInHand($item);
                 $player->getSession()->addCooldown('jump.cooldown', '&l&bJump Boost&r&7: &r&c', 60);
-                $player->sendMessage("§eYou have used your §dJump Boost Buff");
+                $player->sendMessage("§eYou have used your §dJump Boost VIII Buff");
             }
         }
 
@@ -361,7 +361,7 @@ class HCFListener implements Listener
                 $item->pop();
                 $player->getInventory()->setItemInHand($item);
                 $player->getSession()->addCooldown('speed.cooldown', '&l&bSpeed&r&7: &r&c', 60);
-                $player->sendMessage("§eYou have used your §dSpeed Buff");
+                $player->sendMessage("§eYou have used your §dSpeed IV Buff");
             }
             if ($item->getId() === VanillaItems::FEATHER()->getId()) {
                 if ($player->getSession()->getCooldown('jump.cooldown') !== null) {
@@ -372,7 +372,7 @@ class HCFListener implements Listener
                 $item->pop();
                 $player->getInventory()->setItemInHand($item);
                 $player->getSession()->addCooldown('jump.cooldown', '&l&bJump Boost&r&7: &r&c', 60);
-                $player->sendMessage("§eYou have used your §dJump Boost Buff");
+                $player->sendMessage("§eYou have used your §dJump Boost VIII Buff");
             }
         }
 
@@ -382,97 +382,115 @@ class HCFListener implements Listener
             }
             switch ($item->getId()) {
                 case VanillaItems::SPIDER_EYE()->getId():
-                    $player->getEffects()->add(new EffectInstance(VanillaEffects::WITHER(), 20 * 7, 1));
-                    foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
-                        if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            $online_player->getEffects()->add(new EffectInstance(VanillaEffects::WITHER(), 20 * 7, 1));
-                            $online_player->sendMessage("§eThe bard (§a" . $player->getName() . "§e) has used §bWither II");
+                    if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 35){
+                        $player->getEffects()->add(new EffectInstance(VanillaEffects::WITHER(), 20 * 7, 1));
+                        foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
+                            if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
+                                $online_player->getEffects()->add(new EffectInstance(VanillaEffects::WITHER(), 20 * 7, 1));
+                                $online_player->sendMessage("§eThe bard (§a" . $player->getName() . "§e) has used §bWither II");
+                            }
                         }
+                        $item = $player->getInventory()->getItemInHand();
+                        $item->pop();
+                        $player->getInventory()->setItemInHand($item);
+                        $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
+                        $player->getSession()->getEnergy('bard.energy')->reduceEnergy(35);
                     }
-                    $item = $player->getInventory()->getItemInHand();
-                    $item->pop();
-                    $player->getInventory()->setItemInHand($item);
-                    $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
                     break;
                 case VanillaItems::BLAZE_POWDER()->getId():
-                    $player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), 20 * 7, 1));
-                    foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
-                        if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
-                                if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
-                                    $online_player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), 20 * 7, 1));
-                                    $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bStrenght II");
-                                }
+                    if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 40) {
+                        $player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), 20 * 7, 1));
+                        foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
+                            if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
+                                if ($online_player instanceof Player)
+                                    if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
+                                        $online_player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), 20 * 7, 1));
+                                        $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bStrenght II");
+                                    }
+                            }
                         }
+                        $item = $player->getInventory()->getItemInHand();
+                        $item->pop();
+                        $player->getInventory()->setItemInHand($item);
+                        $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
+                        $player->getSession()->getEnergy('bard.energy')->reduceEnergy(40);
                     }
-                    $item = $player->getInventory()->getItemInHand();
-                    $item->pop();
-                    $player->getInventory()->setItemInHand($item);
-                    $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
                     break;
                 case VanillaItems::IRON_INGOT()->getId():
-                    $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 2));
-                    foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
-                        if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
-                                if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
-                                    $online_player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 2));
-                                    $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bResistance III");
-                                }
+                    if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 35) {
+                        $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 2));
+                        foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
+                            if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
+                                if ($online_player instanceof Player)
+                                    if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
+                                        $online_player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 2));
+                                        $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bResistance III");
+                                    }
+                            }
                         }
+                        $item = $player->getInventory()->getItemInHand();
+                        $item->pop();
+                        $player->getInventory()->setItemInHand($item);
+                        $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
+                        $player->getSession()->getEnergy('bard.energy')->reduceEnergy(35);
                     }
-                    $item = $player->getInventory()->getItemInHand();
-                    $item->pop();
-                    $player->getInventory()->setItemInHand($item);
-                    $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
                     break;
                 case VanillaItems::SUGAR()->getId():
-                    $player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 2));
-                    foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
-                        if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
-                                if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
-                                    $online_player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 2));
-                                    $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bSpeed III");
-                                }
+                    if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 20) {
+                        $player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 2));
+                        foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
+                            if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
+                                if ($online_player instanceof Player)
+                                    if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
+                                        $online_player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 2));
+                                        $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bSpeed III");
+                                    }
+                            }
                         }
+                        $item = $player->getInventory()->getItemInHand();
+                        $item->pop();
+                        $player->getInventory()->setItemInHand($item);
+                        $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
+                        $player->getSession()->getEnergy('bard.energy')->reduceEnergy(20);
                     }
-                    $item = $player->getInventory()->getItemInHand();
-                    $item->pop();
-                    $player->getInventory()->setItemInHand($item);
-                    $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
                     break;
                 case VanillaItems::FEATHER()->getId():
-                    $player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 7));
-                    foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
-                        if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
-                                if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
-                                    $online_player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 7));
-                                    $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bJump Boost VIII");
-                                }
+                    if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 30) {
+                        $player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 7));
+                        foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
+                            if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
+                                if ($online_player instanceof Player)
+                                    if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
+                                        $online_player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 7));
+                                        $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bJump Boost VIII");
+                                    }
+                            }
                         }
+                        $item = $player->getInventory()->getItemInHand();
+                        $item->pop();
+                        $player->getInventory()->setItemInHand($item);
+                        $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
+                        $player->getSession()->getEnergy('bard.energy')->reduceEnergy(30);
                     }
-                    $item = $player->getInventory()->getItemInHand();
-                    $item->pop();
-                    $player->getInventory()->setItemInHand($item);
-                    $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
                     break;
                 case VanillaItems::GHAST_TEAR()->getId():
-                    $player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 2));
-                    foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
-                        if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
-                                if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
-                                    $online_player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 2));
-                                    $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bRegeneration III");
-                                }
+                    if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 35) {
+                        $player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 2));
+                        foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
+                            if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
+                                if ($online_player instanceof Player)
+                                    if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
+                                        $online_player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 2));
+                                        $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bRegeneration III");
+                                    }
+                            }
                         }
+                        $item = $player->getInventory()->getItemInHand();
+                        $item->pop();
+                        $player->getInventory()->setItemInHand($item);
+                        $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
+                        $player->getSession()->getEnergy('bard.energy')->reduceEnergy(35);
                     }
-                    $item = $player->getInventory()->getItemInHand();
-                    $item->pop();
-                    $player->getInventory()->setItemInHand($item);
-                    $player->getSession()->addCooldown('bard.cooldown', '&l&eBard Effect&r&7: &r&c', 10);
                     break;
             }
         }

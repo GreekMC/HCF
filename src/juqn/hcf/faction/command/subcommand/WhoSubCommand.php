@@ -51,7 +51,7 @@ class WhoSubCommand implements FactionSubCommand
             return;
         }
         $message = '&7&m--------------------------' . PHP_EOL;
-        $message .= '&9' . $faction->getName() . ' &7[' . count($faction->getOnlineMembers()) . '/' . count($faction->getMembers()) . '] &3- &eHQ: &f' . ($faction->getHome() !== null ? 'X: ' . $faction->getHome()->getFloorX() . ' Z: ' . $faction->getHome()->getFloorZ() : 'Not set ');
+        $message .= '&9' . ($faction->getName()). ' &7[' . count($faction->getOnlineMembers()) . '/' . count($faction->getMembers()) . '] &3- &eHQ: &f' . ($faction->getHome() !== null ? 'X: ' . $faction->getHome()->getFloorX() . ' Z: ' . $faction->getHome()->getFloorZ() : 'Not set ');
         $message .= '&eLeader: ' . implode(', ', array_map(function ($session) {
             return $session->getName();
         }, $faction->getMembersByRole(Faction::LEADER))) . PHP_EOL;

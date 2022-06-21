@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace juqn\hcf\koth\command\subcommand;
 
+use CortexPE\DiscordWebhookAPI\Embed;
+use CortexPE\DiscordWebhookAPI\Message;
+use CortexPE\DiscordWebhookAPI\Webhook;
 use juqn\hcf\koth\command\KothSubCommand;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
@@ -43,6 +46,10 @@ class StartSubCommand implements KothSubCommand
             return;
         }
         $koth = HCFLoader::getInstance()->getKothManager()->getKoth($name);
+        $location = HCFLoader::getInstance()->getKothManager()->getKoth($name)->getCoords();
+        $time = HCFLoader::getInstance()->getKothManager()->getKoth($name)->getTime() / 60;
+        $points = HCFLoader::getInstance()->getKothManager()->getKoth($name)->getPoints();
+        $keys = HCFLoader::getInstance()->getKothManager()->getKoth($name)->getKeyCount();
         
         if ($koth->getCapzone() === null) {
             $sender->sendMessage(TextFormat::colorize('&cThe capzone is not selected'));
@@ -50,5 +57,22 @@ class StartSubCommand implements KothSubCommand
         }
         HCFLoader::getInstance()->getKothManager()->setKothActive($name);
         $sender->sendMessage(TextFormat::colorize('&aYou have activated the koth ' . $name));
+
+        $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
+
+
+        $msg = new Message();
+
+        $embed = new Embed();
+        $embed->setTitle("KotH " . $name . " has started");
+        $embed->setColor(0xD87200);
+        $embed->addField("Location", "{$location}");
+        $embed->addField("Time", "{$time} minutes", true);
+        $embed->addField("Rewards", "{$points} Points & {$keys} Keys", true);
+        $embed->setFooter("greekmc.net");
+        $msg->addEmbed($embed);
+
+
+        $webHook->send($msg);
     }
 }

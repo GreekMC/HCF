@@ -8,6 +8,7 @@ use juqn\hcf\faction\command\subcommand\AcceptInviteSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimSubCommand;
+use juqn\hcf\faction\command\subcommand\DisbandSubCommand;
 use juqn\hcf\faction\command\subcommand\FocusSubCommand;
 use juqn\hcf\faction\command\subcommand\HelpSubCommand;
 use juqn\hcf\faction\command\subcommand\HomeSubCommand;
@@ -56,6 +57,7 @@ class FactionCommand extends Command
         $this->subCommands['unrally'] = new UnrallySubCommand;
         $this->subCommands['who'] = new WhoSubCommand;
         $this->subCommands['invite'] = new InviteSubCommand();
+        $this->subCommands['disband'] = new DisbandSubCommand();
     }
     
     /**

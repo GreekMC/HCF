@@ -86,5 +86,16 @@ abstract class HCFClass
         
         foreach($this->getEffects() as $effect)
             $player->getEffects()->add($effect);
+
+        if($this->getId() === self::BARD){
+            if($player->getSession()->getEnergy('bard.energy') === null ){
+                $player->getSession()->addEnergy('bard.energy', '&l&9Bard Energy&r&7: &r&c');
+            }
+            if ($player->getSession()->getEnergy('bard.energy')->getEnergy() === 120 ) {
+                $player->getSession()->getEnergy('bard.energy')->setPaused(true);
+                return;
+            }
+            $player->getSession()->getEnergy('bard.energy')->update();
+        }
     }
 }

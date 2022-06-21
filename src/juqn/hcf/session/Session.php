@@ -284,11 +284,12 @@ class Session
     /**
      * @param string $key
      * @param string $format
+     * @param bool $paused
      * @param int $energy
      */
-    public function addEnergy(string $key, string $format, int $energy = 0): void
+    public function addEnergy(string $key, string $format, int $energy = 0, bool $paused = false): void
     {
-        $this->energies[$key] = new SessionEnergy($format, $energy);
+        $this->energies[$key] = new SessionEnergy($format, $energy, $paused);
     }
     
     /**
@@ -356,7 +357,8 @@ class Session
         foreach ($this->getEnergies() as $key => $energy)
             $data['energies'][$key] = [
                 'format' => $energy->getFormat(),
-                'energy' => $energy->getEnergy()
+                'energy' => $energy->getEnergy(),
+                'paused' => $energy->isPaused(),
             ];
         return $data;
     }

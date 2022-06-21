@@ -6,13 +6,14 @@
 # Main config
 version: 1.0
 prefix: '&l&6HCF &r&7| '
+koth.webhook: 'https://discord.com/api/webhooks/988934155163303956/Cax1yf1tDH7fNUmBEyw5nZrK3OiT85SqJ_Uk8YZwCsk0o9hZwIFCNdQUVjWWsb1hRY0N'
 
 # Scoreboard Config
 scoreboard.title: '&l&6HCF &r&7| &f Beta'
 
 # Join and quit
 join.message: '&7[&a+&7] &a{player}'
-quit.message: '&7[&c-&a] &c{player}'
+quit.message: '&7[&c-&7] &c{player}'
 
 # Factions
 faction.max.members: 8

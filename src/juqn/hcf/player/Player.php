@@ -155,13 +155,18 @@ class Player extends BasePlayer
         if (($kothName = HCFLoader::getInstance()->getKothManager()->getKothActive()) !== null) {
             $koth = HCFLoader::getInstance()->getKothManager()->getKoth($kothName);
             
-            if ($koth !== null) $lines[] = TextFormat::colorize('&9&l ' . $koth->getName() . ': &r&7' . Timer::format($koth->getProgress()));
+            if ($koth !== null) $lines[] = TextFormat::colorize('&9&l ' . $koth->getName() . '&r&7: &r&c' . Timer::format($koth->getProgress()));
         }
         
         # Cooldowns
         foreach ($this->getSession()->getCooldowns() as $cooldown) {
             if ($cooldown->isVisible())
                 $lines[] = TextFormat::colorize(' ' . $cooldown->getFormat() . Timer::format($cooldown->getTime()));
+        }
+
+        # Energy
+        foreach ($this->getSession()->getEnergies() as $energy) {
+                $lines[] = TextFormat::colorize(' ' . $energy->getFormat() . ($energy->getEnergy().'.0'));
         }
         
         # Faction
@@ -223,6 +228,11 @@ class Player extends BasePlayer
                 
                 # Update scoreboard
                 $this->updateScoreboard();
+
+                #update energys
+                if($this->getClass() === null){
+                    $this->getSession()->removeEnergy('bard.energy');
+                }
 
                 # Class event
                 if ($this->getClass() !== null)

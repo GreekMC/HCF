@@ -15,16 +15,20 @@ class SessionEnergy
     private string $format;
     /** @var int */
     private int $energy;
-    
+    /** @var bool */
+    private bool $paused;
+
     /**
      * Energy construct
      * @param string $format
      * @param int $energy
+     * @param bool $paused
      */
-    public function __construct(string $format, int $energy)
+    public function __construct(string $format, int $energy, bool $paused)
     {
         $this->format = $format;
         $this->energy = $energy;
+        $this->paused = $paused;
     }
     
     /**
@@ -42,6 +46,22 @@ class SessionEnergy
     {
         return $this->energy;
     }
+
+    /**
+     * @return bool
+     */
+    public function isPaused(): bool
+    {
+        return $this->paused;
+    }
+
+    /**
+     * @param bool $value
+     */
+    public function setPaused(bool $value): void
+    {
+        $this->paused = $value;
+    }
     
     /**
      * @param int $amount
@@ -57,5 +77,10 @@ class SessionEnergy
     public function reduceEnergy(int $amount): void
     {
         $this->energy -= $amount;
+    }
+
+    public function update(): void
+    {
+            $this->energy++;
     }
 }

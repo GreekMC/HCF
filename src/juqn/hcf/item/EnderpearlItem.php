@@ -54,7 +54,7 @@ class EnderpearlItem extends PMEnderPearl
             $result = parent::onClickAir($player, $directionVector);
             
             if ($result)
-                $session->addCooldown('enderpearl', '&l&eEnderpearl: &r&7', 15);
+                $session->addCooldown('enderpearl', '&l&eEnderpearl&r&7: &r&c', 15);
             return $result;
         }
 		return parent::onClickAir($player, $directionVector);

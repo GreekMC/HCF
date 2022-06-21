@@ -38,6 +38,7 @@ class Archer extends HCFClass
             VanillaItems::LEATHER_BOOTS()
         ];
     }
+
     
     /**
      * @return EffectInstance[]
@@ -46,7 +47,8 @@ class Archer extends HCFClass
     {
         return [
             new EffectInstance(VanillaEffects::SPEED(), 20 * 15, 2),
-            new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 15, 1)
+            new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 15, 1),
+            new EffectInstance(VanillaEffects::FIRE_RESISTANCE(), 20 * 15, 0)
         ];
     }
 }
