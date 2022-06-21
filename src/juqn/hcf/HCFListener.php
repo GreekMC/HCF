@@ -326,7 +326,7 @@ class HCFListener implements Listener
                 return;
             }
 
-        if($player->getClass()->getId() === HCFClass::ARCHER) {
+        if($player->getClass()->getId() === HCFClass::ROGUE) {
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -336,6 +336,7 @@ class HCFListener implements Listener
                 $item->pop();
                 $player->getInventory()->setItemInHand($item);
                 $player->getSession()->addCooldown('speed.cooldown', '&l&bSpeed&r&7: &r&c', 60);
+                $player->sendMessage("§eYou have used your §dSpeed Buff");
             }
             if ($item->getId() === VanillaItems::FEATHER()->getId()) {
                 if ($player->getSession()->getCooldown('jump.cooldown') !== null) {
@@ -346,7 +347,32 @@ class HCFListener implements Listener
                 $item->pop();
                 $player->getInventory()->setItemInHand($item);
                 $player->getSession()->addCooldown('jump.cooldown', '&l&bJump Boost&r&7: &r&c', 60);
-                $player->sendMessage("You have used your Jump Boost ");
+                $player->sendMessage("§eYou have used your §dJump Boost Buff");
+            }
+        }
+
+        if($player->getClass()->getId() === HCFClass::ARCHER) {
+            if ($item->getId() === VanillaItems::SUGAR()->getId()) {
+                if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
+                    return;
+                }
+                $player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 3));
+                $item = $player->getInventory()->getItemInHand();
+                $item->pop();
+                $player->getInventory()->setItemInHand($item);
+                $player->getSession()->addCooldown('speed.cooldown', '&l&bSpeed&r&7: &r&c', 60);
+                $player->sendMessage("§eYou have used your §dSpeed Buff");
+            }
+            if ($item->getId() === VanillaItems::FEATHER()->getId()) {
+                if ($player->getSession()->getCooldown('jump.cooldown') !== null) {
+                    return;
+                }
+                $player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 7));
+                $item = $player->getInventory()->getItemInHand();
+                $item->pop();
+                $player->getInventory()->setItemInHand($item);
+                $player->getSession()->addCooldown('jump.cooldown', '&l&bJump Boost&r&7: &r&c', 60);
+                $player->sendMessage("§eYou have used your §dJump Boost Buff");
             }
         }
 
