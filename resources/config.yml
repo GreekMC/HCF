@@ -5,14 +5,14 @@
 
 # Main config
 version: 1.0
-prefix: '&8(&6GreekMC&8)'
+prefix: '&l&6HCF &r&7| '
 
 # Scoreboard Config
-scoreboard.title: '&6GreekMC &7| &9First'
+scoreboard.title: '&l&6HCF &r&7| &f Beta'
 
 # Join and quit
-join.message: '&a[+] {player}'
-quit.message: '&c[-] {player}'
+join.message: '&7[&a+&7] &a{player}'
+quit.message: '&7[&c-&a] &c{player}'
 
 # Factions
 faction.max.members: 8

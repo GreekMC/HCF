@@ -97,9 +97,10 @@ class KitManager
             HCFLoader::getInstance()->getProvider()->getKitConfig()->save();
         }
     }
-    
+
     /**
      * @param string $kitName
+     * @throws \JsonException
      */
     public function removeKit(string $kitName): void
     {
@@ -112,9 +113,10 @@ class KitManager
         HCFLoader::getInstance()->getProvider()->getKitConfig()->set('organization', $organization);
         HCFLoader::getInstance()->getProvider()->getKitConfig()->save();
     }
-    
+
     /**
      * @param string[] $organization
+     * @throws \JsonException
      */
     public function setOrganization(array $organization): void
     {

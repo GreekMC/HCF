@@ -70,6 +70,10 @@ class HCFLoader extends PluginBase
     private ShopManager $shopManager;
     /** @var vKitManager */
     private vKitManager $vKitManager;
+
+    private array $tags = [
+        'ArcherMark' => []
+    ];
     
     protected function onLoad(): void
     {
@@ -259,5 +263,18 @@ class HCFLoader extends PluginBase
     public function getvKitManager(): vKitManager
     {
         return $this->vKitManager;
+    }
+
+    public function inTag(string $type, string $player): bool
+    {
+        if (isset($this->tags[$type]) && isset($this->tags[$type][$player])) {
+            return $this->tags[$type][$player] > time();
+        }
+        return false;
+    }
+
+    public function setTag(string $type, string $player, int $time): void
+    {
+        $this->tags[$type][$player] = time() + $time;
     }
 }

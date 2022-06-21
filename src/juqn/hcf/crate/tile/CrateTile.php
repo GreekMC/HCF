@@ -11,6 +11,7 @@ use muqsit\invmenu\InvMenu;
 use muqsit\invmenu\transaction\InvMenuTransaction;
 use muqsit\invmenu\transaction\InvMenuTransactionResult;
 
+use muqsit\invmenu\type\InvMenuTypeIds;
 use pocketmine\block\tile\Chest;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Location;
@@ -107,10 +108,10 @@ class CrateTile extends Chest
             $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
             
             if ($crate !== null) {
-                $menu = InvMenu::create(InvMenu::TYPE_CHEST);
+                $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
                 $menu->getInventory()->setContents($crate->getItems());
                 $menu->setListener(InvMenu::readonly());
-                $menu->send($player, TextFormat::colorize('&9Crate ' . $this->getCrateName() . ' preview'));
+                $menu->send($player, TextFormat::colorize('&9Crate ' . $this->getCrateName() . ' Preview'));
             }
         }
     }
@@ -120,7 +121,7 @@ class CrateTile extends Chest
      */
     public function openCrateConfiguration(Player $player): void
     {
-        $menu = InvMenu::create(InvMenu::TYPE_CHEST);
+        $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
         
         $update_text = ItemFactory::getInstance()->get(345, 0);
         $update_text->setCustomName(TextFormat::colorize('&eUpdate crate text'));

@@ -36,6 +36,9 @@ class AcceptInviteSubCommand implements FactionSubCommand
                 $sender->sendMessage(TextFormat::colorize('&cPlayer not found'));
                 return;
             }
+            if($args[0] === null){
+                $sender->sendMessage("&cUse /f accept (faction name)");
+            }
             $playerInvites = HCFLoader::getInstance()->getFactionManager()->getInvites($sender->getXuid());
             $playerInvite = $player->getName();
 

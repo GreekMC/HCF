@@ -11,7 +11,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\item\ItemFactory;
 use pocketmine\utils\TextFormat;
 
-class GiveSubCommand extends CrateSubCommand
+class GiveSubCommand implements CrateSubCommand
 {
     
     /**

@@ -72,7 +72,7 @@ class Session
             $this->addEnergy($key, $d['format'], (int) $d['energy']);
         
         if ($firstTime)
-            $this->addCooldown('starting.timer', '&l&aStarting Timer: &r&7', 60 * 60);
+            $this->addCooldown('starting.timer', '&l&aStarting Timer&r&7: &r&c', 60 * 60);
     }
     
     /**

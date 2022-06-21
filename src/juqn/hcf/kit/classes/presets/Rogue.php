@@ -45,9 +45,10 @@ class Rogue extends HCFClass
      */
     public function getEffects(): array
     {
-        return array_merge(
-            ClassFactory::getClassById(self::ARCHER)->getEffects(),
-            [new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 15)]
-        );
+        return [
+            new EffectInstance(VanillaEffects::SPEED(), 20 * 15, 2),
+            new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 15, 0),
+            new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 15, 3)
+        ];
     }
 }

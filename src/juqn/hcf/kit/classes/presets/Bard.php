@@ -46,7 +46,8 @@ class Bard extends HCFClass
     {
         return [
             new EffectInstance(VanillaEffects::SPEED(), 20 * 15, 1),
-            new EffectInstance(VanillaEffects::REGENERATION(), 20 * 15, 1)
+            new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 15, 0),
+            new EffectInstance(VanillaEffects::REGENERATION(), 20 * 15, 0)
         ];
     }
 }
