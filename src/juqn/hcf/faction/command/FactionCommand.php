@@ -8,6 +8,7 @@ use juqn\hcf\faction\command\subcommand\AcceptInviteSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimSubCommand;
+use juqn\hcf\faction\command\subcommand\DepositSubCommand;
 use juqn\hcf\faction\command\subcommand\DisbandSubCommand;
 use juqn\hcf\faction\command\subcommand\FocusSubCommand;
 use juqn\hcf\faction\command\subcommand\HelpSubCommand;
@@ -19,6 +20,7 @@ use juqn\hcf\faction\command\subcommand\TopSubCommand;
 use juqn\hcf\faction\command\subcommand\UnfocusSubCommand;
 use juqn\hcf\faction\command\subcommand\UnrallySubCommand;
 use juqn\hcf\faction\command\subcommand\WhoSubCommand;
+use juqn\hcf\faction\command\subcommand\WithdrawSubCommand;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
@@ -42,6 +44,10 @@ class FactionCommand extends Command
         $this->setAliases(['f']);
         
         $this->subCommands['accept'] = new AcceptInviteSubCommand;
+        $this->subCommands['deposit'] = new DepositSubCommand();
+        $this->subCommands['d'] = new DepositSubCommand();
+        $this->subCommands['withdraw'] = new WithdrawSubCommand();
+        $this->subCommands['w'] = new WithdrawSubCommand();
         $this->subCommands['create'] = new CreateSubCommand;
         $this->subCommands['claimfor'] = new ClaimForSubCommand;
         $this->subCommands['claim'] = new ClaimSubCommand;

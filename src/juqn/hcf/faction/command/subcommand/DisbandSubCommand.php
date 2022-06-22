@@ -36,12 +36,11 @@ class DisbandSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cYou don\' have a faction'));
             return;
         }
-        if($sender->getSession()->getFaction()->getRole() === 'leader'){
-            $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
-            HCFLoader::getInstance()->getFactionManager()->removeFaction($sender->getSession()->getFaction());
-            $members = $faction->getMembers();
+        $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
+        if (!in_array($faction->getRole($sender->getXuid()), [Faction::LEADER, Faction::CO_LEADER])) {
+            $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader or co-leader can disband the faction'));
         }else{
-            $sender->sendMessage('&cOnly the leader can use this command!');
+            $sender->sendMessage(TextFormat::colorize('&cuwu'));
         }
 
     }

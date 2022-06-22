@@ -616,22 +616,19 @@ class HCFListener implements Listener
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
             if ($player instanceof Player && $damager instanceof Player) {
-                if ($player->getClass()->getId() === HCFClass::BARD && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()) {
-                    if ($damager->getCardenal() == $player->getCardenal()) {
-
-                            $player->setHealth($player->getHealth() - 9);
-                            $damager->getInventory()->setItemInHand(VanillaItems::AIR());
-                            $damager->addEffect(new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 3 * 10, 3));
-                            $damager->addEffect(new EffectInstance(Effect::getEffect(Effect::BLINDNESS), 3 * 10, 3));
-
-                            $damager->sendMessage(str_replace(["&", "{playerName}", "{playerHealth}"], ["§", $player->getName(), $player->getHealth()], Loader::getConfiguration("messages")->get("rogue_made_backstab_target")));
-
-                            Loader::$rogue[$damager->getName()] = time() + 6;
-                        } else if (time() < Loader::$rogue[$damager->getName()]) {
+                if($damager->getClass() === null){
+                    return;
+                }
+                if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
+                    if ($damager->getViewPos() == $player->getViewPos()) {
+                        if ($damager->getSession()->getCooldown('rogue.cooldown') !== null) {
                             return;
-                        } else {
-                            unset(Loader::$rogue[$damager->getName()]);
                         }
+                        $player->setHealth($player->getHealth() - 9);
+                        $damager->getInventory()->setItemInHand(VanillaItems::AIR());
+                        $damager->getEffects()->add(new EffectInstance(VanillaEffects::SLOWNESS(), 20 * 3, 0));
+                        $damager->getEffects()->add(new EffectInstance(VanillaEffects::BLINDNESS(), 20 * 3, 3));
+                        $damager->getSession()->addCooldown('rogue.cooldown', '&l&dRogue Cooldown&r&7: &r&c', 10);
                     }
                 }
             }

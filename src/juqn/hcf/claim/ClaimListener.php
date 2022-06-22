@@ -273,7 +273,7 @@ class ClaimListener implements Listener
                         $leavingName = '&9KoTH ' . $player->getCurrentClaim();
                 }
                 $player->sendMessage(TextFormat::colorize('&eNow leaving: ' . $leavingName . ' ' . $leaving));
-                $player->sendMessage(TextFormat::colorize('&eNow entering:&c ' . ($player->getPosition()->distance($player->getWorld()->getSafeSpawn()) > 500 ? 'Wilderness' : 'Warzone') . ' ' . $entering));
+                $player->sendMessage(TextFormat::colorize('&eNow entering:&c ' . ($player->getPosition()->distance($player->getWorld()->getSafeSpawn()) > 496 ? 'Wilderness' : 'Warzone') . ' ' . $entering));
                 
                 $player->setCurrentClaim();
             }
@@ -329,6 +329,7 @@ class ClaimListener implements Listener
             }
         }
         $player->sendMessage(TextFormat::colorize('&eNow entering: ' . $enteringName . ' ' . $entering));
+        $player->sendMessage(TextFormat::colorize('&eNow leaving:&c ' . ($player->getPosition()->distance($player->getWorld()->getSafeSpawn()) > 496 ? 'Wilderness' : 'Warzone') . ' ' . $entering));
         $player->setCurrentClaim($claim->getName());
     }
     

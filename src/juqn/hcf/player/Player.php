@@ -271,7 +271,7 @@ class Player extends BasePlayer
     /**
      * @return string
      */
-    public function getCardenal(): string
+    public function getViewPos(): string
     {
         $deg = $this->getLocation()->getYaw() - 90;
         $deg %= 360;
