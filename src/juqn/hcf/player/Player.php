@@ -268,4 +268,25 @@ class Player extends BasePlayer
         }
         parent::processMostRecentMovements();
     }
+    /**
+     * @return string
+     */
+    public function getCardenal(): string
+    {
+        $deg = $this->getLocation()->getYaw() - 90;
+        $deg %= 360;
+        if ($deg < 0)
+            $deg += 360;
+
+        if (22.5 <= $deg and $deg < 157.5)
+            return "N";
+        elseif (157.5 <= $deg and $deg < 202.5)
+            return "E";
+        elseif (202.5 <= $deg and $deg < 337.5)
+            return "S";
+        else
+            return "W";
+
+    }
+
 }

@@ -214,6 +214,8 @@ class HCFListener implements Listener
         $player = $event->getPlayer();
         $item = $event->getItem();
 
+        if($player instanceof Player)
+
         if ($event->isCancelled())
             return;
 
@@ -600,6 +602,38 @@ class HCFListener implements Listener
                         }
                     }
                     break;
+            }
+        }
+    }
+
+    /**
+     * @param EntityDamageEvent $event
+     * @return void
+     */
+    public function onRogueFunction(EntityDamageEvent $event): void
+    {
+        $player = $event->getEntity();
+        if ($event instanceof EntityDamageByEntityEvent) {
+            $damager = $event->getDamager();
+            if ($player instanceof Player && $damager instanceof Player) {
+                if ($player->getClass()->getId() === HCFClass::BARD && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()) {
+                    if ($damager->getCardenal() == $player->getCardenal()) {
+
+                            $player->setHealth($player->getHealth() - 9);
+                            $damager->getInventory()->setItemInHand(VanillaItems::AIR());
+                            $damager->addEffect(new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 3 * 10, 3));
+                            $damager->addEffect(new EffectInstance(Effect::getEffect(Effect::BLINDNESS), 3 * 10, 3));
+
+                            $damager->sendMessage(str_replace(["&", "{playerName}", "{playerHealth}"], ["§", $player->getName(), $player->getHealth()], Loader::getConfiguration("messages")->get("rogue_made_backstab_target")));
+
+                            Loader::$rogue[$damager->getName()] = time() + 6;
+                        } else if (time() < Loader::$rogue[$damager->getName()]) {
+                            return;
+                        } else {
+                            unset(Loader::$rogue[$damager->getName()]);
+                        }
+                    }
+                }
             }
         }
     }
