@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace juqn\hcf;
 
+use CortexPE\DiscordWebhookAPI\Message;
+use CortexPE\DiscordWebhookAPI\Webhook;
 use juqn\hcf\kit\classes\ClassFactory;
 use juqn\hcf\kit\classes\HCFClass;
 use juqn\hcf\kit\classes\presets\Bard;
@@ -151,15 +153,26 @@ class HCFListener implements Listener
                 $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . $faction->getDtr() . '■&6]'));
         }
 
-        if ($killer === null)
+        if ($killer === null) {
             $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &edied';
-        else {
-            if (!$itemInHand->isNull() && $itemInHand instanceof Tool)
+            $webhook = $player->getName() . '[' . $player->getSession()->getKills() . '] died';
+        } else {
+            if (!$itemInHand->isNull() && $itemInHand instanceof Tool) {
                 $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] &cusing ' . $itemInHand->getName();
-            else
+                $webhook = '' . $player->getName() . '[' . $player->getSession()->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] using ' . $itemInHand->getName();
+            } else {
                 $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
+                $webhook = $player->getName() . '[' . $player->getSession()->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
+            }
+            // Construct a discord webhook with its URL
+            $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));
+
+// Construct a new Message object
+            $msg = new Message();
+            $msg->setContent($webhook);
+            $webHook->send($msg);
+            $event->setDeathMessage(TextFormat::colorize($message));
         }
-        $event->setDeathMessage(TextFormat::colorize($message));
     }
 
     /**

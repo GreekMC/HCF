@@ -6,6 +6,9 @@
 # Main config
 version: 1.0
 prefix: '&l&6HCF &r&7| '
+
+#webhooks settings
+kills.webhook: 'https://discord.com/api/webhooks/988949617645338664/CMb1pRadWrrlL1_CSJqaPWmkVc_dGVCw48GiNjqiD39ZBdTzxftzotuQnOZx2ZSnirPD'
 koth.webhook: 'https://discord.com/api/webhooks/988934155163303956/Cax1yf1tDH7fNUmBEyw5nZrK3OiT85SqJ_Uk8YZwCsk0o9hZwIFCNdQUVjWWsb1hRY0N'
 
 # Scoreboard Config

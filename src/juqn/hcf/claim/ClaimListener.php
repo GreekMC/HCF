@@ -50,7 +50,7 @@ class ClaimListener implements Listener
             return;
 
         if ($claim === null) {
-            if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 496)
+            if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 350)
                 $event->cancel();
             return;
         }
