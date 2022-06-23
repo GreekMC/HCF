@@ -6,6 +6,7 @@ namespace juqn\hcf\crate;
 
 use juqn\hcf\crate\command\CrateCommand;
 use juqn\hcf\crate\tile\CrateTile;
+use juqn\hcf\entity\CustomItemEntity;
 use juqn\hcf\entity\TextEntity;
 use juqn\hcf\HCFLoader;
 
@@ -36,7 +37,7 @@ class CrateManager
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new CrateCommand());
         # Register crates
         foreach (HCFLoader::getInstance()->getProvider()->getCrates() as $name => $data)
-            $this->addCrate($name, $data['keyId'], $data['keyFormat'], $data['nameFormat'], $data['items']);
+            $this->addCrate($name, $data['keyId'], $data['keyFormat'], $data['nameFormat'], $data['items'] ?? []);
     }
     
     public function onDisable(): void
@@ -44,6 +45,7 @@ class CrateManager
         foreach (HCFLoader::getInstance()->getServer()->getWorldManager()->getWorlds() as $world) {
             foreach ($world->getEntities() as $entity) {
                 if ($entity instanceof TextEntity) $entity->close();
+                if ($entity instanceof CustomItemEntity) $entity->close();
             }
         }
     }

@@ -11,7 +11,11 @@ use juqn\hcf\kit\classes\HCFClass;
 use juqn\hcf\session\Session;
 use juqn\hcf\utils\Timer;
 
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\Location;
+use pocketmine\network\mcpe\protocol\SetActorDataPacket;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataFlags;
 use pocketmine\player\Player as BasePlayer;
 use pocketmine\player\PlayerInfo;
 use pocketmine\nbt\tag\CompoundTag;
@@ -213,6 +217,7 @@ class Player extends BasePlayer
     public function onUpdate(int $currentTick): bool
     {
         $update = parent::onUpdate($currentTick);
+
         
         if ($update) {
             if ($currentTick % 20 === 0) {
@@ -228,6 +233,8 @@ class Player extends BasePlayer
                 
                 # Update scoreboard
                 $this->updateScoreboard();
+
+                $this->loadInvisibility();
 
                 #update energys
                 if($this->getClass() === null){
@@ -248,6 +255,25 @@ class Player extends BasePlayer
             }
         }
         return $update;
+    }
+
+    public function loadInvisibility() : void
+    {
+        if (!$this->getEffects()->has(VanillaEffects::INVISIBILITY())) return;
+        $metadata = clone $this->getNetworkProperties();
+        $metadata->setGenericFlag(EntityMetadataFlags::INVISIBLE, false);
+        $pk2 = new SetActorDataPacket();
+        $pk2->actorRuntimeId = $this->getId();
+        $pk2->metadata = $metadata->getAll();
+        foreach ($this->getViewers() as $viewer) {
+            if ($viewer instanceof Player)
+                if ($viewer->getSession()->getFaction() === null) {
+                    continue;
+                }
+                if ($viewer->getSession()->getFaction() === $this->getSession()->getFaction()) {
+                    $viewer->getNetworkSession()->sendDataPacket($pk2);
+                }
+        }
     }
     
     protected function processMostRecentMovements() : void

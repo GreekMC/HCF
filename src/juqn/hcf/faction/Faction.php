@@ -18,7 +18,7 @@ use pocketmine\world\Position;
  */
 class Faction
 {
-    
+
     /** @var string[] */
     private static array $types = [
         'Spawn' => 'spawn',
@@ -36,13 +36,13 @@ class Faction
     const CAPTAIN = 'captain';
     /** @var string */
     const MEMBER = 'member';
-    
+
     /** @var string */
     private string $name;
-    
+
     /** @var string[] */
     private array $roles;
-    
+
     /** @var float */
     private float $dtr;
     /** @var int */
@@ -51,18 +51,18 @@ class Faction
     private int $points;
     /** @var int */
     private int $kothCaptures;
-    
+
     /** @var string|null */
     private ?string $focus = null;
     /** @var array|null */
     private ?array $rally = null;
-    
+
     /** @var int|null */
     private ?int $timeRegeneration;
-    
+
     /** @var Position|null */
     private ?Position $home = null;
-    
+
     /**
      * Faction construct.
      * @param string $name
@@ -72,21 +72,21 @@ class Faction
     {
         $this->name = $name;
         $this->roles = $data['roles'];
-        $this->dtr = (float) $data['dtr'];
-        $this->balance = (int) $data['balance'];
-        $this->points = (int) $data['points'];
-        $this->kothCaptures = (int) $data['kothCaptures'];
-        $this->timeRegeneration = (int) $data['timeRegeneration'];
-        
+        $this->dtr = (float)$data['dtr'];
+        $this->balance = (int)$data['balance'];
+        $this->points = (int)$data['points'];
+        $this->kothCaptures = (int)$data['kothCaptures'];
+        $this->timeRegeneration = (int)$data['timeRegeneration'];
+
         if ($data['home'] !== null)
-            $this->home = new Position((int) $data['home']['x'], (int) $data['home']['y'], (int) $data['home']['z'], HCFLoader::getInstance()->getServer()->getWorldManager()->getWorldByName($data['home']['world']));
-            
+            $this->home = new Position((int)$data['home']['x'], (int)$data['home']['y'], (int)$data['home']['z'], HCFLoader::getInstance()->getServer()->getWorldManager()->getWorldByName($data['home']['world']));
+
         if ($data['claim'] !== null) {
             $type = self::$types[$name] ?? 'faction';
             HCFLoader::getInstance()->getClaimManager()->createClaim($name, $type, $data['claim']['minX'], $data['claim']['maxX'], $data['claim']['minZ'], $data['claim']['maxZ'], $data['claim']['world']);
         }
     }
-    
+
     /**
      * @return string
      */
@@ -94,7 +94,7 @@ class Faction
     {
         return $this->name;
     }
-    
+
     /**
      * @return string[]
      */
@@ -102,7 +102,7 @@ class Faction
     {
         return $this->roles;
     }
-    
+
     /**
      * @param string $member
      * @return string|null
@@ -111,7 +111,7 @@ class Faction
     {
         return $this->roles[$member] ?? null;
     }
-    
+
     /**
      * @return float
      */
@@ -119,7 +119,7 @@ class Faction
     {
         return $this->dtr;
     }
-    
+
     /**
      * @return float
      */
@@ -127,7 +127,7 @@ class Faction
     {
         return 0.01 + (count($this->getMembers()) * 1.00);
     }
-    
+
     /**
      * @return int
      */
@@ -135,7 +135,7 @@ class Faction
     {
         return $this->balance;
     }
-    
+
     /**
      * @return int
      */
@@ -143,7 +143,7 @@ class Faction
     {
         return $this->points;
     }
-    
+
     /**
      * @return int
      */
@@ -151,7 +151,7 @@ class Faction
     {
         return $this->kothCaptures;
     }
-    
+
     /**
      * @return string|null
      */
@@ -159,7 +159,7 @@ class Faction
     {
         return $this->focus;
     }
-    
+
     /**
      * @return array|null
      */
@@ -167,7 +167,7 @@ class Faction
     {
         return $this->rally;
     }
-    
+
     /**
      * @return Position|null
      */
@@ -175,7 +175,7 @@ class Faction
     {
         return $this->home;
     }
-    
+
     /**
      * @return int|null
      */
@@ -183,7 +183,7 @@ class Faction
     {
         return $this->timeRegeneration;
     }
-    
+
     /**
      * @param string $member
      * @param string $role
@@ -192,7 +192,7 @@ class Faction
     {
         $this->roles[$member] = $role;
     }
-    
+
     /**
      * @param string $member
      */
@@ -200,7 +200,7 @@ class Faction
     {
         unset($this->roles[$member]);
     }
-    
+
     /**
      * @param float $value
      */
@@ -208,7 +208,7 @@ class Faction
     {
         $this->dtr = $value;
     }
-    
+
     /**
      * @param int $value
      */
@@ -216,7 +216,7 @@ class Faction
     {
         $this->balance = $value;
     }
-    
+
     /**
      * @param int $value
      */
@@ -224,7 +224,7 @@ class Faction
     {
         $this->points = $value;
     }
-    
+
     /**
      * @param int $value
      */
@@ -232,7 +232,7 @@ class Faction
     {
         $this->kothCaptures = $value;
     }
-    
+
     /**
      * @param string|null $value
      */
@@ -240,7 +240,7 @@ class Faction
     {
         $this->focus = $value;
     }
-    
+
     /**
      * @param array|null $value
      */
@@ -248,7 +248,7 @@ class Faction
     {
         $this->rally = $value;
     }
-    
+
     /**
      * @param Position|null $value
      */
@@ -256,7 +256,7 @@ class Faction
     {
         $this->home = $value;
     }
-    
+
     /**
      * @param int|null $value
      */
@@ -264,7 +264,7 @@ class Faction
     {
         $this->timeRegeneration = $value;
     }
-    
+
     /**
      * @return Session[]
      */
@@ -274,7 +274,7 @@ class Faction
             return $session->getFaction() !== null && $session->getFaction() === $this->getName();
         });
     }
-    
+
     /**
      * @return Player[]
      */
@@ -284,7 +284,7 @@ class Faction
             return $player instanceof Player && $player->getSession()->getFaction() === $this->getName();
         });
     }
-    
+
     /**
      * @return Session[]
      */
@@ -303,6 +303,14 @@ class Faction
         foreach ($this->getOnlineMembers() as $member) {
             $member->sendMessage($message);
         }
+    }
+
+    public function disband(): void
+    {
+        foreach ($this->getMembers() as $member) {
+            $member->setFaction(null);
+        }
+        HCFLoader::getInstance()->getClaimManager()->removeClaim($this->getName());
     }
     
     public function onUpdate(): void

@@ -28,6 +28,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cYou have already faction'));
             return;
         }
+        //cambiar tag del player y bajar dtr de la faction y si el tiempo de regeneracion de cooldown esta actibo no pueda usar el comando
 
         if (isset($args[0])) {
             $player = $sender->getServer()->getPlayerByPrefix($args[0]);
@@ -36,9 +37,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
                 $sender->sendMessage(TextFormat::colorize('&cPlayer not found'));
                 return;
             }
-            if($args[0] === null){
-                $sender->sendMessage("&cUse /f accept (faction name)");
-            }
+
             $playerInvites = HCFLoader::getInstance()->getFactionManager()->getInvites($sender->getXuid());
             $playerInvite = $player->getName();
 

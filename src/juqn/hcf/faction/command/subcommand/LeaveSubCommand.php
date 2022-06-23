@@ -29,7 +29,7 @@ use pocketmine\utils\TextFormat;
  * Class RallySubCommand
  * @package juqn\hcf\faction\command\subcommand
  */
-class DisbandSubCommand implements FactionSubCommand
+class LeaveSubCommand implements FactionSubCommand
 {
 
     /**
@@ -47,15 +47,14 @@ class DisbandSubCommand implements FactionSubCommand
         }
         $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
 
-        if ($faction->getRole($sender->getXuid()) !== Faction::LEADER) {
-            $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader or co-leader can disband the faction'));
+        if ($faction->getRole($sender->getXuid()) === Faction::LEADER) {
+            $sender->sendMessage(TextFormat::colorize('&ceres lider'));
             return;
         }
+        $faction->removeRole($sender->getXuid());
+        $sender->getSession()->setFaction(null);
         //cambiar tag del player y bajar dtr de la faction y si el tiempo de regeneracion de cooldown esta actibo no pueda usar el comando
-        $faction->disband();
-        HCFLoader::getInstance()->getFactionManager()->removeFaction($faction->getName());
-        $sender->sendMessage("a");
-
+        $sender->sendMessage("saliste de la faction");
 
     }
 }

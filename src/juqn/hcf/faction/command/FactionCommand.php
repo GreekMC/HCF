@@ -14,6 +14,8 @@ use juqn\hcf\faction\command\subcommand\FocusSubCommand;
 use juqn\hcf\faction\command\subcommand\HelpSubCommand;
 use juqn\hcf\faction\command\subcommand\HomeSubCommand;
 use juqn\hcf\faction\command\subcommand\InviteSubCommand;
+use juqn\hcf\faction\command\subcommand\KickSubCommand;
+use juqn\hcf\faction\command\subcommand\LeaveSubCommand;
 use juqn\hcf\faction\command\subcommand\RallySubCommand;
 use juqn\hcf\faction\command\subcommand\SetHomeSubCommand;
 use juqn\hcf\faction\command\subcommand\TopSubCommand;
@@ -64,6 +66,8 @@ class FactionCommand extends Command
         $this->subCommands['who'] = new WhoSubCommand;
         $this->subCommands['invite'] = new InviteSubCommand();
         $this->subCommands['disband'] = new DisbandSubCommand();
+        $this->subCommands['leave'] = new LeaveSubCommand();
+        $this->subCommands['kick'] = new KickSubCommand();
     }
     
     /**

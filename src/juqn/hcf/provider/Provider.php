@@ -145,8 +145,10 @@ class Provider
         $crates = [];
         
         foreach ($this->crateConfig->getAll() as $name => $data) {
-            foreach ($data['items'] as $slot => $item)
+            if (isset($data['items'])) {
+                foreach ($data['items'] as $slot => $item)
                 $data['items'][$slot] = Item::jsonDeserialize($item);
+            }
             $crates[$name] = $data;
         }
         return $crates;
