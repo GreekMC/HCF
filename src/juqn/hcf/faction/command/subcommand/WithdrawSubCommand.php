@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace juqn\hcf\faction\command\subcommand;
 
 use juqn\hcf\faction\command\FactionSubCommand;
-use juqn\hcf\faction\Faction;
-use juqn\hcf\faction\FactionManager;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
 use pocketmine\command\CommandSender;
-use pocketmine\entity\effect\EffectInstance;
-use pocketmine\entity\effect\VanillaEffects;
-use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 /**

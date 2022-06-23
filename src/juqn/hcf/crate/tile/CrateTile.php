@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace juqn\hcf\crate\tile;
 
+use juqn\hcf\entity\CustomItemEntity;
 use juqn\hcf\entity\TextEntity;
 use juqn\hcf\HCFLoader;
 
@@ -17,6 +18,7 @@ use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Location;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -73,9 +75,12 @@ class CrateTile extends Chest
             
             if ($crate !== null) {
                 $nbt = $this->saveNBT();
-                $this->text = new TextEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 1.3, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $nbt);
-                $this->text->setNameTag(TextFormat::colorize($crate->getNameFormat(). PHP_EOL . '&fLeft click for reward'. PHP_EOL . '&fRight click to open' . PHP_EOL . '&r' . PHP_EOL . '&o&7play.greekmc.net'));
+                $this->text = new TextEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 1.8, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $nbt);
+                $this->text->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
                 $this->text->spawnToAll();
+                $entity = new CustomItemEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 3, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), ItemFactory::getInstance()->get($crate->getKeyId()));
+                $entity->setPickupDelay(-1);
+                $entity->spawnToAll();
             }
         }
     }
@@ -111,7 +116,7 @@ class CrateTile extends Chest
                 $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
                 $menu->getInventory()->setContents($crate->getItems());
                 $menu->setListener(InvMenu::readonly());
-                $menu->send($player, TextFormat::colorize('&9Crate ' . $this->getCrateName() . ' Preview'));
+                $menu->send($player, TextFormat::colorize('&7Crate ' . $this->getCrateName() . ' Preview'));
             }
         }
     }
@@ -144,7 +149,10 @@ class CrateTile extends Chest
                     $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
                     
                     if ($crate !== null) {
-                        $this->getText()->setNameTag(TextFormat::colorize($crate->getNameFormat(). PHP_EOL . '&fLeft click for reward'. PHP_EOL . '&fRight click to open' . PHP_EOL . '&r' . PHP_EOL . '&o&7play.greekmc.net'));
+                        $this->getText()->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
+                        $entity = new CustomItemEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 3, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), ItemFactory::getInstance()->get($crate->getKeyId()));
+                        $entity->setPickupDelay(-1);
+                        $entity->spawnToAll();
                         $player->sendMessage(TextFormat::colorize('&aThe text of the crate ' . $this->getCrateName() . ' has been updated'));
                     } else $player->sendMessage(TextFormat::colorize('&cThere is no crate that is defined in the Tile'));
                 }

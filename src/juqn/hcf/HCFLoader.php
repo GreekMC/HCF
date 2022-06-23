@@ -9,6 +9,7 @@ use juqn\hcf\claim\ClaimManager;
 use juqn\hcf\command\CommandManager;
 use juqn\hcf\crate\CrateManager;
 use juqn\hcf\enchantment\EnchantmentManager;
+use juqn\hcf\entity\ItemEntity;
 use juqn\hcf\event\EventManager;
 use juqn\hcf\faction\FactionManager;
 use juqn\hcf\item\ItemManager;
@@ -23,8 +24,15 @@ use juqn\hcf\vkit\vKitManager;
 
 use muqsit\invmenu\InvMenuHandler;
 
+use pocketmine\data\bedrock\EntityLegacyIds;
+use pocketmine\data\SavedDataLoadingException;
+use pocketmine\entity\EntityDataHelper;
+use pocketmine\entity\EntityFactory;
+use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
+use pocketmine\world\World;
 
 /**
  * Class HCFLoader
@@ -82,6 +90,7 @@ class HCFLoader extends PluginBase
     
     protected function onEnable() : void
     {
+
         if (!InvMenuHandler::isRegistered())
 	        InvMenuHandler::register($this);
 	

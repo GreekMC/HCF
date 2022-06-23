@@ -28,6 +28,7 @@ use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\item\Item;
 use pocketmine\item\Tool;
 use pocketmine\item\VanillaItems;
 use pocketmine\scheduler\ClosureTask;

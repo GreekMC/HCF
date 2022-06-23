@@ -23,6 +23,9 @@ permissions:
   crate.command.delete:
     description: Permission for /crate delete
     default: op
+  crate.command.give:
+    description: Permission for /crate edit
+    default: op
   crate.command.edit:
     description: Permission for /crate edit
     default: op
