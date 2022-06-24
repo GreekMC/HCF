@@ -51,7 +51,7 @@ class AddKeySubCommand implements KothSubCommand
             return;
         }
         $koth->setKey($keyName);
-        $koth->setKeyCount($count);
-        $sender->sendMessage(TextFormat::colorize('&aYou have added the key ' . $keyName . ' x' . $count . ' to the koth ' . $name));
+        $koth->setKeyCount((int)$count);
+        $sender->sendMessage(TextFormat::colorize('&aYou have added the key ' . $keyName . ' x' . (int)$count . ' to the koth ' . $name));
     }
 }

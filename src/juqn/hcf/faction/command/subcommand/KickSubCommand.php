@@ -57,6 +57,7 @@ class KickSubCommand implements FactionSubCommand
             $faction->removeRole($player->getXuid());
             $player->getSession()->setFaction(null);
             $player->sendMessage("&cYou were kicked out of your faction");
+            $player->setScoreTag("");
             $sender->sendMessage("&cThe player was kicked from the faction");
             $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
             //Remover score tag

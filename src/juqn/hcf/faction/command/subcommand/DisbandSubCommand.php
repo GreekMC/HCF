@@ -52,13 +52,18 @@ class DisbandSubCommand implements FactionSubCommand
             return;
         }
         if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
-            $sender->sendMessage("&cYou can't use this with regeneration time active!");
+            $sender->sendMessage(TextFormat::colorize("&cYou can't use this with regeneration time active!"));
             return;
+        }
+        foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
+                if ($online_player instanceof Player)
+                    if ($online_player->getSession()->getFaction() === $sender->getSession()->getFaction()) {
+                        $online_player->setScoreTag("");
+                    }
         }
         $faction->disband();
         HCFLoader::getInstance()->getFactionManager()->removeFaction($faction->getName());
         $sender->sendMessage("&cThe factions has disbanded");
 
-        //remover scoretag de los jugadores
     }
 }

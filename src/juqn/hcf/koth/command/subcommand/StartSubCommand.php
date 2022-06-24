@@ -60,15 +60,24 @@ class StartSubCommand implements KothSubCommand
 
         $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
 
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill]"));
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3███&7███ &r&9" . $koth->getName() . " &ehas started in &6" . $koth->getCoords() . "!"));
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill] Win the event and get &9x"  . $koth->getKeyCount()  . " ". $koth->getKey() . " Key&e!"));
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+        HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+
 
         $msg = new Message();
 
         $embed = new Embed();
-        $embed->setTitle("KotH " . $name . " has started");
+        $embed->setTitle("KotH " . $name . " has started 🏔️");
         $embed->setColor(0xD87200);
-        $embed->addField("Location", "{$location}");
-        $embed->addField("Time", "{$time} minutes", true);
-        $embed->addField("Rewards", "{$points} Points & {$keys} Keys", true);
+        $embed->addField("Location 📍", "{$location}");
+        $embed->addField("Time 🕐", "{$time} minutes", true);
+        $embed->addField("Rewards 🔑", "{$points} Points & {$keys} Keys", true);
         $embed->setFooter("greekmc.net");
         $msg->addEmbed($embed);
 

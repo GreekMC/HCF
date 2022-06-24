@@ -47,7 +47,6 @@ class WhoSubCommand implements FactionSubCommand
         }
 
         if ($faction === null) {
-            $faction = $sender->getSession()->getFaction();
             $sender->sendMessage(TextFormat::colorize('&cNo faction found'));
             return;
         }
