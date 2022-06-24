@@ -37,7 +37,7 @@ class CrateCommand extends Command
         $this->subCommands['delete'] = new DeleteSubCommand;
         $this->subCommands['edit'] = new EditSubCommand;
         $this->subCommands['give'] = new GiveSubCommand;
-        $this->subCommands['giveKey'] = new GiveKeySubCommand;
+        $this->subCommands['givekey'] = new GiveKeySubCommand;
         $this->subCommands['itemConfiguration'] = new ItemConfigurationSubCommand;
     }
     

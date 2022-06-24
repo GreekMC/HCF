@@ -312,25 +312,25 @@ class Faction
         }
         HCFLoader::getInstance()->getClaimManager()->removeClaim($this->getName());
     }
-    
+
     public function onUpdate(): void
     {
         if ($this->getTimeRegeneration() !== null) {
             if (HCFLoader::getInstance()->getConfig()->get('facion.regeneration.offline', true) === false && count($this->getOnlineMembers()) === 0)
                 return;
             $this->timeRegeneration--;
-            
-            if ($this->timeRegeneration === 0) {
+
+            if ($this->timeRegeneration === -1) {
                 $this->timeRegeneration = null;
                 $this->setDtr(0.01 + (count($this->getMembers()) * 1.00));
-                
+
                 # Setup scoretag for team members
                 foreach ($this->getOnlineMembers() as $member)
                     $member->setScoreTag(TextFormat::colorize('&6[&c' . $this->getName() . ' &a' . $this->getDtr() . '■&6]'));
             }
         }
     }
-    
+
     /**
      * @return array
      */
@@ -346,7 +346,7 @@ class Faction
             'home' => null,
             'claim' => null
         ];
-        
+
         if ($this->getHome() !== null)
             $data['home'] = [
                 'x' => $this->getHome()->getFloorX(),
@@ -354,7 +354,7 @@ class Faction
                 'z' => $this->getHome()->getFloorZ(),
                 'world' => $this->getHome()->getWorld()->getFolderName()
             ];
-        
+
         if (($claim = HCFLoader::getInstance()->getClaimManager()->getClaim($this->getName())) !== null)
             $data['claim'] = [
                 'minX' => $claim->getMinX(),
