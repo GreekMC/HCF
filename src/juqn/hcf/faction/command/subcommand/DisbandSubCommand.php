@@ -51,11 +51,14 @@ class DisbandSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader or co-leader can disband the faction'));
             return;
         }
-        //cambiar tag del player y bajar dtr de la faction y si el tiempo de regeneracion de cooldown esta actibo no pueda usar el comando
+        if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
+            $sender->sendMessage("&cYou can't use this with regeneration time active!");
+            return;
+        }
         $faction->disband();
         HCFLoader::getInstance()->getFactionManager()->removeFaction($faction->getName());
-        $sender->sendMessage("a");
+        $sender->sendMessage("&cThe factions has disbanded");
 
-
+        //remover scoretag de los jugadores
     }
 }

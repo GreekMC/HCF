@@ -51,10 +51,14 @@ class LeaveSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&ceres lider'));
             return;
         }
+        if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
+            $sender->sendMessage("&cYou can't use this with regeneration time active!");
+            return;
+        }
         $faction->removeRole($sender->getXuid());
         $sender->getSession()->setFaction(null);
-        //cambiar tag del player y bajar dtr de la faction y si el tiempo de regeneracion de cooldown esta actibo no pueda usar el comando
-        $sender->sendMessage("saliste de la faction");
+        #remover el scoretag
+        $sender->sendMessage("&cYou just left your faction");
 
     }
 }

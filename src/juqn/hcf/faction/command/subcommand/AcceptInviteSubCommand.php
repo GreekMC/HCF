@@ -79,6 +79,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
             
             $faction->addRole($sender->getXuid(), Faction::MEMBER);
             $faction->announce(TextFormat::colorize('&a' . $sender->getName() . ' joined the faction'));
+            $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
     
             $sender->getSession()->setFaction($faction->getName());
     

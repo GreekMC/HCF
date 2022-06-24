@@ -38,14 +38,9 @@ class KickSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader, co-leader or captain of the invite member'));
             return;
         }
-
-        if (count($faction->getRoles()) === HCFLoader::getInstance()->getConfig()->get('faction.max.members', 8)) {
-            $sender->sendMessage(TextFormat::colorize('&cYour faction have max players'));
-            return;
-        }
         
         if (!isset($args[0])) {
-            $sender->sendMessage(TextFormat::colorize('&cUse /f invite [player]'));
+            $sender->sendMessage(TextFormat::colorize('&cUse /f kick [player]'));
             return;
         }
         $player = $sender->getServer()->getPlayerByPrefix($args[0]);
@@ -54,13 +49,19 @@ class KickSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cPlayer not found!'));
             return;
         }
-        
-        if ($player->getSession()->getFaction() !== null) {
-            $sender->sendMessage(TextFormat::colorize('&cThe player already has a faction'));
+        if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
+            $sender->sendMessage("&cYou can't use this with regeneration time active!");
             return;
         }
-        HCFLoader::getInstance()->getFactionManager()->createInvite($sender, $player);
-        $player->sendMessage(TextFormat::colorize('&a' . $sender->getName() . ' has invited you to join ' . $sender->getSession()->getFaction() . ' faction'));
-        $sender->sendMessage(TextFormat::colorize('&aYou have invited ' . $player->getName() . ' to join your faction'));
+        if ($faction === HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction())) {
+            $faction->removeRole($player->getXuid());
+            $player->getSession()->setFaction(null);
+            $player->sendMessage("&cYou were kicked out of your faction");
+            $sender->sendMessage("&cThe player was kicked from the faction");
+            $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
+            //Remover score tag
+        }else{
+            $sender->sendMessage("&cThe player is not in your faction");
+        }
     }
 }
