@@ -67,6 +67,7 @@ class ClaimListener implements Listener
             if ($faction->getDtr() > 0.0) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
+                $player->setMovementTime(time() + 0.1);
             }
         }
     }
@@ -106,6 +107,7 @@ class ClaimListener implements Listener
             if ($faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
+                $player->setMovementTime(time() + 0.1);
             }
         }
     }
@@ -251,7 +253,11 @@ class ClaimListener implements Listener
         
         $leaving = self::DEATHBAN;
         $entering = self::DEATHBAN;
-        
+
+        if ($player->isMovementTime()) {
+            $event->cancel();
+        }
+
         if ($event->isCancelled())
             return;
         
