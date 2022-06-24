@@ -138,6 +138,7 @@ class HCFListener implements Listener
                 }
             }
         }
+        $player->getSession()->removeCooldown('spawn.tag');
         $player->getSession()->addDeath();
         $player->getSession()->setKillStreak(0);
 
