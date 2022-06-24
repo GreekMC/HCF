@@ -59,6 +59,11 @@ class InviteSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cThe player already has a faction'));
             return;
         }
+
+        if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
+            $sender->sendMessage(TextFormat::colorize("&cYou can't use this with regeneration time active!"));
+            return;
+        }
         HCFLoader::getInstance()->getFactionManager()->createInvite($sender, $player);
         $player->sendMessage(TextFormat::colorize('&a' . $sender->getName() . ' has invited you to join ' . $sender->getSession()->getFaction() . ' faction'));
         $sender->sendMessage(TextFormat::colorize('&aYou have invited ' . $player->getName() . ' to join your faction'));

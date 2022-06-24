@@ -52,13 +52,13 @@ class LeaveSubCommand implements FactionSubCommand
             return;
         }
         if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
-            $sender->sendMessage("&cYou can't use this with regeneration time active!");
+            $sender->sendMessage("§cYou can't use this with regeneration time active!");
             return;
         }
         $faction->removeRole($sender->getXuid());
         $sender->getSession()->setFaction(null);
         $sender->setScoreTag("");
-        $sender->sendMessage("&cYou just left your faction");
+        $sender->sendMessage("§cYou just left your faction");
 
     }
 }

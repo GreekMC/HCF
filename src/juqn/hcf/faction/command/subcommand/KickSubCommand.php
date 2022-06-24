@@ -50,19 +50,19 @@ class KickSubCommand implements FactionSubCommand
             return;
         }
         if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
-            $sender->sendMessage("&cYou can't use this with regeneration time active!");
+            $sender->sendMessage("§cYou can't use this with regeneration time active!");
             return;
         }
         if ($faction === HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction())) {
             $faction->removeRole($player->getXuid());
             $player->getSession()->setFaction(null);
-            $player->sendMessage("&cYou were kicked out of your faction");
+            $player->sendMessage("§cYou were kicked out of your faction");
             $player->setScoreTag("");
-            $sender->sendMessage("&cThe player was kicked from the faction");
+            $sender->sendMessage("§cThe player was kicked from the faction");
             $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
             //Remover score tag
         }else{
-            $sender->sendMessage("&cThe player is not in your faction");
+            $sender->sendMessage("§cThe player is not in your faction");
         }
     }
 }

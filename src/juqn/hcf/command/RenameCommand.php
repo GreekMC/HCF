@@ -24,7 +24,7 @@ class RenameCommand extends Command
      */
     public function __construct()
     {
-        parent::__construct('renam', 'Command for rename');
+        parent::__construct('rename', 'Command for rename');
         $this->setPermission('rename.command');
     }
 	

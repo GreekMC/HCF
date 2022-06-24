@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace juqn\hcf\claim;
 
+use juqn\hcf\crate\tile\CrateTile;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
@@ -166,6 +168,9 @@ class ClaimListener implements Listener
         
         $item = $player->getInventory()->getItemInHand();
 
+        $block = $event->getBlock();
+        $player = $event->getPlayer();
+
         if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($player->getName())) !== null) {
             if ($item->getNamedTag()->getTag('claim_type') !== null) {
                 $event->cancel();
@@ -220,6 +225,8 @@ class ClaimListener implements Listener
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
         
         if ($claim !== null) {
+            $tile = $player->getWorld()->getTile($block->getPosition()->asVector3());
+            if ($tile instanceof CrateTile) return;
             if ($player->isGod()) return;
             if ($player->getSession()->getFaction() !== $claim->getName()) {
                 $event->cancel();

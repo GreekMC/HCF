@@ -72,7 +72,7 @@ class CreateSubCommand implements FactionSubCommand
            'balance' => 0,
            'points' => 0,
            'kothCaptures' => 0,
-           'timeRegeneration' => 60,
+           'timeRegeneration' => 0,
            'home' => null,
            'claim' => null
        ]);

@@ -63,7 +63,7 @@ class DisbandSubCommand implements FactionSubCommand
         }
         $faction->disband();
         HCFLoader::getInstance()->getFactionManager()->removeFaction($faction->getName());
-        $sender->sendMessage("&cThe factions has disbanded");
+        $sender->sendMessage("§cThe factions has disbanded");
 
     }
 }
