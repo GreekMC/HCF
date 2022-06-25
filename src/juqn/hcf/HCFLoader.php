@@ -27,6 +27,7 @@ use muqsit\invmenu\InvMenuHandler;
 
 use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\data\SavedDataLoadingException;
+use pocketmine\entity\Entity;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
 use pocketmine\entity\object\ExperienceOrb;
