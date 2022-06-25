@@ -221,7 +221,7 @@ class Koth
 
                 if ($crate !== null) {
                     $crate->giveKey($this->capturer, $this->getKeyCount());
-                    $this->capturer->sendMessage(TextFormat::colorize('&8[&6KOTH&r&8] &6You have received &e' . $this->getKey() . ' Key'));
+                    $this->capturer->sendMessage(TextFormat::colorize('&8[&6Event&r&8] &6You have received &e' . $this->getKey() . ' Key'));
                 }
 
                 HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->setPoints(HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->getPoints() + $this->getPoints());

@@ -49,7 +49,7 @@ class EnderpearlItem extends PMEnderPearl
             $session = $player->getSession();
 
             if ($player->getCurrentClaim() === '§5Citadel§c'){
-                $player->sendMessage("§cYou can use this in §5Citadel §cclaim.");
+                $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
                 return ItemUseResult::FAIL();
             }
 

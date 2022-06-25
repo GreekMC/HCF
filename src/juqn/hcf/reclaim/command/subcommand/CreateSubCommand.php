@@ -36,7 +36,7 @@ class CreateSubCommand implements ReclaimSubCommand
         }
         $name = $args[0];
         $time = $args[1];
-        $permission = $args[3];
+        $permission = $args[2];
         $contents = $sender->getInventory()->getContents();
         
         if (HCFLoader::getInstance()->getReclaimManager()->getReclaim($name) !== null) {
