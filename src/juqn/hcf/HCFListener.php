@@ -652,7 +652,7 @@ class HCFListener implements Listener
                         continue;
                     }
                 if ($online->getSession()->getFaction() === $player->getSession()->getFaction()) {
-                    $online->sendMessage("§9(Team) ". $player->getName() . "§f: §e" . $message);
+                    $online->sendMessage("§9(Team) ". $player->getName() . ": §e" . $message);
                 }
             }
 

@@ -8,6 +8,7 @@ use juqn\hcf\crate\tile\CrateTile;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
+use juqn\hcf\utils\Inventories;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -52,7 +53,7 @@ class ClaimListener implements Listener
             return;
 
         if ($claim === null) {
-            if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 350)
+            if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 400)
                 $event->cancel();
             return;
         }
@@ -92,7 +93,7 @@ class ClaimListener implements Listener
             return;
 
         if ($claim === null) {
-            if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 496)
+            if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 400)
                 $event->cancel();
             return;
         }
@@ -181,7 +182,7 @@ class ClaimListener implements Listener
                 }
                 
                 if ($creator->getType() === 'faction') {
-                    if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 496) {
+                    if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 400) {
                         $player->sendMessage(TextFormat::colorize('&cYou can\'t claim in this position'));
                         return;
                     }
@@ -229,6 +230,7 @@ class ClaimListener implements Listener
             if ($player->getInventory()->getItemInHand()->getCustomName() === "§r§l§6Partner Packages") return;
             $tile = $player->getWorld()->getTile($block->getPosition()->asVector3());
             if ($tile instanceof CrateTile) return;
+            if ($tile instanceof Inventories) return;
             if ($player->isGod()) return;
             if ($player->getSession()->getFaction() !== $claim->getName()) {
                 $event->cancel();

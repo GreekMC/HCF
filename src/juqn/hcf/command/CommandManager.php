@@ -23,5 +23,7 @@ class CommandManager
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new PvPCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new RenameCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new AutoFeedCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new TLCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FeedCommand());
     }
 }

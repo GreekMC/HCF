@@ -47,7 +47,7 @@ class TLCommand extends Command
                     continue;
                 }
             if ($online->getSession()->getFaction() === $sender->getSession()->getFaction()) {
-                $online->sendMessage("§9(Team) " . $sender->getName() . "§f: §e[" $sender->getPosition()->getX(). "]");
+                $online->sendMessage("§9(Team) " . $sender->getName() . ": §e[" . (int)$sender->getPosition()->getX() . ", " . (int)$sender->getPosition()->getY() . ", " . (int)$sender->getPosition()->getZ() . "]");
             }
         }
     }

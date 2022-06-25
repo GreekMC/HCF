@@ -40,7 +40,7 @@ class HomeSubCommand implements FactionSubCommand
             return;
         }
         
-        $sender->getSession()->addCooldown('faction.teleport.home',  '&l&1Home: &r&7', 15);
+        $sender->getSession()->addCooldown('faction.teleport.home',  '&l&1Home&r&7: &c', 15);
         
         $xuid = $sender->getXuid();
         $position = $sender->getPosition();
