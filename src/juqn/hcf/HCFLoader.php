@@ -115,6 +115,8 @@ class HCFLoader extends PluginBase
 
         # Register listener
         $this->getServer()->getPluginManager()->registerEvents(new HCFListener(), $this);
+
+        $this->getServer()->getNetwork()->setName("§r§l§6Greek §r§7| §r§fHCF");
         
         # Register handler
         $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {

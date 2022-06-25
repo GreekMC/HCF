@@ -48,7 +48,7 @@ class LeaveSubCommand implements FactionSubCommand
         $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
 
         if ($faction->getRole($sender->getXuid()) === Faction::LEADER) {
-            $sender->sendMessage(TextFormat::colorize('&ceres lider'));
+            $sender->sendMessage(TextFormat::colorize('§cYou are the faction Leader'));
             return;
         }
         if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
