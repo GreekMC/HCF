@@ -333,6 +333,9 @@ class HCFListener implements Listener
             if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
                 return;
             }
+            if ($damager->getCurrentClaim() === 'Spawn') {
+                return;
+            }
             $damager->sendMessage("§e[§9Archer Range §e(§c" . (int)$entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
             $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+20% damage) for 10 seconds).");
             $entity->setNameTag("§e" . $entity->getName());
@@ -362,6 +365,9 @@ class HCFListener implements Listener
             if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
                 return;
             }
+            if ($player->getCurrentClaim() === 'Spawn') {
+                return;
+            }
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -387,6 +393,12 @@ class HCFListener implements Listener
         }
 
         if($player->getClass()->getId() === HCFClass::ARCHER) {
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
+            if ($player->getCurrentClaim() === 'Spawn') {
+                return;
+            }
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -413,6 +425,12 @@ class HCFListener implements Listener
 
         if($player->getClass()->getId() === HCFClass::BARD){
             if ($player->getSession()->getCooldown('bard.cooldown') !== null) {
+                return;
+            }
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
+            if ($player->getCurrentClaim() === 'Spawn') {
                 return;
             }
             switch ($item->getId()) {
@@ -543,6 +561,9 @@ class HCFListener implements Listener
             }
 
         if($player->getClass()->getId() === HCFClass::BARD){
+            if ($player->getCurrentClaim() === 'Spawn') {
+                return;
+            }
             if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
                 return;
             }
@@ -646,6 +667,9 @@ class HCFListener implements Listener
                 
                 if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
                     if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                        return;
+                    }
+                    if ($player->getCurrentClaim() === 'Spawn') {
                         return;
                     }
                     if ($damager->getViewPos() == $player->getViewPos()) {
