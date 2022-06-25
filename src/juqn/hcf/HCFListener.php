@@ -330,6 +330,9 @@ class HCFListener implements Listener
         }
 
         if($damager->getClass()->getId() === HCFClass::ARCHER){
+            if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
             $damager->sendMessage("§e[§9Archer Range §e(§c" . (int)$entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
             $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+20% damage) for 10 seconds).");
             $entity->setNameTag("§e" . $entity->getName());
@@ -356,6 +359,9 @@ class HCFListener implements Listener
             }
 
         if($player->getClass()->getId() === HCFClass::ROGUE) {
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -537,6 +543,9 @@ class HCFListener implements Listener
             }
 
         if($player->getClass()->getId() === HCFClass::BARD){
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
             switch ($item->getId()) {
 
                 case VanillaItems::BLAZE_POWDER()->getId():
@@ -636,6 +645,9 @@ class HCFListener implements Listener
                 }
                 
                 if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
+                    if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                        return;
+                    }
                     if ($damager->getViewPos() == $player->getViewPos()) {
                         if ($damager->getSession()->getCooldown('rogue.cooldown') !== null) {
                             return;
