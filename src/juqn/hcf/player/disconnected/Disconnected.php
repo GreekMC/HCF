@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace juqn\hcf\player\disconnect;
+namespace juqn\hcf\player\disconnected;
 
 use juqn\hcf\HCFLoader;
 use juqn\hcf\session\Session;
@@ -45,7 +45,6 @@ class Disconnected
         $this->disconnectedMob->setNameTagVisible();
         $this->disconnectedMob->setNameTagAlwaysVisible(true);
         $this->disconnectedMob->setNameTag(TextFormat::colorize('&r' . $this->getName() . ' &e(AFK)'));
-        $this->disconnectedMob->getArmorInventory()->setContents($this->getArmorInventory());
         $this->disconnectedMob->spawnToAll();
     }
     

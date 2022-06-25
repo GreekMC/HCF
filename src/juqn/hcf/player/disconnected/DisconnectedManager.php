@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace juqn\hcf\player\disconnected;
-
 use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
@@ -40,7 +39,7 @@ class DisconnectedManager
      */
     public function getDisconnected(string $xuid): ?Disconnected
     {
-        return $this->disconnected[$uuid] ?? null;
+        return $this->disconnected[$xuid] ?? null;
     }
     
     /**
@@ -56,6 +55,6 @@ class DisconnectedManager
      */
     public function removeDisconnected(string $xuid): void
     {
-        unset($this->disconnected[$uuid]);
+        unset($this->disconnected[$xuid]);
     }
 }

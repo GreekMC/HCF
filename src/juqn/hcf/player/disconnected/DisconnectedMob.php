@@ -2,13 +2,19 @@
 
 declare(strict_types=1);
 
-namespace juqn\hcf\player\disconnect;
+namespace juqn\hcf\player\disconnected;
 
+use CortexPE\DiscordWebhookAPI\Message;
+use CortexPE\DiscordWebhookAPI\Webhook;
+use JetBrains\PhpStorm\Pure;
+use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
+use juqn\hcf\session\Session;
 use pocketmine\entity\Villager;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
+use pocketmine\item\Tool;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
@@ -31,7 +37,7 @@ class DisconnectedMob extends Villager
     /**
      * @return Item[]
      */
-    public function getDrops(): array
+    #[Pure] public function getDrops(): array
     {
         $drops = [];
         $disconnected = $this->getDisconnected();
@@ -72,7 +78,7 @@ class DisconnectedMob extends Villager
                         }
 
                         if ($session->getFaction() !== null && $damager->getSession()->getFaction() !== null) {
-                            if ($entity->getSession()->getFaction() === $damager->getSession()->getFaction()) {
+                            if ($session->getFaction() === $damager->getSession()->getFaction()) {
                                 $source->cancel();
                                 return;
                             }
@@ -153,7 +159,7 @@ class DisconnectedMob extends Villager
             $msg = new Message();
             $msg->setContent($webhook);
             $webHook->send($msg);
-            $event->setDeathMessage(TextFormat::colorize($message));
+            Server::getInstance()->broadcastMessage(TextFormat::colorize($message));
         }
     }
     
