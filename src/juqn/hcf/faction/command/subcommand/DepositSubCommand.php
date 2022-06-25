@@ -48,9 +48,8 @@ class DepositSubCommand implements FactionSubCommand
         $cantidad = $args[0];
 
         if (($cantidad) === "all") {
-            $sender->sendMessage('§cUse /f deposit [amount | all]');
+            $sender->sendMessage('§aThe new balance of the faction is ' . $faction->getBalance() . '$');
             $faction->setBalance($faction->getBalance() + $sender->getSession()->getBalance());
-
             $sender->getSession()->setBalance(0);
             return;
         }
@@ -62,7 +61,7 @@ class DepositSubCommand implements FactionSubCommand
 
         if($sender->getSession()->getBalance() >= $cantidad) {
             $faction->setBalance($faction->getBalance() + $cantidad);
-            $sender->sendMessage('§aThe new balance of the faction is ' . $faction->getBalance());
+            $sender->sendMessage('§aThe new balance of the faction is ' . $faction->getBalance() . '$');
             $sender->getSession()->setBalance($sender->getSession()->getBalance() - $cantidad);
         }else{
             $sender->sendMessage('§cThe amount you entered exceeds your balance!');

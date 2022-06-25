@@ -5,6 +5,9 @@ api: 4.0.0
 main: juqn\hcf\HCFLoader
 
 permissions:
+  autofeed.command:
+    description: Permission nested for /feed
+    default: op
   feed.command:
     description: Permission nested for /feed
     default: op
@@ -29,7 +32,7 @@ permissions:
   crate.command.edit:
     description: Permission for /crate edit
     default: op
-  crate.command.giveKey:
+  crate.command.givekey:
     description: Permission for /crate giveKey
     default: op
   crate.command.itemConfiguration:

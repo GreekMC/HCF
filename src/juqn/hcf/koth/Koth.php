@@ -198,7 +198,12 @@ class Koth
                     if ($player instanceof Player) {
                         if ($this->getCapzone()->inside($player->getPosition()) && $player->getSession()->getFaction() !== null && ($player->getSession()->getCooldown('pvp.timer')  === null && $player->getSession()->getCooldown('starting.timer') === null)) {
                             $this->capturer = $player;
-                            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize('&r&6[KingOfTheHill] &e' . $player->getName() . ' &6is capturing&e ' . $this->getName()));
+                            if ($this->getName() !== "§r§5§lCitadel§r") {
+                                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize('&r&6[KingOfTheHill] &e' . $player->getName() . ' &6is capturing&e ' . $this->getName()));
+                            }
+                            if ($this->getName() === "§r§5§lCitadel§r") {
+                                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize('&r&6[Citadel] &e' . $player->getName() . ' &6is capturing&e ' . $this->getName()));
+                            }
                             break;
                         }
                     }
@@ -213,7 +218,7 @@ class Koth
             
             if ($this->getProgress() === 0) {
                 $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getKey());
-                
+
                 if ($crate !== null) {
                     $crate->giveKey($this->capturer, $this->getKeyCount());
                     $this->capturer->sendMessage(TextFormat::colorize('&8[&6KOTH&r&8] &6You have received &e' . $this->getKey() . ' Key'));
@@ -222,36 +227,63 @@ class Koth
                 HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->setPoints(HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->getPoints() + $this->getPoints());
                 HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->setKothCaptures(HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->getKothCaptures() + 1);
 
-                $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
+                if ($this->getName() !== "§r§5§lCitadel§r") {
+                    $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
 
-                $msg = new Message();
+                    $msg = new Message();
 
-                $totalpoints = HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->getPoints();
+                    $totalpoints = HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->getPoints();
 
-                $embed = new Embed();
-                $embed->setTitle("KotH " . "{$this->getName()}" . " has finished 🏔️");
-                $embed->setColor(0xD87200);
-                $embed->addField("Was captured by 👤", "{$this->capturer->getName()}");
-                $embed->addField("Faction 👥", "{$this->capturer->getSession()->getFaction()}", true);
-                $embed->addField("Total Points 🍎", "{$totalpoints}", true);
-                $embed->setFooter("greekmc.net");
-                $msg->addEmbed($embed);
+                    $embed = new Embed();
+                    $embed->setTitle("KotH " . "{$this->getName()}" . " has finished 🏔️");
+                    $embed->setColor(0xD87200);
+                    $embed->addField("Was captured by 👤", "{$this->capturer->getName()}");
+                    $embed->addField("Faction 👥", "{$this->capturer->getSession()->getFaction()}", true);
+                    $embed->addField("Total Points 🍎", "{$totalpoints}", true);
+                    $embed->setFooter("greekmc.net");
+                    $msg->addEmbed($embed);
 
-                $webHook->send($msg);
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill]"));
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3███&7███ &r&9" . $this->getName() . " &ehas been controlled by &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e!"));
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill] &eAwarded &9" . $this->getKey() . " Key&e to &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e."));
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
-                HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+                    $webHook->send($msg);
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill]"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3███&7███ &r&9" . $this->getName() . " &ehas been controlled by &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e!"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill] &eAwarded &9" . $this->getKey() . " Key&e to &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e."));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
 
+                }
+                if ($this->getName() === "§r§5§lCitadel§r") {
+                    $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
+
+                    $msg = new Message();
+
+                    $totalpoints = HCFLoader::getInstance()->getFactionManager()->getFaction($this->capturer->getSession()->getFaction())->getPoints();
+
+                    $embed = new Embed();
+                        $embed->setTitle("Citadel has finished 🌌");
+                    $embed->setColor(0x4F0075);
+                    $embed->addField("Was captured by 👤", "{$this->capturer->getName()}");
+                    $embed->addField("Faction 👥", "{$this->capturer->getSession()->getFaction()}", true);
+                    $embed->addField("Total Points 🍎", "{$totalpoints}", true);
+                    $embed->setFooter("greekmc.net");
+                    $msg->addEmbed($embed);
+
+                    $webHook->send($msg);
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7██&5████&7█"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&6[Citadel]"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&econtrolled by"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e!"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7██&5████&7█"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+
+                }
                 $this->progress = $this->time;
                 $this->capturer = null;
-                
                 HCFLoader::getInstance()->getKothManager()->setKothActive(null);
-
                 return;
             }
             $this->progress--;

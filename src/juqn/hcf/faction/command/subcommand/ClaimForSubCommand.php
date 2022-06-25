@@ -25,7 +25,8 @@ class ClaimForSubCommand implements FactionSubCommand
         'North Road' => 'road',
         'South Road' => 'road',
         'West Road' => 'road',
-        'East Road' => 'road'
+        'East Road' => 'road',
+        '§5Citadel§c' => 'citadel'
     ];
     
     /**

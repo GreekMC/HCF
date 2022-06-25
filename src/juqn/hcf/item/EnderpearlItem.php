@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace juqn\hcf\item;
 
 use juqn\hcf\entity\EnderpearlEntity;
+use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player as HCFPlayer;
 use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Throwable;
@@ -46,7 +47,12 @@ class EnderpearlItem extends PMEnderPearl
     {
         if ($player instanceof HCFPlayer) {
             $session = $player->getSession();
-            
+
+            if ($player->getCurrentClaim() === '§5Citadel§c'){
+                $player->sendMessage("§cYou can use this in §5Citadel §cclaim.");
+                return ItemUseResult::FAIL();
+            }
+
             if ($session->getCooldown('enderpearl') !== null) {
                 $player->sendMessage(TextFormat::colorize('&cYou have cooldown enderpearl'));
                 return ItemUseResult::FAIL();

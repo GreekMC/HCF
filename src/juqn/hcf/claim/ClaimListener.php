@@ -225,6 +225,8 @@ class ClaimListener implements Listener
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
         
         if ($claim !== null) {
+            if ($player instanceof Player)
+            if ($player->getInventory()->getItemInHand()->getCustomName() === "§r§l§6Partner Packages") return;
             $tile = $player->getWorld()->getTile($block->getPosition()->asVector3());
             if ($tile instanceof CrateTile) return;
             if ($player->isGod()) return;
