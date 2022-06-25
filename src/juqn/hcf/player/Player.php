@@ -235,7 +235,6 @@ class Player extends BasePlayer
     public function onUpdate(int $currentTick): bool
     {
         $update = parent::onUpdate($currentTick);
-
         
         if ($update) {
             if ($currentTick % 20 === 0) {
@@ -253,11 +252,6 @@ class Player extends BasePlayer
                 $this->updateScoreboard();
 
                 $this->loadInvisibility();
-
-                #update energys
-                if($this->getClass() === null){
-                    $this->getSession()->removeEnergy('bard.energy');
-                }
 
                 # Class event
                 if ($this->getClass() !== null)
