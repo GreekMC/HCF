@@ -43,6 +43,8 @@ class Session
 
     /** @var bool */
     private bool $autoFeed = false;
+    /** @var bool */
+    private bool $factionchat = false;
     
     /**
      * Session construct.
@@ -188,6 +190,14 @@ class Session
     {
         return $this->autoFeed;
     }
+
+    /**
+     * @return bool
+     */
+    public function hasFactionChat(): bool
+    {
+        return $this->factionchat;
+    }
     
     /**
      * @param string $name
@@ -314,6 +324,14 @@ class Session
     public function setAutoFeed(bool $value): void
     {
         $this->autoFeed = $value;
+    }
+
+    /**
+     * @param bool $value
+     */
+    public function setFactionChat(bool $value): void
+    {
+        $this->factionchat = $value;
     }
     
     public function onUpdate(): void

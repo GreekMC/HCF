@@ -55,6 +55,7 @@ class KickSubCommand implements FactionSubCommand
         }
         if ($faction === HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction())) {
             $faction->removeRole($player->getXuid());
+            $player->getSession()->setFactionChat(false);
             $player->getSession()->setFaction(null);
             $player->sendMessage("§cYou were kicked out of your faction");
             $player->setScoreTag("");

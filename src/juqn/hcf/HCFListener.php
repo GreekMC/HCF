@@ -19,6 +19,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\ProjectileHitEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
@@ -635,5 +636,27 @@ class HCFListener implements Listener
                 }
             }
         }
+    }
+
+    public function onChat(PlayerChatEvent $event): void
+    {
+        $player = $event->getPlayer();
+        $message = $event->getMessage();
+
+        if ($player instanceof Player)
+        if ($player->getSession()->hasFactionChat() === true){
+            $event->cancel();
+            foreach (Server::getInstance()->getOnlinePlayers() as $online) {
+                if ($online instanceof Player)
+                    if ($online->getSession()->getFaction() === null) {
+                        continue;
+                    }
+                if ($online->getSession()->getFaction() === $player->getSession()->getFaction()) {
+                    $online->sendMessage("§9(Team) ". $player->getName() . "§f: §e" . $message);
+                }
+            }
+
+        }
+
     }
 }

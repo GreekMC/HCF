@@ -59,6 +59,7 @@ class DisbandSubCommand implements FactionSubCommand
                 if ($online_player instanceof Player)
                     if ($online_player->getSession()->getFaction() === $sender->getSession()->getFaction()) {
                         $online_player->setScoreTag("");
+                        $online_player->getSession()->setFactionChat(false);
                     }
         }
         $faction->disband();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace juqn\hcf\faction\command;
 
 use juqn\hcf\faction\command\subcommand\AcceptInviteSubCommand;
+use juqn\hcf\faction\command\subcommand\ChatSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimSubCommand;
@@ -68,6 +69,8 @@ class FactionCommand extends Command
         $this->subCommands['disband'] = new DisbandSubCommand();
         $this->subCommands['leave'] = new LeaveSubCommand();
         $this->subCommands['kick'] = new KickSubCommand();
+        $this->subCommands['chat'] = new ChatSubCommand();
+        $this->subCommands['c'] = new ChatSubCommand();
     }
     
     /**

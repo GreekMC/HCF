@@ -58,6 +58,7 @@ class LeaveSubCommand implements FactionSubCommand
         $faction->removeRole($sender->getXuid());
         $sender->getSession()->setFaction(null);
         $sender->setScoreTag("");
+        $sender->getSession()->setFactionChat(false);
         $sender->sendMessage("§cYou just left your faction");
 
     }
