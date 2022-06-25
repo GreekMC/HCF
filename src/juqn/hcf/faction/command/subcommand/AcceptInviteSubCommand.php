@@ -109,6 +109,10 @@ class AcceptInviteSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cYou don\'t have invites'));
             return;
         }
+        if ($invites[0] === null ){
+            $sender->sendMessage(TextFormat::colorize('&cUsa bien el comando'));
+            return;
+        }
         $invite = $invites[0];
 
         if ($invite->getPlayer()->getSession()->getFaction() !== $invite->getFaction()) {
