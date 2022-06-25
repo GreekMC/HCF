@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace juqn\hcf\player\disconnected;
+
 use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
