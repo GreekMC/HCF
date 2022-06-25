@@ -26,6 +26,9 @@ class DisconnectedMob extends Villager
     /** @var Player|null */
     private ?Player $lastHit = null;
     
+    /** @var int */
+    private int $time = 60;
+    
     /**
      * @return Disconnected|null
      */
@@ -37,7 +40,7 @@ class DisconnectedMob extends Villager
     /**
      * @return Item[]
      */
-    #[Pure] public function getDrops(): array
+    public function getDrops(): array
     {
         $drops = [];
         $disconnected = $this->getDisconnected();
@@ -54,6 +57,22 @@ class DisconnectedMob extends Villager
     public function getXpDropAmount(): int
     {
         return 0;
+    }
+    
+    protected function entityBaseTick(int $tickDiff = 1): bool
+    {
+        $disconnected = $this->getDisconnected();
+        
+        if ($disconnected !== null) {
+            $this->time--;
+        
+            if ($this->time <= 0) {
+                HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($disconnected->getXuid());
+                $this->flagForDespawn();
+                return false;
+            }
+        }
+        return parent::entityBaseTick($tickDiff);
     }
     
     /**

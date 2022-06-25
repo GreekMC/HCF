@@ -19,6 +19,7 @@ use juqn\hcf\faction\command\subcommand\KickSubCommand;
 use juqn\hcf\faction\command\subcommand\LeaveSubCommand;
 use juqn\hcf\faction\command\subcommand\RallySubCommand;
 use juqn\hcf\faction\command\subcommand\SetHomeSubCommand;
+use juqn\hcf\faction\command\subcommand\StuckSubCommand;
 use juqn\hcf\faction\command\subcommand\TopSubCommand;
 use juqn\hcf\faction\command\subcommand\UnfocusSubCommand;
 use juqn\hcf\faction\command\subcommand\UnrallySubCommand;
@@ -61,6 +62,7 @@ class FactionCommand extends Command
         $this->subCommands['rally'] = new RallySubCommand;
         $this->subCommands['sethome'] = new SetHomeSubCommand;
         $this->subCommands['sethq'] = new SetHomeSubCommand;
+        $this->subCommands['stuck'] = new StuckSubCommand;
         $this->subCommands['top'] = new TopSubCommand;
         $this->subCommands['unfocus'] = new UnfocusSubCommand;
         $this->subCommands['unrally'] = new UnrallySubCommand;

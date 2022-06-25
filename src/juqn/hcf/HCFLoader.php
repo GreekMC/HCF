@@ -9,6 +9,7 @@ use juqn\hcf\claim\ClaimManager;
 use juqn\hcf\command\CommandManager;
 use juqn\hcf\crate\CrateManager;
 use juqn\hcf\enchantment\EnchantmentManager;
+use juqn\hcf\entity\CustomItemEntity;
 use juqn\hcf\event\EventManager;
 use juqn\hcf\faction\FactionManager;
 use juqn\hcf\item\ItemManager;
@@ -28,6 +29,8 @@ use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\data\SavedDataLoadingException;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
+use pocketmine\entity\object\ExperienceOrb;
+use pocketmine\entity\object\ItemEntity;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
@@ -122,6 +125,23 @@ class HCFLoader extends PluginBase
         $this->getServer()->getNetwork()->setName("§r§l§6Greek §r§7| §r§fHCF");
         
         # Register handler
+        $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {
+            $world = $this->getServer()->getWorldManager()->getDefaultWorld();
+            
+            if ($world !== null) {
+                $count = 0;
+                $entities = array_filter($world->getEntities(), function (Entity $entity): bool {
+                    return $entity instanceof ItemEntity || $entity instanceof ExperienceOrb;
+                });
+                    
+                foreach ($entities as $entity) {
+                    if (!$entity instanceof CustomItemEntity) {
+                        $entity->flagForDespawn();
+                        ++$count;
+                    }
+                }
+            }
+        }), 5 * 60 * 20);
         $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {
             # Koth
             if (($kothName = $this->getKothManager()->getKothActive()) !== null) {
