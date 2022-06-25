@@ -284,11 +284,19 @@ class HCFListener implements Listener
     {
         /** @var Player */
         $player = $event->getPlayer();
+        if (!$player instanceof Player) return;
         $quitMessage = str_replace('{player}', $player->getName(), HCFLoader::getInstance()->getConfig()->get('quit.message'));
         $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
         
-        if ($player->getSession()->getCooldown('logout') !== null) {
-            $disconnectedManager->addDisconnected($player);
+        if ($player->getSession()->getCooldown('logout') === null) {
+            if ($player->getCurrentClaim() !== null) {
+                $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
+                if ($claim->getType() !== 'spawn') {
+                    $disconnectedManager->addDisconnected($player);
+                }
+            }else{
+                $disconnectedManager->addDisconnected($player);
+            }
         }
         $event->setQuitMessage(TextFormat::colorize($quitMessage));
     }

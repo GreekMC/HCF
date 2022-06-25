@@ -53,15 +53,15 @@ class Disconnected
      */
     public function getSession(): ?Session
     {
-        return HCFLoader::getInstance()->getSessionManager()->getSession($this->uuid);
+        return HCFLoader::getInstance()->getSessionManager()->getSession($this->xuid);
     }
     
     /**
      * @return string
      */
-    public function getUuid(): string
+    public function getXuid(): string
     {
-        return $this->uuid;
+        return $this->xuid;
     }
     
     /**

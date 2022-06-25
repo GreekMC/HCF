@@ -157,9 +157,16 @@ class Player extends BasePlayer
         # Disconnected 
         $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
         $disconnected = $disconnectedManager->getDisconnected($this->getXuid());
-        
-        if ($disconnected !== null) {
-            $disconnected->join($this);
+
+        $disconnected?->join($this);
+
+        if ($this->getSession()->isModKilled()) {
+            $this->getSession()->setMobKilled(false);
+            $this->getInventory()->clearAll();
+            $this->getArmorInventory()->clearAll();
+            $this->getEffects()->clear();
+            $this->setHealth($this->getMaxHealth());
+            $this->teleport($this->getWorld()->getSafeSpawn());
         }
     }
     

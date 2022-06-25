@@ -45,6 +45,8 @@ class Session
     private bool $autoFeed = false;
     /** @var bool */
     private bool $factionchat = false;
+    /** @var bool */
+    private bool $mobkilled = false;
     
     /**
      * Session construct.
@@ -198,6 +200,14 @@ class Session
     {
         return $this->factionchat;
     }
+
+    /**
+     * @return bool
+     */
+    public function isModKilled(): bool
+    {
+        return $this->mobkilled;
+    }
     
     /**
      * @param string $name
@@ -332,6 +342,14 @@ class Session
     public function setFactionChat(bool $value): void
     {
         $this->factionchat = $value;
+    }
+
+    /**
+     * @param bool $value
+     */
+    public function setMobKilled(bool $value): void
+    {
+        $this->mobkilled = $value;
     }
     
     public function onUpdate(): void

@@ -124,6 +124,7 @@ class DisconnectedMob extends Villager
                 $faction->setPoints($faction->getPoints() + 1);
             }
         }
+        $session->setMobKilled(true);
         $session->removeCooldown('spawn.tag');
         $session->addDeath();
         $session->setKillStreak(0);
