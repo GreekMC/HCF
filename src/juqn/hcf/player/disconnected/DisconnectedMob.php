@@ -90,8 +90,71 @@ class DisconnectedMob extends Villager
     
     protected function onDeath(): void
     {
-        
         parent::onDeath();
+        $disconnected = $this->getDisconnected();
+        
+        if ($disconnected === null)
+            return;
+        $session = $disconnected->getSession();
+        $killerXuid = null;
+        $killer = null;
+        $itemInHand = null;
+        $message = '';
+        $damager = $this->lastHit;
+
+        if ($damager instanceof Player) {
+            $killerXuid = $damager->getXuid();
+            $killer = $damager->getName();
+            $itemInHand = $damager->getInventory()->getItemInHand();
+
+            $damager->getSession()->addKill();
+            $damager->getSession()->addKillStreak();
+
+            if ($damager->getSession()->getKillStreak() > $damager->getSession()->getHighestKillStreak())
+                $damager->getSession()->addHighestKillStreak();
+
+            if ($damager->getSession()->getFaction() !== null) {
+                $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($damager->getSession()->getFaction());
+                $faction->setPoints($faction->getPoints() + 1);
+            }
+        }
+        $session->removeCooldown('spawn.tag');
+        $session->addDeath();
+        $session->setKillStreak(0);
+
+        $session->addCooldown('pvp.timer', '&l&aPvP Timer&r&7: &r&c', 60 * 60, true);
+
+        if ($session->getFaction() !== null) {
+            $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($session->getFaction());
+            $faction->setPoints($faction->getPoints() - 1);
+            $faction->setDtr($faction->getDtr() - 1.0);
+            $faction->setTimeRegeneration(45 * 60);
+
+            # Setup scoretag for team members
+            foreach ($faction->getOnlineMembers() as $member)
+                $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . $faction->getDtr() . '■&6]'));
+        }
+
+        if ($killer === null) {
+            $message = '&c' . $session->getName() . '&4[' . $session->getKills() . '] &edied';
+            $webhook = $session->getName() . '[' . $session->getKills() . '] died';
+        } else {
+            if (!$itemInHand->isNull() && $itemInHand instanceof Tool) {
+                $message = '&c' . $session->getName() . '&4[' . $session->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] &cusing ' . $itemInHand->getName();
+                $webhook = '' . $session->getName() . '[' . $session->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] using ' . $itemInHand->getName();
+            } else {
+                $message = '&c' . $session->getName() . '&4[' . $session->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
+                $webhook = $session->getName() . '[' . $session->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
+            }
+            // Construct a discord webhook with its URL
+            $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));
+
+            // Construct a new Message object
+            $msg = new Message();
+            $msg->setContent($webhook);
+            $webHook->send($msg);
+            $event->setDeathMessage(TextFormat::colorize($message));
+        }
     }
     
     /**
