@@ -44,7 +44,7 @@ class Disconnected
         $this->disconnectedMob->setHealth($this->getHealth());
         $this->disconnectedMob->setNameTagVisible();
         $this->disconnectedMob->setNameTagAlwaysVisible(true);
-        $this->disconnectedMob->setNameTag(TextFormat::colorize('&r' . $this->getName() . ' &e(AFK)'));
+        $this->disconnectedMob->setNameTag(TextFormat::colorize("§7(Combat-Logger)§c " . $this->getName()));
         $this->disconnectedMob->spawnToAll();
     }
     
