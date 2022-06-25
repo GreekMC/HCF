@@ -15,6 +15,7 @@ use juqn\hcf\faction\FactionManager;
 use juqn\hcf\item\ItemManager;
 use juqn\hcf\kit\KitManager;
 use juqn\hcf\koth\KothManager;
+use juqn\hcf\disconnected\DisconnectedManager;
 use juqn\hcf\reclaim\ReclaimManager;
 use juqn\hcf\session\SessionManager;
 use juqn\hcf\shop\ShopManager;
@@ -70,6 +71,8 @@ class HCFLoader extends PluginBase
     private KitManager $kitManager;
     /** @var KothManager */
     private KothManager $kothManager;
+    /** @var DisconnectedManager */
+    private DisconnectedManager $disconnectedManager;
     /** @var ReclaimManager */
     private ReclaimManager $reclaimManager;
     /** @var SessionManager */
@@ -242,6 +245,14 @@ class HCFLoader extends PluginBase
     public function getKothManager(): KothManager
     {
         return $this->kothManager;
+    }
+    
+    /**
+     * @return DisconnectedManager
+     */
+    public function getDisconnectedManager(): DisconnectedManager
+    {
+        return $this->disconnectedManager;
     }
     
     /**

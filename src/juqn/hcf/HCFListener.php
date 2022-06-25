@@ -112,9 +112,7 @@ class HCFListener implements Listener
         $player = $event->getPlayer();
         $last = $player->getLastDamageCause();
 
-        if ($player instanceof Player)
-
-            $killerXuid = null;
+        $killerXuid = null;
         $killer = null;
         $itemInHand = null;
         $message = '';
@@ -170,7 +168,7 @@ class HCFListener implements Listener
             // Construct a discord webhook with its URL
             $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));
 
-// Construct a new Message object
+            // Construct a new Message object
             $msg = new Message();
             $msg->setContent($webhook);
             $webHook->send($msg);
@@ -287,10 +285,15 @@ class HCFListener implements Listener
         /** @var Player */
         $player = $event->getPlayer();
         $quitMessage = str_replace('{player}', $player->getName(), HCFLoader::getInstance()->getConfig()->get('quit.message'));
+        $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
+        
+        if ($player->getSession()->getCooldown('logout') !== null) {
+            $disconnectedManager->addDisconnected($player);
+        }
         $event->setQuitMessage(TextFormat::colorize($quitMessage));
     }
 
-    public function ArcherTag(EntityDamageEvent $event): void
+    public function handleArcherTag(EntityDamageEvent $event): void
     {
         $tag = 'ArcherMark';
         $player = $event->getEntity();
@@ -333,7 +336,7 @@ class HCFListener implements Listener
         }
     }
 
-    public function BardEffectsEvent(PlayerItemUseEvent $event):void
+    public function handleEffects(PlayerItemUseEvent $event):void
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
@@ -514,7 +517,7 @@ class HCFListener implements Listener
         }
     }
 
-    public function BardHoldEvent(PlayerItemHeldEvent $event):void
+    public function handleHoldEffects(PlayerItemHeldEvent $event):void
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
@@ -611,17 +614,19 @@ class HCFListener implements Listener
 
     /**
      * @param EntityDamageEvent $event
-     * @return void
      */
-    public function onRogueFunction(EntityDamageEvent $event): void
+    public function handleRogue(EntityDamageEvent $event): void
     {
         $player = $event->getEntity();
+        
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
+            
             if ($player instanceof Player && $damager instanceof Player) {
                 if($damager->getClass() === null){
                     return;
                 }
+                
                 if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
                     if ($damager->getViewPos() == $player->getViewPos()) {
                         if ($damager->getSession()->getCooldown('rogue.cooldown') !== null) {
@@ -638,25 +643,27 @@ class HCFListener implements Listener
         }
     }
 
-    public function onChat(PlayerChatEvent $event): void
+    public function handleChat(PlayerChatEvent $event): void
     {
         $player = $event->getPlayer();
         $message = $event->getMessage();
 
-        if ($player instanceof Player)
-        if ($player->getSession()->hasFactionChat() === true){
-            $event->cancel();
-            foreach (Server::getInstance()->getOnlinePlayers() as $online) {
-                if ($online instanceof Player)
-                    if ($online->getSession()->getFaction() === null) {
-                        continue;
+        if ($player instanceof Player) {
+            if ($player->getSession()->hasFactionChat() === true){
+                $event->cancel();
+            
+                foreach (Server::getInstance()->getOnlinePlayers() as $online) {
+                    if ($online instanceof Player) {
+                        if ($online->getSession()->getFaction() === null) {
+                            continue;
+                        }
+                        
+                        if ($online->getSession()->getFaction() === $player->getSession()->getFaction()) {
+                            $online->sendMessage("§9(Team) ". $player->getName() . ": §e" . $message);
+                        }
                     }
-                if ($online->getSession()->getFaction() === $player->getSession()->getFaction()) {
-                    $online->sendMessage("§9(Team) ". $player->getName() . ": §e" . $message);
                 }
             }
-
         }
-
     }
 }

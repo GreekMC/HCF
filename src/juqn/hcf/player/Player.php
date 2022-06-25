@@ -154,11 +154,13 @@ class Player extends BasePlayer
             $this->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' ' . ($faction->getDtr() === (count($faction->getMembers()) + 0.1) ? '&a' : '&c') . $faction->getDtr() . '■&6]'));
         }
         
-        # Add coordinates
-        $pk = GameRulesChangedPacket::create([
-            'showCoordinates' => new BoolGameRule(true, false)
-        ]);
-        $this->getNetworkSession()->sendDataPacket($pk);
+        # Disconnected 
+        $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
+        $disconnected = $disconnectedManager->getDisconnected($this->getXuid());
+        
+        if ($disconnected !== null) {
+            $disconnected->join($this);
+        }
     }
     
     private function updateScoreboard(): void
@@ -306,6 +308,7 @@ class Player extends BasePlayer
         }
         parent::processMostRecentMovements();
     }
+    
     /**
      * @return string
      */
