@@ -23,7 +23,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
     {
         if (!$sender instanceof Player)
             return;
-        
+
         if ($sender->getSession()->getFaction() !== null) {
             $sender->sendMessage(TextFormat::colorize('&cYou have already faction'));
             return;
@@ -66,7 +66,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
                 return;
             }
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction());
-    
+
             if ($faction->getRole($playerInvite) === Faction::MEMBER) {
                 $sender->sendMessage(TextFormat::colorize('&cInvite not valid'));
                 HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $player->getName());
@@ -76,13 +76,13 @@ class AcceptInviteSubCommand implements FactionSubCommand
                 $player->sendMessage(TextFormat::colorize('&a' . $sender->getName() . ' accepted invitation for join in your faction'));
             }
             $sender->sendMessage(TextFormat::colorize('&aYou have accepted ' . $player->getName() . '\' invite for join in faction'));
-            
+
             $faction->addRole($sender->getXuid(), Faction::MEMBER);
             $faction->announce(TextFormat::colorize('&a' . $sender->getName() . ' joined the faction'));
             $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
-    
+
             $sender->getSession()->setFaction($faction->getName());
-    
+
             HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $player->getName());
             return;
         }
@@ -109,8 +109,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cYou don\'t have invites'));
             return;
         }
-        if ($invites[0] === null ){
-            $sender->sendMessage(TextFormat::colorize('&cUsa bien el comando'));
+        if (!isset($invites[0])) {
             return;
         }
         $invite = $invites[0];
@@ -133,7 +132,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
             $inviter->sendMessage(TextFormat::colorize('&a' . $sender->getName() . ' accepted invitation for join in your faction'));
         }
         $sender->sendMessage(TextFormat::colorize('&aYou have accepted ' . $inviter->getName() . '\' invite for join in faction'));
-        
+
         $faction->addRole($sender->getXuid(), Faction::MEMBER);
         $faction->announce(TextFormat::colorize('&a' . $sender->getName() . ' joined the faction'));
 
