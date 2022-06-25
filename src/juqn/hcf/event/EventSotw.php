@@ -19,7 +19,7 @@ class EventSotw
      */
     public function __construct(
         private int $time = 60 * 60,
-        private string $format = '&l&6SOTW Ends in: &r&7',
+        private string $format = '&l&6SOTW Ends in&r&7: &r&7',
         private bool $active = false
     ) {}
     

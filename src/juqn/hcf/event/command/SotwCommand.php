@@ -42,7 +42,7 @@ class SotwCommand extends Command
             case 'help':
                 $sender->sendMessage(
                     TextFormat::colorize('&eSotw Commands') . PHP_EOL .
-                    TextFormat::colorize('&7/sotw on [time] - &eUse this command to start the sotw') . PHP_EOL .
+                    TextFormat::colorize('&7/sotw start [time] - &eUse this command to start the sotw') . PHP_EOL .
                     TextFormat::colorize('&7/sotw stop - &eUse this command to stop sotw')
                 );
                 break;
