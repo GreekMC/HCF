@@ -10,6 +10,7 @@ use juqn\hcf\player\Player;
 
 use juqn\hcf\utils\Inventories;
 use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\FenceGate;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
@@ -45,10 +46,10 @@ class ClaimListener implements Listener
         $player = $event->getPlayer();
         $block = $event->getBlock();
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
-            
+
         if ($event->isCancelled())
             return;
-        
+
         if ($player->isGod())
             return;
 
@@ -66,7 +67,7 @@ class ClaimListener implements Listener
 
         if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName()) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
-            
+
             if ($faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
@@ -87,7 +88,7 @@ class ClaimListener implements Listener
 
         if ($event->isCancelled())
             return;
-        
+
         if ($player->isGod())
             return;
 
@@ -105,14 +106,14 @@ class ClaimListener implements Listener
 
         if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName()) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
-            
+
             if ($faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
             }
         }
     }
-    
+
     /**
      * @param EntityTeleportEvent $event
      */
@@ -120,27 +121,27 @@ class ClaimListener implements Listener
     {
         $entity = $event->getEntity();
         $to = $event->getTo();
-		
-		if (!$entity instanceof Player)
-			return;
-	    $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($to);
-	
-	    if ($claim === null)
-	        return;
-	    
-	    if ($entity->getSession()->getCooldown('spawn.tag') !== null) {
-		    if ($claim->getType() == 'spawn') {
-			    $event->cancel();
-			    $entity->sendMessage(TextFormat::colorize('&cYou have Spawn Tag. You cannot teleport to this location'));
-			}
-		} elseif ($entity->getSession()->getCooldown('pvp.timer') !== null) {
-			if ($claim->getType() === 'faction' && $entity->getSession()->getFaction() !== $claim->getName()) {
-				$event->cancel();
-				$entity->sendMessage(TextFormat::colorize('&cYou have PvP Timer. You cannot teleport to this location'));
-			}
-		}
+
+        if (!$entity instanceof Player)
+            return;
+        $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($to);
+
+        if ($claim === null)
+            return;
+
+        if ($entity->getSession()->getCooldown('spawn.tag') !== null) {
+            if ($claim->getType() == 'spawn') {
+                $event->cancel();
+                $entity->sendMessage(TextFormat::colorize('&cYou have Spawn Tag. You cannot teleport to this location'));
+            }
+        } elseif ($entity->getSession()->getCooldown('pvp.timer') !== null) {
+            if ($claim->getType() === 'faction' && $entity->getSession()->getFaction() !== $claim->getName()) {
+                $event->cancel();
+                $entity->sendMessage(TextFormat::colorize('&cYou have PvP Timer. You cannot teleport to this location'));
+            }
+        }
     }
-    
+
     /**
      * @param PlayerDropItemEvent $event
      */
@@ -148,13 +149,13 @@ class ClaimListener implements Listener
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
-        
+
         if (HCFLoader::getInstance()->getClaimManager()->getCreator($player->getName()) !== null) {
             if ($item->getId() === 294 && $item->getNamedTag()->getTag('claim_type'))
                 $event->cancel();
         }
     }
-    
+
     /**
      * @param PlayerInteractEvent $event
      */
@@ -164,36 +165,36 @@ class ClaimListener implements Listener
         $block = $event->getBlock();
         /** @var Player $player */
         $player = $event->getPlayer();
-        
+
         $item = $player->getInventory()->getItemInHand();
 
         if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($player->getName())) !== null) {
             if ($item->getNamedTag()->getTag('claim_type') !== null) {
                 $event->cancel();
-                
+
                 if (($claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition())) !== null && ($claim->getType() !== 'koth' || $claim->getName() !== $creator->getName())) {
                     $player->sendMessage(TextFormat::colorize('&cYou cannot make a claim in an area that is already claiming'));
                     return;
                 }
-                
+
                 if ($creator->getType() === 'faction') {
                     if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 400) {
                         $player->sendMessage(TextFormat::colorize('&cYou can\'t claim in this position'));
                         return;
                     }
                 }
-                
+
                 if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                     if ($creator->getFirst() === null) {
                         $creator->calculate($block->getPosition());
                         $player->sendMessage(TextFormat::colorize('&aYou have selected the first position. Now select the second position'));
                     } else {
                         $result = $creator->calculate($block->getPosition(), false);
-                        
+
                         if (!$result) {
                             $player->sendMessage(TextFormat::colorize('&cERROR: The position was not selected in the same world'));
                             HCFLoader::getInstance()->getClaimManager()->removeCreator($player->getName());
-                            
+
                             foreach ($player->getInventory()->getContents() as $slot => $i) {
                                 if ($i->getId() === 294 && $i->getNamedTag()->getTag('claim_type')) {
                                     $player->getInventory()->clear($slot);
@@ -209,7 +210,7 @@ class ClaimListener implements Listener
                         }
 
                         $player->sendMessage(TextFormat::colorize('&aYou have selected the second position.'));
-                        
+
                         if ($creator->getType() === 'faction') {
                             $player->sendMessage(TextFormat::colorize('&aThe price of your claim is $' . $creator->calculateValue() . '. &7(Type again /f claim to accept or /f claim cancel to cancel)'));
                         }
@@ -218,20 +219,28 @@ class ClaimListener implements Listener
             }
             return;
         }
-        
+
         if ($player->isGod())
             return;
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
-        
+
         if ($claim === null)
             return;
-        
+
         if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName() && $claim->getType() !== 'spawn') {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
-            
+
             if ($faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot interact blocks in ' . $claim->getName() . ' territory'));
+
+                if ($block instanceof FenceGate) {
+                    $distance = $player->getPosition()->distance($block->getPosition());
+
+                    if ($distance <= 0 && !$block->isOpen()) {
+                        $player->setMotion($player->getDirectionVector()->multiply(-1.0));
+                    }
+                }
                 return;
             }
         }
@@ -245,7 +254,7 @@ class ClaimListener implements Listener
         /** @var Player $player */
         $player = $event->getPlayer();
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($player->getPosition());
-        
+
         if ($claim !== null)
             $player->setCurrentClaim($claim->getName());
     }
@@ -259,18 +268,18 @@ class ClaimListener implements Listener
         /** @var Player $player */
         $player = $event->getPlayer();
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($player->getPosition());
-        
+
         $leaving = self::DEATHBAN;
         $entering = self::DEATHBAN;
 
         if ($event->isCancelled())
             return;
-        
+
         if ($claim === null) {
             if ($player->getCurrentClaim() !== null) {
                 $currentClaim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
                 $leavingName = '&c' . $player->getCurrentClaim();
-                
+
                 if ($currentClaim !== null) {
                     if ($currentClaim->getType() === 'spawn') {
                         $leaving = self::NO_DEATHBAN;
@@ -285,22 +294,22 @@ class ClaimListener implements Listener
                 }
                 $player->sendMessage(TextFormat::colorize('&eNow leaving: ' . $leavingName . ' ' . $leaving));
                 $player->sendMessage(TextFormat::colorize('&eNow entering:&c ' . ($player->getPosition()->distance($player->getWorld()->getSafeSpawn()) > 496 ? 'Wilderness' : 'Warzone') . ' ' . $entering));
-                
+
                 $player->setCurrentClaim();
             }
             return;
         }
-        
+
         if ($player->getCurrentClaim() !== null && $claim->getName() === $player->getCurrentClaim())
             return;
 
         if ($player->getCurrentClaim() !== null) {
             $currentClaim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
-            
+
             if ($currentClaim !== null) {
                 $leaving = self::NO_DEATHBAN;
                 $leavingName = '&a' . $player->getCurrentClaim();
-                
+
                 if ($currentClaim->getType() === 'spawn') {
                     if ($player->getSession()->getCooldown('pvp.timer') !== null && $player->getSession()->getCooldown('pvp.timer')->isPaused())
                         $player->getSession()->getCooldown('pvp.timer')->setPaused(false);
@@ -312,16 +321,16 @@ class ClaimListener implements Listener
             }
         }
         $enteringName = '&c' . $claim->getName();
-        
+
         if ($claim->getType() === 'spawn') {
             $entering = self::NO_DEATHBAN;
             $enteringName = '&a' . $claim->getName();
-			
+
             if ($player->getSession()->getCooldown('spawn.tag') !== null) {
                 $event->cancel();
                 return;
             }
-		
+
             if ($player->getSession()->getCooldown('pvp.timer') !== null && !$player->getSession()->getCooldown('pvp.timer')->isPaused())
                 $player->getSession()->getCooldown('pvp.timer')->setPaused(true);
         } elseif ($claim->getType() === 'road')
@@ -333,7 +342,7 @@ class ClaimListener implements Listener
                 $event->cancel();
                 return;
             }
-            
+
             if ($player->getSession()->getCooldown('starting.timer') !== null && $player->getSession()->getFaction() !== $claim->getName()) {
                 $event->cancel();
                 return;
@@ -343,7 +352,7 @@ class ClaimListener implements Listener
         $player->sendMessage(TextFormat::colorize('&eNow leaving:&c ' . ($player->getPosition()->distance($player->getWorld()->getSafeSpawn()) > 496 ? 'Wilderness' : 'Warzone') . ' ' . $entering));
         $player->setCurrentClaim($claim->getName());
     }
-    
+
     /**
      * @param PlayerQuitEvent $event
      */
@@ -353,7 +362,7 @@ class ClaimListener implements Listener
 
         if (HCFLoader::getInstance()->getClaimManager()->getCreator($player->getName()) !== null) {
             HCFLoader::getInstance()->getClaimManager()->removeCreator($player->getName());
-            
+
             foreach ($player->getInventory()->getContents() as $slot => $i) {
                 if ($i->getId() === 294 && $i->getNamedTag()->getTag('claim_type')) {
                     $player->getInventory()->clear($slot);

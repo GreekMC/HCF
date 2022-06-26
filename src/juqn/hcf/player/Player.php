@@ -146,7 +146,7 @@ class Player extends BasePlayer
         $pk = GameRulesChangedPacket::create([
             'showCoordinates' => new BoolGameRule(true, false)
         ]);
-        $this->getNetworkSession()->sendDataPacket($pk)
+        $this->getNetworkSession()->sendDataPacket($pk);
         
         # Mob
         if ($this->getSession()->isModKilled()) {
