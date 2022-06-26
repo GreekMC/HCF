@@ -104,6 +104,8 @@ class StartSubCommand implements KothSubCommand
 
             $msg = new Message();
 
+            $msg->setContent("@everyone");
+
             $embed = new Embed();
             $embed->setTitle("Citadel has started 🌌");
             $embed->setColor(0xC13DFF);
