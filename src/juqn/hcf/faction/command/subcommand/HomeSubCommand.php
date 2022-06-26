@@ -42,6 +42,11 @@ class HomeSubCommand implements FactionSubCommand
         
         if ($sender->getSession()->getCooldown('faction.teleport.home') !== null)
             return;
+        
+        if ($sender->getCurrentClaim() === 'Spawn') {
+            $sender->teleport($faction->getHome());
+            return;
+        }
         $sender->getSession()->addCooldown('faction.teleport.home',  '&l&1Home&r&7: &c', 15);
         
         $xuid = $sender->getXuid();
