@@ -36,6 +36,16 @@ class BrewerCommand extends Command
         
         if (!$this->testPermission($sender))
             return;
+
+        if ($sender->getSession()->getFaction === null) {
+            $sender->sendMessage(TextFormat::colorize('&cYou can\'t use this command '));
+            return;
+        }
+        
+        if ($sender->getSession()->getFaction() !== $sender->getCurrentClaim()) {
+            $sender->sendMessage(TextFormat::colorize('&cYou can\'t use this command '));
+            return;
+        }
         
         if ($sender->getSession()->getCooldown('brewer.cooldown') !== null) {
             $sender->sendMessage(TextFormat::colorize('&cYou have cooldown to use this'));
