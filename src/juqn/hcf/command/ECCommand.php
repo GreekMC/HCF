@@ -15,6 +15,14 @@ class ECCommand extends Command
 {
     
     /**
+     * ECCommand construct.
+     */
+    public function __construct()
+    {
+        parent::__construct('ec', 'Command for Ender Chest');
+    }
+    
+    /**
      * @param CommandSender $sender
      * @param string $commandLabel
      * @param array $args
