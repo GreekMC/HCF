@@ -41,7 +41,8 @@ class BrewerCommand extends Command
             $sender->sendMessage(TextFormat::colorize('&cYou have cooldown to use this'));
             return;
         }
-        $sender->getSession()->addCooldown('brewer.cooldown', '', 12 * 60 * 60, false, false);
+        $world = $sender->getWorld();
+        $sender->getSession()->addCooldown('brewer.cooldown', '', 6 * 60 * 60, false, false);
         $position = $sender->getPosition()->floor();
         $tile1 = $this->createTileChest($position, $world);
         $tile2 = $this->createTileChest($position->add(1, 0, 0), $world);
