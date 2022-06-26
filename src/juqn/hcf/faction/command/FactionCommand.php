@@ -76,6 +76,7 @@ class FactionCommand extends Command
         $this->subCommands['chat'] = new ChatSubCommand;
         $this->subCommands['c'] = new ChatSubCommand;
         $this->subCommands['unclaim'] = new UnclaimSubCommand;
+        $this->subCommands['info'] = new WhoSubCommand();
     }
     
     /**

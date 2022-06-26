@@ -6,6 +6,8 @@ namespace juqn\hcf\entity;
 
 use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\data\bedrock\EntityLegacyIds as LegacyIds;
+use pocketmine\data\bedrock\PotionTypeIdMap;
+use pocketmine\data\bedrock\PotionTypeIds;
 use pocketmine\data\SavedDataLoadingException;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityDataHelper as Helper;

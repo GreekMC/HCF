@@ -52,7 +52,7 @@ class WhoSubCommand implements FactionSubCommand
         }
         $message = '&7&m--------------------------' . PHP_EOL;
         $message .= '&9' . (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getName()). ' &7[' . count(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getOnlineMembers()) . '/' . count(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembers()) . '] &3- &eHQ: &f' . (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome() !== null ? 'X: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorX() . ' Z: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorZ() : 'Not set ');
-        $message .= '&eLeader: &f' . implode(', ', array_map(function ($session) {
+        $message .=  PHP_EOL . '&eLeader: &f' . implode(', ', array_map(function ($session) {
             return $session->getName();
         }, HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembersByRole(Faction::LEADER))) . PHP_EOL;
         $message .= '&eColeaders: &f' . implode(', ', array_map(function ($session) {

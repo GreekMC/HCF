@@ -13,6 +13,7 @@ use juqn\hcf\player\Player;
 
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -341,26 +342,32 @@ class HCFListener implements Listener
         }
 
         if ($damager->getClass()->getId() === HCFClass::ARCHER) {
-            if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
-            
-            if ($damager->getCurrentClaim() === 'Spawn') {
-                return;
-            }
-
-            $damager->sendMessage("§e[§9Archer Range §e(§c" . (int) $entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
-            $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+20% damage) for 10 seconds).");
-            $entity->setNameTag("§e" . $entity->getName());
-            
-            $entity->getSession()->addCooldown('archer.mark', '&l&6Archer Mark&r&7: &r&c', 10);
-            
-            HCFLoader::getInstance()->setTag($tag, $entity->getName(), 10);
-            HCFLoader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($entity): void {
-                if ($entity->isOnline()) {
-                    $entity->setNameTag("§c" . $entity->getName());
+            if ($child instanceof Arrow) {
+                if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                    return;
                 }
-            }), 20 * 5);
+
+                if ($damager->getCurrentClaim() === 'Spawn') {
+                    return;
+                }
+                if ($damager->getSession()->getFaction() === $entity->getSession()->getFaction()) {
+                    return;
+                }
+
+
+                $damager->sendMessage("§e[§9Archer Range §e(§c" . (int)$entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
+                $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+20% damage) for 10 seconds).");
+                $entity->setNameTag("§e" . $entity->getName());
+
+                $entity->getSession()->addCooldown('archer.mark', '&l&6Archer Mark&r&7: &r&c', 10);
+
+                HCFLoader::getInstance()->setTag($tag, $entity->getName(), 10);
+                HCFLoader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($entity): void {
+                    if ($entity->isOnline()) {
+                        $entity->setNameTag("§c" . $entity->getName());
+                    }
+                }), 20 * 5);
+            }
         }
     }
     

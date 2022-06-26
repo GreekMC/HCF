@@ -230,7 +230,7 @@ class ClaimListener implements Listener
         if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName() && $claim->getType() !== 'spawn') {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
 
-            if ($faction->getDtr() > 0.00) {
+            if ($faction !== null && $faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot interact blocks in ' . $claim->getName() . ' territory'));
                 
