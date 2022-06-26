@@ -237,8 +237,8 @@ class ClaimListener implements Listener
                 if ($block instanceof FenceGate) {
                     $distance = $player->getPosition()->distance($block->getPosition());
 
-                    if ($distance <= 0 && !$block->isOpen()) {
-                        $player->setMotion($player->getDirectionVector()->multiply(-1.0));
+                    if ($distance <= 3 && !$block->isOpen()) {
+                        $player->setMotion($player->getDirectionVector()->multiply(-1.5));
                     }
                 }
                 return;
