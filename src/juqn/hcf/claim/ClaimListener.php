@@ -67,10 +67,9 @@ class ClaimListener implements Listener
         if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName()) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
             
-            if ($faction->getDtr() > 0.0) {
+            if ($faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
-                $player->setMovementTime(time() + 0.1);
             }
         }
     }
@@ -168,9 +167,6 @@ class ClaimListener implements Listener
         
         $item = $player->getInventory()->getItemInHand();
 
-        $block = $event->getBlock();
-        $player = $event->getPlayer();
-
         if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($player->getName())) !== null) {
             if ($item->getNamedTag()->getTag('claim_type') !== null) {
                 $event->cancel();
@@ -222,20 +218,23 @@ class ClaimListener implements Listener
             }
             return;
         }
-        //$claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
         
-        /*if ($claim !== null) {
-            if ($player instanceof Player)
-            if ($player->getInventory()->getItemInHand()->getCustomName() === "§r§l§6Partner Packages") return;
-            $tile = $player->getWorld()->getTile($block->getPosition()->asVector3());
-            if ($tile instanceof CrateTile) return;
-            if ($tile instanceof Inventories) return;
-            if ($player->isGod()) return;
-            if ($player->getSession()->getFaction() !== $claim->getName()) {
+        if ($player->isGod())
+            return;
+        $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
+        
+        if ($claim === null)
+            return;
+        
+        if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName()) {
+            $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
+            
+            if ($faction->getDtr() > 0.00) {
                 $event->cancel();
+                $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
                 return;
             }
-        }*/
+        }
     }
 
     /**
