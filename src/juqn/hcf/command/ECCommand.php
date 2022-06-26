@@ -6,8 +6,10 @@ namespace juqn\hcf\command;
 
 use juqn\hcf\player\Player as HCFPlayer;
 use muqsit\invmenu\InvMenu;
+use muqsit\invmenu\type\InvMenuTypeIds;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\inventory\Inventory;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
@@ -32,9 +34,9 @@ class ECCommand extends Command
         if (!$sender instanceof HCFPlayer)
             return;
         
-        $menu = InvMenu::create(InvMenu::TYPE_HOPPER);
+        $menu = InvMenu::create(InvMenuTypeIds::TYPE_HOPPER);
         if ($sender->hasPermission('enderchest.permission')) {
-            $menu = InvMenu::create(InvMenu::TYPE_CHEST);
+            $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
             /*menu->getInventory()->setContents($sender->getEnderInventory()->getContents());
             $menu->setInventoryCloseListener(function (Player $player, Inventory $inventory): void {
                 $player->getEnderInventory()->setContents($inventory->getContents());
