@@ -89,6 +89,7 @@ class CrateTile extends Chest
             $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
             
             if ($crate !== null) {
+                $this->setDirty(true);
                 $nbt = $this->saveNBT();
                 $id = explode(':', $crate->getKeyId());
                 $itemMeta = isset($id[1]) ? (int) $id[1] : 0;
