@@ -9,6 +9,7 @@ use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
+use pocketmine\Server;
 use pocketmine\world\World;
 
 class DisconnectedManager
@@ -24,6 +25,14 @@ class DisconnectedManager
         EntityFactory::getInstance()->register(DisconnectedMob::class, function(World $world, CompoundTag $nbt): DisconnectedMob {
 			return new DisconnectedMob(EntityDataHelper::parseLocation($nbt, $world), $nbt);
 		}, ['DisconnectedMob', 'hcf:disconnectedmob'], EntityLegacyIds::VILLAGER);
+    }
+    
+    public function onDisable(): void
+    {
+        foreach (Server::getInstance()->getWorldManager()->getDefaultWorld()->getEntities() as $entity) {
+            if ($entity instanceof DisconnectedMob)
+                $entity->flagForDespawn();
+        }
     }
     
     /**

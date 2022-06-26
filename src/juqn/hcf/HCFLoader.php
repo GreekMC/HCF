@@ -184,6 +184,7 @@ class HCFLoader extends PluginBase
     {
         if (isset($this->provider)) $this->provider->save();
         if (isset($this->crateManager)) $this->crateManager->onDisable();
+        if (isset($this->disconnectedManager)) $this->disconnectedManager->onDisable();
     }
 
     /**
