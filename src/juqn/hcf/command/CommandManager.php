@@ -19,6 +19,7 @@ class CommandManager
     public function __construct()
     {
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new ECCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new BrewerCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FixCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new GodCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new PvPCommand());

@@ -5,11 +5,11 @@ api: 4.0.0
 main: juqn\hcf\HCFLoader
 
 permissions:
-  enderchest.permission:
-    description: Permission nested for /ec
-    default: op
   autofeed.command:
     description: Permission nested for /feed
+    default: op
+  brewer.command:
+    description: Permission nested for /brewer
     default: op
   feed.command:
     description: Permission nested for /feed
@@ -136,4 +136,7 @@ permissions:
     default: op
   vkit.command.give:
     description: Permission for /vkit give
+    default: op
+  enderchest.permission:
+    description: Permission for big enderchest 
     default: op
