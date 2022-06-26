@@ -327,7 +327,7 @@ class Faction
 
                 # Setup scoretag for team members
                 foreach ($this->getOnlineMembers() as $member)
-                    $member->setScoreTag(TextFormat::colorize('&6[&c' . $this->getName() . ' &a' . $this->getDtr() . '■&6]'));
+                    $member->setScoreTag(TextFormat::colorize('&6[&c' . $this->getName() . ' &a' . round($this->getDtr(), 2) . '■&6]'));
             }
         }
     }
