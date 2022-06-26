@@ -37,10 +37,7 @@ class ECCommand extends Command
         $menu = InvMenu::create(InvMenuTypeIds::TYPE_HOPPER);
         if ($sender->hasPermission('enderchest.permission')) {
             $menu = InvMenu::create(InvMenuTypeIds::TYPE_CHEST);
-            /*menu->getInventory()->setContents($sender->getEnderInventory()->getContents());
-            $menu->setInventoryCloseListener(function (Player $player, Inventory $inventory): void {
-                $player->getEnderInventory()->setContents($inventory->getContents());
-            });*/
+
         }
         $menu->getInventory()->setContents($sender->getEnderInventory()->getContents());
         $menu->setInventoryCloseListener(function (Player $player, Inventory $inventory): void {

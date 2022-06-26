@@ -68,7 +68,7 @@ final class Inventories
      */
     public static function editvKitOrganization(Player $player): void
     {
-        $menu = InvMenu::create(InvMenu::TYPE_DOUBLE_CHEST);
+        $menu = InvMenu::create(InvMenu::TYPE_CHEST);
         
         foreach (HCFLoader::getInstance()->getvKitManager()->getOrganization() as $slot => $vKitName) {
             $vkit = HCFLoader::getInstance()->getvKitManager()->getvKit($vKitName);
@@ -103,7 +103,7 @@ final class Inventories
      */
     public static function createvKitOrganization(Player $player): void
     {
-        $menu = InvMenu::create(InvMenu::TYPE_DOUBLE_CHEST);
+        $menu = InvMenu::create(InvMenu::TYPE_CHEST);
         $organization = HCFLoader::getInstance()->getvKitManager()->getOrganization();
         
         for ($i = 0; $i < 54; $i++) {
