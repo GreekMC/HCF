@@ -33,6 +33,9 @@ class SotwCommand extends Command
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
+        if (!$this->testPermission($sender))
+            return;
+            
         if (count($args) < 1) {
             $sender->sendMessage(TextFormat::colorize('&cUse /sotw help'));
             return;

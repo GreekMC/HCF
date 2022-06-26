@@ -110,7 +110,6 @@ class ClaimListener implements Listener
             if ($faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
-                $player->setMovementTime(time() + 0.1);
             }
         }
     }
@@ -223,9 +222,9 @@ class ClaimListener implements Listener
             }
             return;
         }
-        $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
+        //$claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
         
-        if ($claim !== null) {
+        /*if ($claim !== null) {
             if ($player instanceof Player)
             if ($player->getInventory()->getItemInHand()->getCustomName() === "§r§l§6Partner Packages") return;
             $tile = $player->getWorld()->getTile($block->getPosition()->asVector3());
@@ -236,7 +235,7 @@ class ClaimListener implements Listener
                 $event->cancel();
                 return;
             }
-        }
+        }*/
     }
 
     /**
@@ -264,10 +263,6 @@ class ClaimListener implements Listener
         
         $leaving = self::DEATHBAN;
         $entering = self::DEATHBAN;
-
-        if ($player->isMovementTime()) {
-            $event->cancel();
-        }
 
         if ($event->isCancelled())
             return;

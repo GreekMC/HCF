@@ -10,7 +10,6 @@ use JetBrains\PhpStorm\Pure;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 use juqn\hcf\session\Session;
-use juqn\hcf\utils\Timer;
 use pocketmine\entity\Villager;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -21,15 +20,15 @@ use pocketmine\utils\TextFormat;
 
 class DisconnectedMob extends Villager
 {
-
+    
     /** @var Disconnected|null */
     private ?Disconnected $disconnected = null;
     /** @var Player|null */
     private ?Player $lastHit = null;
-
+    
     /** @var int */
     private int $time = 60;
-
+    
     /**
      * @return Disconnected|null
      */
@@ -37,7 +36,7 @@ class DisconnectedMob extends Villager
     {
         return $this->disconnected;
     }
-
+    
     /**
      * @return Item[]
      */
@@ -45,31 +44,33 @@ class DisconnectedMob extends Villager
     {
         $drops = [];
         $disconnected = $this->getDisconnected();
-
+        
         if ($disconnected !== null) {
             return array_merge($disconnected->getInventory(), $disconnected->getArmorInventory());
         }
         return $drops;
     }
-
-    /**
-     * @return int
+	
+	/**
+	 * @return int
      */
     public function getXpDropAmount(): int
     {
         return 0;
     }
-
-    public function onUpdate(int $currentTick): bool
+    
+    /**
+     * @param int $currentTick
+     */
+    protected function onUpdate(int $currentTick): bool
     {
+        $disconnected = $this->getDisconnected();
+        
         if ($currentTick % 20 === 0) {
-            $disconnected = $this->getDisconnected();
-
             if ($disconnected !== null) {
                 $this->time--;
-                $time = $this->time;
-                $this->setNameTag("§7(Combat-Logger)§c " . $this->getDisconnected()->getName() . " §7- §4" .Timer::format($time));
-                if ($this->time <= 0) {
+        
+                if ($this->time === 0) {
                     HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($disconnected->getXuid());
                     $this->flagForDespawn();
                     return false;
@@ -78,7 +79,7 @@ class DisconnectedMob extends Villager
         }
         return parent::onUpdate($currentTick);
     }
-
+    
     /**
      * @param EntityDamageEvent $source
      */
@@ -107,8 +108,9 @@ class DisconnectedMob extends Villager
                             }
                         }
                         $this->lastHit = $damager;
-                        $session->addCooldown('spawn.tag', '&l&cSpawn Tag&r&7: &r&c', 30);
                         $this->time = 60;
+                        
+                        $session->addCooldown('spawn.tag', '&l&cSpawn Tag&r&7: &r&c', 30);
                         $damager->getSession()->addCooldown('spawn.tag', '&l&cSpawn Tag&r&7: &r&c', 30);
                     }
                 }

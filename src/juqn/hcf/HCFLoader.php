@@ -27,7 +27,6 @@ use muqsit\invmenu\InvMenuHandler;
 
 use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\data\SavedDataLoadingException;
-use pocketmine\entity\Entity;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
 use pocketmine\entity\object\ExperienceOrb;
@@ -122,8 +121,22 @@ class HCFLoader extends PluginBase
 
         # Register listener
         $this->getServer()->getPluginManager()->registerEvents(new HCFListener(), $this);
-
+        
+        # Network
         $this->getServer()->getNetwork()->setName("§r§l§6Greek §r§7| §r§fHCF");
+        
+        # Unregister command
+        $commands = [
+            'me',
+            'clear'
+        ];
+        
+        foreach ($commands as $commandName) {
+            $command = $this->getServer()->getCommandMap()->getCommand($commandName);
+            
+            if ($command !== null)
+                $this->getServer()->getCommandMap()->unregister($command);
+        }
         
         # Register handler
         $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {
@@ -142,7 +155,7 @@ class HCFLoader extends PluginBase
                     }
                 }
             }
-        }), 5 * 60 * 20);
+        }), 2 * 60 * 20);
         $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {
             # Koth
             if (($kothName = $this->getKothManager()->getKothActive()) !== null) {

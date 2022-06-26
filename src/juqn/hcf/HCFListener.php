@@ -42,6 +42,9 @@ use pocketmine\utils\TextFormat;
  */
 class HCFListener implements Listener
 {
+    
+    /** @var array */
+    private array $antispam = [];
 
     /**
      * @param EntityDamageEvent $event
@@ -61,7 +64,7 @@ class HCFListener implements Listener
             }
 
             if ($entity->getSession()->getCooldown('pvp.timer') !== null) {
-                if ($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK) {
+                if ($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK || $cause === EntityDamageEvent::CAUSE_PROJECTILE) {
                     $event->cancel();
                     return;
                 }
@@ -77,6 +80,11 @@ class HCFListener implements Listener
 
                 if ($damager instanceof Player) {
                     if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                        $event->cancel();
+                        return;
+                    }
+                    
+                    if ($damager->getCurrentClaim() === 'Spawn') {
                         $event->cancel();
                         return;
                     }
@@ -330,12 +338,6 @@ class HCFListener implements Listener
         }
 
         if($damager->getClass()->getId() === HCFClass::ARCHER){
-            if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
-            if ($damager->getCurrentClaim() === 'Spawn') {
-                return;
-            }
             $damager->sendMessage("§e[§9Archer Range §e(§c" . (int)$entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
             $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+20% damage) for 10 seconds).");
             $entity->setNameTag("§e" . $entity->getName());
@@ -362,12 +364,6 @@ class HCFListener implements Listener
             }
 
         if($player->getClass()->getId() === HCFClass::ROGUE) {
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
-            if ($player->getCurrentClaim() === 'Spawn') {
-                return;
-            }
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -393,12 +389,6 @@ class HCFListener implements Listener
         }
 
         if($player->getClass()->getId() === HCFClass::ARCHER) {
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
-            if ($player->getCurrentClaim() === 'Spawn') {
-                return;
-            }
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -425,12 +415,6 @@ class HCFListener implements Listener
 
         if($player->getClass()->getId() === HCFClass::BARD){
             if ($player->getSession()->getCooldown('bard.cooldown') !== null) {
-                return;
-            }
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
-            if ($player->getCurrentClaim() === 'Spawn') {
                 return;
             }
             switch ($item->getId()) {
@@ -561,12 +545,6 @@ class HCFListener implements Listener
             }
 
         if($player->getClass()->getId() === HCFClass::BARD){
-            if ($player->getCurrentClaim() === 'Spawn') {
-                return;
-            }
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
             switch ($item->getId()) {
 
                 case VanillaItems::BLAZE_POWDER()->getId():
@@ -666,12 +644,6 @@ class HCFListener implements Listener
                 }
                 
                 if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
-                    if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
-                        return;
-                    }
-                    if ($player->getCurrentClaim() === 'Spawn') {
-                        return;
-                    }
                     if ($damager->getViewPos() == $player->getViewPos()) {
                         if ($damager->getSession()->getCooldown('rogue.cooldown') !== null) {
                             return;
@@ -686,14 +658,17 @@ class HCFListener implements Listener
             }
         }
     }
-
+    
+    /**
+     * @param PlayerChatEvent $event
+     */
     public function handleChat(PlayerChatEvent $event): void
     {
         $player = $event->getPlayer();
         $message = $event->getMessage();
 
         if ($player instanceof Player) {
-            if ($player->getSession()->hasFactionChat() === true){
+            if ($player->getSession()->hasFactionChat()) {
                 $event->cancel();
             
                 foreach (Server::getInstance()->getOnlinePlayers() as $online) {
@@ -707,6 +682,7 @@ class HCFListener implements Listener
                         }
                     }
                 }
+                return;
             }
         }
     }

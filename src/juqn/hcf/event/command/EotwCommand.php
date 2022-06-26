@@ -33,6 +33,9 @@ class EotwCommand extends Command
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
+        if (!$this->testPermission($sender))
+            return;
+            
         if (count($args) < 1) {
             $sender->sendMessage(TextFormat::colorize('&cUse /eotw help'));
             return;
@@ -42,7 +45,7 @@ class EotwCommand extends Command
             case 'help':
                 $sender->sendMessage(
                     TextFormat::colorize('&eEotw Commands') . PHP_EOL .
-                    TextFormat::colorize('&7/eotw on [time] - &eUse this command to start the eotw') . PHP_EOL .
+                    TextFormat::colorize('&7/eotw start [time] - &eUse this command to start the eotw') . PHP_EOL .
                     TextFormat::colorize('&7/eotw stop - &eUse this command to stop eotw')
                 );
                 break;

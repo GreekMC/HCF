@@ -43,8 +43,6 @@ class Player extends BasePlayer
     
     /** @var bool */
     private bool $god = false;
-    /** @var Int */
-    protected $movementTime = 0;
 
     /**
      * Player construct.
@@ -99,22 +97,6 @@ class Player extends BasePlayer
     public function getSession(): ?Session
     {
         return HCFLoader::getInstance()->getSessionManager()->getSession($this->getXuid());
-    }
-
-    /**
-     * @param mixed $movementTime
-     */
-    public function setMovementTime(mixed $movementTime)
-    {
-        $this->movementTime = $movementTime;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMovementTime(): bool
-    {
-        return (time() - $this->movementTime) < 0;
     }
     
     /**
@@ -334,7 +316,5 @@ class Player extends BasePlayer
             return "S";
         else
             return "W";
-
     }
-
 }

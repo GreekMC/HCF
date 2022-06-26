@@ -31,7 +31,7 @@ class FactionManager
         HCFLoader::getInstance()->getServer()->getPluginManager()->registerEvents(new FactionListener(), HCFLoader::getInstance());
         # Register factions
         foreach (HCFLoader::getInstance()->getProvider()->getFactions() as $name => $data)
-            $this->createFaction($name, $data);
+            $this->createFaction((string) $name, $data);
     }
     
     /**
