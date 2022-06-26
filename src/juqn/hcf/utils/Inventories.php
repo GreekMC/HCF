@@ -106,7 +106,7 @@ final class Inventories
         $menu = InvMenu::create(InvMenu::TYPE_CHEST);
         $organization = HCFLoader::getInstance()->getvKitManager()->getOrganization();
         
-        for ($i = 0; $i < 54; $i++) {
+        for ($i = 0; $i < 27; $i++) {
             if (isset($organization[$i])) {
                 $vkit = HCFLoader::getInstance()->getvKitManager()->getvKit($organization[$i]);
                 
@@ -151,7 +151,7 @@ final class Inventories
         $menu = InvMenu::create(InvMenu::TYPE_DOUBLE_CHEST);
         $organization = HCFLoader::getInstance()->getKitManager()->getOrganization();
         
-        for ($i = 0; $i < 27; $i++) {
+        for ($i = 0; $i < 54; $i++) {
             if (isset($organization[$i])) {
                 $kit = HCFLoader::getInstance()->getKitManager()->getKit($organization[$i]);
                 

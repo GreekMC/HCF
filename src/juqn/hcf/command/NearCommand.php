@@ -11,7 +11,7 @@ use pocketmine\utils\TextFormat;
 
 class NearCommand extends Command
 {
-    
+
     /**
      * NearCommand construct.
      */
@@ -20,7 +20,7 @@ class NearCommand extends Command
         parent::__construct('near', 'Command for near');
         $this->setPermission('near.command');
     }
-    
+
     /**
      * @param CommandSender $sender
      * @param string $commandLabel
@@ -30,16 +30,15 @@ class NearCommand extends Command
     {
         if (!$sender instanceof Player)
             return;
-        
+
         if (!$this->testPermission($sender))
             return;
-        $entities = $sender->getWorld()->getNearbyEntities($sender->getBoundingBox()->expand(200, 200, 200), $sender);
-        $entities = array_filter($entities, function ($entity): bool {
-            return $entity instanceof Player;
+        $players = array_filter($sender->getServer()->getOnlinePlayers(), function ($player) use ($sender): bool {
+            return $player instanceof Player && $player->getId() !== $sender->getId() && $player->getPosition()->distance($sender->getPosition()) <= 100;
         });
-        
-        $sender->sendMessage(TextFormat::colorize('&cNear: &f' . array_map(function (Player $player) use ($sender) {
-            return $player->getName() . ' &7(' . intval($sender->getPosition()->distance($player->getPosition())) . ')';
-        }, $entities)));
+
+        $sender->sendMessage(TextFormat::colorize("&c× Near Players ×\n" . implode("\n", array_map(function (Player $player) use ($sender) {
+                return '&f' . $player->getName() . ' &7(' . intval($sender->getPosition()->distance($player->getPosition())) . 'm)&f';
+            }, $players))));
     }
 }
