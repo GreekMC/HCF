@@ -37,6 +37,9 @@ class RenameCommand extends Command
     {
         if (!$sender instanceof Player)
             return;
+            
+        if (!$this->testPermission($sender))
+            return;
         
         if (count($args) < 1) {
             $sender->sendMessage(TextFormat::colorize('&cUse /rename [name]'));

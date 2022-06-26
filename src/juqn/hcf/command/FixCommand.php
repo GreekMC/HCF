@@ -37,6 +37,9 @@ class FixCommand extends Command
     {
         if (!$sender instanceof Player)
             return;
+            
+        if (!$this->testPermission($sender))
+            return;
     	
         if (count($args) < 1) {
             $sender->sendMessage(

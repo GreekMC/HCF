@@ -35,6 +35,9 @@ class GodCommand extends Command
     {
         if (!$sender instanceof Player)
             return;
+            
+        if (!$this->testPermission($sender))
+            return;
         
         if ($sender->isGod()) {
             $sender->setGod(false);

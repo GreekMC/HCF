@@ -26,7 +26,10 @@ class AutoFeedCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender instanceof Player) return;
-
+        
+        if (!$this->testPermission($sender))
+            return;
+            
         if ($sender->getSession()->hasAutoFeed()) {
             $sender->getSession()->setAutoFeed(false);
             $sender->sendMessage(TextFormat::colorize('&cAutofeed disabled'));

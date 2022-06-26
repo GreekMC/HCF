@@ -233,12 +233,14 @@ class ClaimListener implements Listener
             if ($faction->getDtr() > 0.00) {
                 $event->cancel();
                 $player->sendMessage(TextFormat::colorize('&cYou cannot interact blocks in ' . $claim->getName() . ' territory'));
+                
+                if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if ($block instanceof FenceGate) {
+                        $distance = $player->getPosition()->distance($block->getPosition());
 
-                if ($block instanceof FenceGate) {
-                    $distance = $player->getPosition()->distance($block->getPosition());
-
-                    if ($distance <= 3 && !$block->isOpen()) {
-                        $player->setMotion($player->getDirectionVector()->multiply(-1.5));
+                        if ($distance <= 3 && !$block->isOpen()) {
+                            $player->setMotion($player->getDirectionVector()->multiply(-1.5));
+                        }
                     }
                 }
                 return;

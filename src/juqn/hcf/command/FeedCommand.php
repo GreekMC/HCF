@@ -26,6 +26,9 @@ class FeedCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!$sender instanceof Player) return;
+        
+        if (!$this->testPermission($sender))
+            return;
 
         if (!isset($args[0])) {
             $sender->getHungerManager()->setFood($sender->getHungerManager()->getMaxFood());
