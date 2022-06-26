@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace juqn\hcf\command;
 
+use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\scheduler\ClosureTask;
+use pocketmine\scheduler\TaskHandler;
 use pocketmine\utils\TextFormat;
 
 class LogoutCommand extends Command
