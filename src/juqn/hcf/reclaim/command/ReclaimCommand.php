@@ -56,7 +56,7 @@ class ReclaimCommand extends Command
                     if ($sender->getSession()->getCooldown($reclaim->getName() . '.reclaim') === null) {
                         $reclaim->giveContent($sender);
                         $sender->getSession()->addCooldown($reclaim->getName() . '.reclaim', "", $reclaim->getTime(), false, false);
-                        Server::getInstance()->broadcastMessage(TextFormat::colorize("&f" . $sender->getName() . " &7has redeemed their " . $reclaim->getName() . " &7rewards using &o&f/reclaim"));
+                        Server::getInstance()->broadcastMessage(TextFormat::colorize("&f" . $sender->getName() . " &7has redeemed their &g&l" . $reclaim->getName() . "&r &7rewards using &o&f/reclaim"));
                     } else {
                         $sender->sendMessage(TextFormat::colorize("&cYou need wait " . Timer::convert($sender->getSession()->getCooldown($reclaim->getName() . '.reclaim')->getTime()) . " for use this!"));
                     }
