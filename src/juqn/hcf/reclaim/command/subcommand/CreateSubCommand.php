@@ -56,10 +56,11 @@ class CreateSubCommand implements ReclaimSubCommand
         HCFLoader::getInstance()->getReclaimManager()->createReclaim($name, $permission, (int) $time, $contents);
         $sender->sendMessage(TextFormat::colorize('&aYou have created the reclaim ' . $name . ' successfully'));
         
-        $permissionManager = PermissionManager::getInstance();
+        HCFLoader::getInstance()->getReclaimManager()->registerPermission($permission);
+        /*$permissionManager = PermissionManager::getInstance();
         if ($permissionManager->getPermission($permission) !== null) {
             $permissionManager->addPermission(new Permission($permission, 'Permission for the reclaim ' . $name));
 		    $permissionManager->getPermission(DefaultPermissions::ROOT_USER)->addChild($permission, true);
-        }
+        }*/
     }
 }

@@ -69,10 +69,11 @@ class CreateSubCommand implements KitSubCommand
         HCFLoader::getInstance()->getKitManager()->addKit($kitName, $nameFormat, $permission, $representativeItem, $items, $armor, $cooldown);
         $sender->sendMessage(TextFormat::colorize('&aYou have successfully created the ' . $kitName . ' kit'));
         
-        $permissionManager = PermissionManager::getInstance();
+        HCFLoader::getInstance()->getKitManager()->registerPermission($permission);
+        /*$permissionManager = PermissionManager::getInstance();
         if ($permission !== null && $permissionManager->getPermission($permission) !== null) {
             $permissionManager->addPermission(new Permission($permission, 'Permission for the reclaim ' . $kitName));
 		    $permissionManager->getPermission(DefaultPermissions::ROOT_USER)->addChild($permission, true);
         }
-    }
+    }*/
 }

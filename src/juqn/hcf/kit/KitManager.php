@@ -36,18 +36,25 @@ class KitManager
         foreach (HCFLoader::getInstance()->getProvider()->getKits() as $name => $data) {
             $permissionManager = PermissionManager::getInstance();
             
-            if ($data['permission'] !== null) {         
-                if ($permissionManager->getPermission($data['permission']) !== null) {
+            if ($data['permission'] !== null) {
+                $this->registerPermission($data['permission']);
+                /*f ($permissionManager->getPermission($data['permission']) !== null) {
 					HCFLoader::getInstance()->getLogger()->error(TextFormat::colorize('The permission of the kit ' . $name . ' already exists, the kit will not be loaded'));
 					continue;
 				}
 				$permissionManager->addPermission(new Permission($data['permission'], 'Permission for the kit ' . $name));
-				$permissionManager->getPermission(DefaultPermissions::ROOT_USER)->addChild($data['permission'], true);
+				$permissionManager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($data['permission'], true);*/
             }
             $this->addKit($name, $data['nameFormat'], $data['permission'], $data['representativeItem'], $data['items'] ?? [], $data['armor'] ?? [], $data['cooldown'] ?? 0, false);
         }
         # Register classes
         ClassFactory::init();
+    }
+    
+    public function registerPermission(string $permission): void {
+        $manager = PermissionManager::getInstance();
+        $manager->addPermission(new Permission($permission));
+        $manager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission, true);
     }
     
     /**
