@@ -39,6 +39,11 @@ class KickSubCommand implements FactionSubCommand
             return;
         }
         
+        if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
+            $sender->sendMessage(TextFormat::colorize('&cYou can\'t use this with regeneration time active!');
+            return;
+        }
+        
         if (!isset($args[0])) {
             $sender->sendMessage(TextFormat::colorize('&cUse /f kick [player]'));
             return;
@@ -49,21 +54,32 @@ class KickSubCommand implements FactionSubCommand
             $sender->sendMessage(TextFormat::colorize('&cPlayer not found!'));
             return;
         }
-        if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
-            $sender->sendMessage("§cYou can't use this with regeneration time active!");
+        
+        if ($player->getId() === $sender->getId()) {
+            $sender->sendMessage(TextFormat::colorize('&cYou can\'t kick yourself'));
             return;
         }
-        if ($faction === HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction())) {
-            $faction->removeRole($player->getXuid());
-            $player->getSession()->setFactionChat(false);
-            $player->getSession()->setFaction(null);
-            $player->sendMessage("§cYou were kicked out of your faction");
-            $player->setScoreTag("");
-            $sender->sendMessage("§cThe player was kicked from the faction");
-            $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
-            //Remover score tag
-        }else{
-            $sender->sendMessage("§cThe player is not in your faction");
+        
+        if ($player->getSession()->getFaction() !== $faction->getName()) {
+            $sender->sendMessage(TextFormat::colorize('&cThe player is not a member'));
+            return;
         }
+        
+        if ($faction->getRole($sender->getXuid()) === Faction::CO_LEADER) {
+            if ($faction->getRole($player->getXuid()) === Faction::LEADER || $faction->getRole($player->getXuid()) === Faction::CO_LEADER) {
+                $sender->sendMessage(TextFormat::colorize('&cYou cannot kick this player'));
+                return;
+            }
+        }
+        $faction->removeRole($player->getXuid());
+        $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
+        
+        $player->getSession()->setFactionChat(false);
+        $player->getSession()->setFaction(null);
+        $player->setScoreTag('');
+        
+        $player->sendMessage(TextFormat::colorize('&cYou were kicked out of your faction'));
+        $sender->sendMessage(TextFormat::colorize('&cYou kicked the player'));
+        
     }
 }

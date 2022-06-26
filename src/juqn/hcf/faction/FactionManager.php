@@ -75,7 +75,7 @@ class FactionManager
      */
     public function createInvite(Player $player, Player $target): void
     {
-        $this->invites[$target->getXuid()][$player->getName()] = new FactionInvite($player, $player->getSession()->getFaction(), time() + 60);
+        $this->invites[$target->getXuid()][$player->getSession()->getFaction()] = new FactionInvite($player, $player->getSession()->getFaction(), time() + 60);
     }
 
     /**

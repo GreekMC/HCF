@@ -30,16 +30,9 @@ class AcceptInviteSubCommand implements FactionSubCommand
         }
         
         if (isset($args[0])) {
-            $player = $sender->getServer()->getPlayerByPrefix($args[0]);
-
-            if (!$player instanceof Player) {
-                $sender->sendMessage(TextFormat::colorize('&cPlayer not found'));
-                return;
-            }
-
+            $factionName = (string) $args[0];
             $playerInvites = HCFLoader::getInstance()->getFactionManager()->getInvites($sender->getXuid());
-            $playerInvite = $player->getName();
-
+            
             if ($playerInvites === null || count($playerInvites) === 0) {
                 $sender->sendMessage(TextFormat::colorize('&cYou don\'t have invites'));
                 return;
@@ -48,29 +41,32 @@ class AcceptInviteSubCommand implements FactionSubCommand
                 return $invite->getTime() > time();
             });
 
-            if (!isset($invites[$playerInvite])) {
-                $sender->sendMessage(TextFormat::colorize('&cYou have no invites from this player'));
+            if (!isset($invites[$factionName])) {
+                $sender->sendMessage(TextFormat::colorize('&cYou have no invites from this faction'));
                 return;
             }
-            $invite = $invites[$playerInvite];
-
+            $invite = $invites[$factionName];
+            
             if ($invite->getTime() < time()) {
                 $sender->sendMessage(TextFormat::colorize('&cThis invite has already expired'));
-                HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $playerInvite);
+                HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $factionName);
                 return;
             }
+            
             if ($invite->getPlayer()->getSession()->getFaction() !== $invite->getFaction()) {
                 $sender->sendMessage(TextFormat::colorize('&cInvite not valid'));
-                HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $invite->getPlayer()->getName());
+                HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $factionName);
                 return;
             }
-            $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction());
+            $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($factionName);
     
-            if ($faction->getRole($playerInvite) === Faction::MEMBER) {
+            if ($faction->getRole($invite->getPlayer()->getName()) === Faction::MEMBER) {
                 $sender->sendMessage(TextFormat::colorize('&cInvite not valid'));
-                HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $player->getName());
+                HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $factionName);
                 return;
             }
+            $player = $invite->getPlayer();
+            
             if ($player->isOnline()) {
                 $player->sendMessage(TextFormat::colorize('&a' . $sender->getName() . ' accepted invitation for join in your faction'));
             }
@@ -79,43 +75,32 @@ class AcceptInviteSubCommand implements FactionSubCommand
             $faction->addRole($sender->getXuid(), Faction::MEMBER);
             $faction->announce(TextFormat::colorize('&a' . $sender->getName() . ' joined the faction'));
             $faction->setDtr(0.01 + (count($faction->getMembers()) * 1.00));
-    
+            
+            $sender->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' ' . ($faction->getDtr() === (count($faction->getMembers()) + 0.1) ? '&a' : '&c') . $faction->getDtr() . '■&6]'));
             $sender->getSession()->setFaction($faction->getName());
     
-            HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $player->getName());
+            HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $factionName);
             return;
         }
         $playerInvites = HCFLoader::getInstance()->getFactionManager()->getInvites($sender->getXuid());
-
-        if ($sender->getSession()->getFaction() !== null) {
-            $sender->sendMessage(TextFormat::colorize('&cYou cant accept invites becaues you have faction'));
-
-            if ($playerInvites !== null && count($playerInvites) !== 0) {
-                HCFLoader::getInstance()->getFactionManager()->removeInvites($sender);
-            }
-            return;
-        }
-
+        
         if ($playerInvites === null || count($playerInvites) === 0) {
             $sender->sendMessage(TextFormat::colorize('&cYou don\'t have invites'));
             return;
         }
-        $invites = array_filter($playerInvites, function (FactionInvite $invite): bool {
+        $invites = array_values(array_filter($playerInvites, function (FactionInvite $invite): bool {
             return $invite->getTime() > time();
-        });
-
+        }));
+        
         if (count($invites) === 0) {
             $sender->sendMessage(TextFormat::colorize('&cYou don\'t have invites'));
             return;
         }
-        
-        if (!isset($invites[0]))
-            return;
         $invite = $invites[0];
-
+        
         if ($invite->getPlayer()->getSession()->getFaction() !== $invite->getFaction()) {
             $sender->sendMessage(TextFormat::colorize('&cInvite not valid'));
-            HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $invite->getPlayer()->getName());
+            HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $invite->getFaction());
             return;
         }
         $inviter = $invite->getPlayer();
@@ -123,7 +108,7 @@ class AcceptInviteSubCommand implements FactionSubCommand
 
         if ($faction->getRole($inviter->getName()) === Faction::MEMBER) {
             $sender->sendMessage(TextFormat::colorize('&cInvite not valid'));
-            HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $inviter->getName());
+            HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $faction->getName());
             return;
         }
 
@@ -134,9 +119,10 @@ class AcceptInviteSubCommand implements FactionSubCommand
         
         $faction->addRole($sender->getXuid(), Faction::MEMBER);
         $faction->announce(TextFormat::colorize('&a' . $sender->getName() . ' joined the faction'));
-
+        
+        $sender->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' ' . ($faction->getDtr() === (count($faction->getMembers()) + 0.1) ? '&a' : '&c') . $faction->getDtr() . '■&6]'));
         $sender->getSession()->setFaction($faction->getName());
 
-        HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $inviter->getName());
+        HCFLoader::getInstance()->getFactionManager()->removeInvite($sender, $faction->getName());
     }
 }

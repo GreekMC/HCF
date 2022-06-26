@@ -309,6 +309,7 @@ class Faction
     {
         foreach ($this->getMembers() as $member) {
             $member->setFaction(null);
+            $member->setFactionChat(false);
         }
         HCFLoader::getInstance()->getClaimManager()->removeClaim($this->getName());
     }

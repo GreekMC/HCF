@@ -37,7 +37,7 @@ class NearCommand extends Command
             return $player instanceof Player && $player->getId() !== $sender->getId() && $player->getPosition()->distance($sender->getPosition()) <= 100;
         });
 
-        $sender->sendMessage(TextFormat::colorize("&c× Near Players ×\n" . implode("\n", array_map(function (Player $player) use ($sender) {
+        $sender->sendMessage(TextFormat::colorize('&c× Near Players ×' . PHP_EOL . implode(PHP_EOL, array_map(function (Player $player) use ($sender) {
                 return '&f' . $player->getName() . ' &7(' . intval($sender->getPosition()->distance($player->getPosition())) . 'm)&f';
             }, $players))));
     }

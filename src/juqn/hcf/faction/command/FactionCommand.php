@@ -21,6 +21,7 @@ use juqn\hcf\faction\command\subcommand\RallySubCommand;
 use juqn\hcf\faction\command\subcommand\SetHomeSubCommand;
 use juqn\hcf\faction\command\subcommand\StuckSubCommand;
 use juqn\hcf\faction\command\subcommand\TopSubCommand;
+use juqn\hcf\faction\command\subcommand\UnclaimSubCommand;
 use juqn\hcf\faction\command\subcommand\UnfocusSubCommand;
 use juqn\hcf\faction\command\subcommand\UnrallySubCommand;
 use juqn\hcf\faction\command\subcommand\WhoSubCommand;
@@ -74,6 +75,7 @@ class FactionCommand extends Command
         $this->subCommands['kick'] = new KickSubCommand;
         $this->subCommands['chat'] = new ChatSubCommand;
         $this->subCommands['c'] = new ChatSubCommand;
+        $this->subCommands['unclaim'] = new UnclaimSubCommand;
     }
     
     /**
