@@ -43,8 +43,7 @@ class DisbandSubCommand implements FactionSubCommand
         
         foreach ($sender->getServer()->getOnlinePlayers() as $player) {
             if ($player instanceof Player) {
-                if ($player->getSession()->getFaction() === $sender->getSession()->getFaction())
-                    $online_player->setScoreTag('');
+                if ($player->getSession()->getFaction() === $sender->getSession()->getFaction());
             }
         }
         $faction->disband();

@@ -341,11 +341,11 @@ class HCFListener implements Listener
         }
 
         if ($damager->getClass()->getId() === HCFClass::ARCHER) {
-            if ($session->getSession()->getCooldown('starting.timer') !== null || $session->getSession()->getCooldown('pvp.timer') !== null) {
+            if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
                 return;
             }
             
-            if ($session->getCurrentClaim() === 'Spawn') {
+            if ($damager->getCurrentClaim() === 'Spawn') {
                 return;
             }
 
