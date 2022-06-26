@@ -198,10 +198,10 @@ class Koth
                     if ($player instanceof Player) {
                         if ($this->getCapzone()->inside($player->getPosition()) && $player->getSession()->getFaction() !== null && ($player->getSession()->getCooldown('pvp.timer')  === null && $player->getSession()->getCooldown('starting.timer') === null)) {
                             $this->capturer = $player;
+                            
                             if ($this->getName() !== "§r§5§lCitadel§r") {
                                 HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize('&r&6[KingOfTheHill] &e' . $player->getName() . ' &6is capturing&e ' . $this->getName()));
-                            }
-                            if ($this->getName() === "§r§5§lCitadel§r") {
+                            } else {
                                 HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize('&r&6[Citadel] &e' . $player->getName() . ' &6is capturing&e ' . $this->getName()));
                             }
                             break;
@@ -253,8 +253,7 @@ class Koth
                     HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
                     HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
 
-                }
-                if ($this->getName() === "§r§5§lCitadel§r") {
+                } else {
                     $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
 
                     $msg = new Message();
