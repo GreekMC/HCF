@@ -48,10 +48,11 @@ class FactionCommand extends Command
         $this->setAliases(['f']);
         
         $this->subCommands['accept'] = new AcceptInviteSubCommand;
-        $this->subCommands['deposit'] = new DepositSubCommand();
-        $this->subCommands['d'] = new DepositSubCommand();
-        $this->subCommands['withdraw'] = new WithdrawSubCommand();
-        $this->subCommands['w'] = new WithdrawSubCommand();
+        $this->subCommands['join'] = new AcceptInviteSubCommand;
+        $this->subCommands['deposit'] = new DepositSubCommand;
+        $this->subCommands['d'] = new DepositSubCommand;
+        $this->subCommands['withdraw'] = new WithdrawSubCommand;
+        $this->subCommands['w'] = new WithdrawSubCommand;
         $this->subCommands['create'] = new CreateSubCommand;
         $this->subCommands['claimfor'] = new ClaimForSubCommand;
         $this->subCommands['claim'] = new ClaimSubCommand;
@@ -67,12 +68,12 @@ class FactionCommand extends Command
         $this->subCommands['unfocus'] = new UnfocusSubCommand;
         $this->subCommands['unrally'] = new UnrallySubCommand;
         $this->subCommands['who'] = new WhoSubCommand;
-        $this->subCommands['invite'] = new InviteSubCommand();
-        $this->subCommands['disband'] = new DisbandSubCommand();
-        $this->subCommands['leave'] = new LeaveSubCommand();
-        $this->subCommands['kick'] = new KickSubCommand();
-        $this->subCommands['chat'] = new ChatSubCommand();
-        $this->subCommands['c'] = new ChatSubCommand();
+        $this->subCommands['invite'] = new InviteSubCommand;
+        $this->subCommands['disband'] = new DisbandSubCommand;
+        $this->subCommands['leave'] = new LeaveSubCommand;
+        $this->subCommands['kick'] = new KickSubCommand;
+        $this->subCommands['chat'] = new ChatSubCommand;
+        $this->subCommands['c'] = new ChatSubCommand;
     }
     
     /**

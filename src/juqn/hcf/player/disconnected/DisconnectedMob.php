@@ -62,7 +62,7 @@ class DisconnectedMob extends Villager
     /**
      * @param int $currentTick
      */
-    protected function onUpdate(int $currentTick): bool
+    public function onUpdate(int $currentTick): bool
     {
         $disconnected = $this->getDisconnected();
         

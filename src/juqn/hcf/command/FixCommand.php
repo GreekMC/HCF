@@ -8,9 +8,8 @@ use juqn\hcf\player\Player;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
-use pocketmine\item\Armor;
+use pocketmine\item\Durable;
 use pocketmine\item\Item;
-use pocketmine\item\Tool;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -41,9 +40,9 @@ class FixCommand extends Command
     	
         if (count($args) < 1) {
             $sender->sendMessage(
-                TextFormat::colorize('&eFix commands') .
-                TextFormat::colorize('&7/fix hand - &eFix the item you have in your hand') .
-                TextFormat::colorize('&7/fix all - &eFix all the items in your inventory and your armor') .
+                TextFormat::colorize('&eFix commands') . PHP_EOL .
+                TextFormat::colorize('&7/fix hand - &eFix the item you have in your hand') . PHP_EOL .
+                TextFormat::colorize('&7/fix all - &eFix all the items in your inventory and your armor') . PHP_EOL .
                 TextFormat::colorize('&7/fix all [player] - &eFixes all items in a player\'s inventory and armor')
             );
             return;
@@ -53,12 +52,12 @@ class FixCommand extends Command
             case 'hand':
                 $item = $sender->getInventory()->getItemInHand();
     
-                if (!$item instanceof Tool && !$item instanceof Armor) {
+                if (!$item instanceof Durable) {
                     $sender->sendMessage(TextFormat::colorize('&cYou have no fixable items in hand'));
                     return;
                 }
     
-                if ($item->getMeta() <= 0) {
+                if ($item->getMeta() > 0) {
                     $sender->sendMessage(TextFormat::colorize('&cThis item is already fixed'));
                     return;
                 }
@@ -71,7 +70,7 @@ class FixCommand extends Command
             case 'all':
                 if (count($args) < 2) {
                     foreach ($sender->getInventory()->getContents() as $slot => $item) {
-                        if (($item instanceof Tool && $item instanceof Armor) && $item->getMeta() > 0) {
+                        if ($item instanceof Durable && $item->getMeta() > 0) {
                             $newItem = $item->jsonSerialize();
                             $newItem['damage'] = 0;
                             $sender->getInventory()->setItem($slot, Item::jsonDeserialize($newItem));
@@ -101,7 +100,7 @@ class FixCommand extends Command
                 }
     
                 foreach ($sender->getInventory()->getContents() as $slot => $item) {
-                    if (($item instanceof Tool && $item instanceof Armor) && $item->getMeta() > 0) {
+                    if ($item instanceof Durable && $item->getMeta() > 0) {
                         $newItem = $item->jsonSerialize();
                         $newItem['damage'] = 0;
                         $sender->getInventory()->setItem($slot, Item::jsonDeserialize($newItem));
@@ -121,7 +120,7 @@ class FixCommand extends Command
             
             default:
                 $sender->sendMessage(
-                    TextFormat::colorize('&eFix commands') .
+                    TextFormat::colorize('&eFix commands') . PHP_EOL .
                     TextFormat::colorize('&7/fix hand - &eFix the item you have in your hand') . PHP_EOL .
                     TextFormat::colorize('&7/fix all - &eFix all the items in your inventory and your armor') . PHP_EOL .
                     TextFormat::colorize('&7/fix all [player] - &eFixes all items in a player\'s inventory and armor')

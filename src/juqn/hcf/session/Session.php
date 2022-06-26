@@ -47,6 +47,8 @@ class Session
     private bool $factionchat = false;
     /** @var bool */
     private bool $mobkilled = false;
+    /** @var bool */
+    private bool $logout = false;
     
     /**
      * Session construct.
@@ -210,6 +212,14 @@ class Session
     }
     
     /**
+     * @return bool
+     */
+    public function isLogout(): bool
+    {
+        return $this->logout;
+    }
+    
+    /**
      * @param string $name
      */
     public function setName(string $name): void
@@ -350,6 +360,14 @@ class Session
     public function setMobKilled(bool $value): void
     {
         $this->mobkilled = $value;
+    }
+    
+    /**
+     * @param bool $value
+     */
+    public function setLogout(bool $value): void
+    {
+        $this->logout = $value;
     }
     
     public function onUpdate(): void

@@ -141,7 +141,8 @@ class Player extends BasePlayer
         $disconnected = $disconnectedManager->getDisconnected($this->getXuid());
 
         $disconnected?->join($this);
-
+        
+        # Mob
         if ($this->getSession()->isModKilled()) {
             $this->getSession()->setMobKilled(false);
             $this->getInventory()->clearAll();
@@ -150,6 +151,10 @@ class Player extends BasePlayer
             $this->setHealth($this->getMaxHealth());
             $this->teleport($this->getWorld()->getSafeSpawn());
         }
+        
+        # Logout
+        if ($this->getSession()->isLogout())
+            $this->getSession()->setLogout(false);
     }
     
     private function updateScoreboard(): void

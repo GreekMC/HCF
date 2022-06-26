@@ -36,16 +36,9 @@ use pocketmine\scheduler\ClosureTask;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class HCFListener
- * @package juqn\hcf
- */
 class HCFListener implements Listener
 {
     
-    /** @var array */
-    private array $antispam = [];
-
     /**
      * @param EntityDamageEvent $event
      * @priority HIGH
@@ -292,36 +285,46 @@ class HCFListener implements Listener
     {
         /** @var Player */
         $player = $event->getPlayer();
+        
         if (!$player instanceof Player) return;
         $quitMessage = str_replace('{player}', $player->getName(), HCFLoader::getInstance()->getConfig()->get('quit.message'));
         $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
         
-        if ($player->getSession()->getCooldown('logout') === null) {
+        if (!$player->getSession()->isLogout()) {
             if ($player->getCurrentClaim() !== null) {
                 $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
                 if ($claim->getType() !== 'spawn') {
                     $disconnectedManager->addDisconnected($player);
                 }
-            }else{
+            } else {
                 $disconnectedManager->addDisconnected($player);
             }
         }
         $event->setQuitMessage(TextFormat::colorize($quitMessage));
     }
-
+    
+    /**
+     * @param EntityDamageEvent $event
+     */
     public function handleArcherTag(EntityDamageEvent $event): void
     {
         $tag = 'ArcherMark';
         $player = $event->getEntity();
+        
+        if ($event->isCancelled())
+            return;
 
-        if ($player instanceof Player)
-
+        if ($player instanceof Player) {
             if (HCFLoader::getInstance()->inTag($tag, $player->getName())) {
                 $baseDamage = $event->getBaseDamage();
                 $event->setBaseDamage($baseDamage + 2);
             }
+        }
     }
 
+    /**
+     * @param EntityDamageByChildEntityEvent $event
+     */
     public function handleDamageByChildEntity(EntityDamageByChildEntityEvent $event): void
     {
         $child = $event->getChild();
@@ -333,37 +336,58 @@ class HCFListener implements Listener
         if (!$entity instanceof Player || !$damager instanceof Player)
             return;
 
-        if($damager->getClass() === null){
+        if ($damager->getClass() === null) {
             return;
         }
 
-        if($damager->getClass()->getId() === HCFClass::ARCHER){
-            $damager->sendMessage("§e[§9Archer Range §e(§c" . (int)$entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
+        if ($damager->getClass()->getId() === HCFClass::ARCHER) {
+            if ($session->getSession()->getCooldown('starting.timer') !== null || $session->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
+            
+            if ($session->getCurrentClaim() === 'Spawn') {
+                return;
+            }
+
+            $damager->sendMessage("§e[§9Archer Range §e(§c" . (int) $entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
             $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+20% damage) for 10 seconds).");
             $entity->setNameTag("§e" . $entity->getName());
+            
             $entity->getSession()->addCooldown('archer.mark', '&l&6Archer Mark&r&7: &r&c', 10);
+            
             HCFLoader::getInstance()->setTag($tag, $entity->getName(), 10);
             HCFLoader::getInstance()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($entity): void {
                 if ($entity->isOnline()) {
                     $entity->setNameTag("§c" . $entity->getName());
                 }
             }), 20 * 5);
-
         }
     }
-
+    
+    /**
+     * @param PlayerItemUseEvent $event
+     */
     public function handleEffects(PlayerItemUseEvent $event):void
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
 
-        if($player instanceof Player)
+        if (!$player instanceof Player)
+            return;
 
-            if($player->getClass() === null){
+        if ($player->getClass() === null) {
+            return;
+        }
+
+        if ($player->getClass()->getId() === HCFClass::ROGUE) {
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
+            
+            if ($player->getCurrentClaim() === 'Spawn') {
                 return;
             }
 
-        if($player->getClass()->getId() === HCFClass::ROGUE) {
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -388,7 +412,15 @@ class HCFListener implements Listener
             }
         }
 
-        if($player->getClass()->getId() === HCFClass::ARCHER) {
+        if ($player->getClass()->getId() === HCFClass::ARCHER) {
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
+            
+            if ($player->getCurrentClaim() === 'Spawn') {
+                return;
+            }
+            
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
                 if ($player->getSession()->getCooldown('speed.cooldown') !== null) {
                     return;
@@ -400,6 +432,7 @@ class HCFListener implements Listener
                 $player->getSession()->addCooldown('speed.cooldown', '&l&bSpeed&r&7: &r&c', 60);
                 $player->sendMessage("§eYou have used your §dSpeed IV Buff");
             }
+            
             if ($item->getId() === VanillaItems::FEATHER()->getId()) {
                 if ($player->getSession()->getCooldown('jump.cooldown') !== null) {
                     return;
@@ -413,14 +446,24 @@ class HCFListener implements Listener
             }
         }
 
-        if($player->getClass()->getId() === HCFClass::BARD){
+        if ($player->getClass()->getId() === HCFClass::BARD) {
             if ($player->getSession()->getCooldown('bard.cooldown') !== null) {
                 return;
             }
+            
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
+            
+            if ($player->getCurrentClaim() === 'Spawn') {
+                return;
+            }
+
             switch ($item->getId()) {
                 case VanillaItems::SPIDER_EYE()->getId():
                     if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 35){
                         $player->getEffects()->add(new EffectInstance(VanillaEffects::WITHER(), 20 * 7, 1));
+                        
                         foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                             if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
                                 $online_player->getEffects()->add(new EffectInstance(VanillaEffects::WITHER(), 20 * 7, 1));
@@ -434,6 +477,7 @@ class HCFListener implements Listener
                         $player->getSession()->getEnergy('bard.energy')->reduceEnergy(35);
                     }
                     break;
+                    
                 case VanillaItems::BLAZE_POWDER()->getId():
                     if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 40) {
                         $player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), 20 * 7, 1));
@@ -453,16 +497,19 @@ class HCFListener implements Listener
                         $player->getSession()->getEnergy('bard.energy')->reduceEnergy(40);
                     }
                     break;
+                    
                 case VanillaItems::IRON_INGOT()->getId():
                     if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 35) {
                         $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 2));
+                        
                         foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                             if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                                if ($online_player instanceof Player)
+                                if ($online_player instanceof Player) {
                                     if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                         $online_player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 2));
                                         $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bResistance III");
                                     }
+                                }
                             }
                         }
                         $item = $player->getInventory()->getItemInHand();
@@ -472,16 +519,19 @@ class HCFListener implements Listener
                         $player->getSession()->getEnergy('bard.energy')->reduceEnergy(35);
                     }
                     break;
+                    
                 case VanillaItems::SUGAR()->getId():
-                    if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 20) {
+                    if ($player->getSession()->getEnergy('bard.energy')->getEnergy() > 20) {
                         $player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 2));
+                        
                         foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                             if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                                if ($online_player instanceof Player)
+                                if ($online_player instanceof Player) {
                                     if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                         $online_player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 2));
                                         $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bSpeed III");
                                     }
+                                }
                             }
                         }
                         $item = $player->getInventory()->getItemInHand();
@@ -491,16 +541,19 @@ class HCFListener implements Listener
                         $player->getSession()->getEnergy('bard.energy')->reduceEnergy(20);
                     }
                     break;
+                    
                 case VanillaItems::FEATHER()->getId():
                     if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 30) {
                         $player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 7));
+                        
                         foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                             if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                                if ($online_player instanceof Player)
+                                if ($online_player instanceof Player) {
                                     if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                         $online_player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 7));
                                         $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bJump Boost VIII");
                                     }
+                                }
                             }
                         }
                         $item = $player->getInventory()->getItemInHand();
@@ -510,16 +563,19 @@ class HCFListener implements Listener
                         $player->getSession()->getEnergy('bard.energy')->reduceEnergy(30);
                     }
                     break;
+                    
                 case VanillaItems::GHAST_TEAR()->getId():
                     if($player->getSession()->getEnergy('bard.energy')->getEnergy() > 35) {
                         $player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 2));
+                        
                         foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                             if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                                if ($online_player instanceof Player)
+                                if ($online_player instanceof Player) {
                                     if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                         $online_player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 2));
                                         $online_player->sendMessage("§eThe bard in your faction (§a" . $player->getName() . "§e) has used §bRegeneration III");
                                     }
+                                }
                             }
                         }
                         $item = $player->getInventory()->getItemInHand();
@@ -533,94 +589,125 @@ class HCFListener implements Listener
         }
     }
 
+    /**
+     * @param PlayerItemHeldEvent $event
+     */
     public function handleHoldEffects(PlayerItemHeldEvent $event):void
     {
         $player = $event->getPlayer();
         $item = $event->getItem();
 
-        if($player instanceof Player)
+        if (!$player instanceof Player)
+            return;
 
-            if($player->getClass() === null){
+        if ($player->getClass() === null) {
+            return;
+        }
+
+        if ($player->getClass()->getId() === HCFClass::BARD) {
+            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                return;
+            }
+            
+            if ($player->getCurrentClaim() === 'Spawn') {
                 return;
             }
 
-        if($player->getClass()->getId() === HCFClass::BARD){
             switch ($item->getId()) {
-
                 case VanillaItems::BLAZE_POWDER()->getId():
                     $player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), 20 * 7, 0));
+                    
                     foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                         if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
+                            if ($online_player instanceof Player) {
                                 if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                     $online_player->getEffects()->add(new EffectInstance(VanillaEffects::STRENGTH(), 20 * 7, 0));
                                 }
+                            }
                         }
                     }
                     break;
+                    
                 case VanillaItems::IRON_INGOT()->getId():
                     $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 0));
+                    
                     foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                         if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
+                            if ($online_player instanceof Player) {
                                 if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                     $online_player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 20 * 7, 0));
                                 }
+                            }
                         }
                     }
                     break;
+                    
                 case VanillaItems::SUGAR()->getId():
                     $player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 1));
+                    
                     foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                         if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
+                            if ($online_player instanceof Player) {
                                 if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                     $online_player->getEffects()->add(new EffectInstance(VanillaEffects::SPEED(), 20 * 7, 1));
                                 }
+                            }
                         }
                     }
                     break;
+                    
                 case VanillaItems::FEATHER()->getId():
                     $player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 2));
+                    
                     foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                         if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
+                            if ($online_player instanceof Player) {
                                 if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                     $online_player->getEffects()->add(new EffectInstance(VanillaEffects::JUMP_BOOST(), 20 * 7, 2));
                                 }
+                            }
                         }
                     }
                     break;
+                    
                 case VanillaItems::MAGMA_CREAM()->getId():
                     $player->getEffects()->add(new EffectInstance(VanillaEffects::FIRE_RESISTANCE(), 20 * 7, 0));
+                    
                     foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                         if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
+                            if ($online_player instanceof Player) {
                                 if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                     $online_player->getEffects()->add(new EffectInstance(VanillaEffects::FIRE_RESISTANCE(), 20 * 7, 0));
                                 }
+                            }
                         }
                     }
                     break;
+                    
                 case VanillaItems::GHAST_TEAR()->getId():
                     $player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 1));
+                    
                     foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                         if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
+                            if ($online_player instanceof Player) {
                                 if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                     $online_player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 20 * 7, 1));
                                 }
+                            }
                         }
                     }
                     break;
+                    
                 case VanillaItems::INK_SAC()->getId():
                     $player->getEffects()->add(new EffectInstance(VanillaEffects::INVISIBILITY(), 20 * 7, 0));
+                    
                     foreach (Server::getInstance()->getOnlinePlayers() as $online_player) {
                         if ($player->getPosition()->distance($online_player->getPosition()) <= 20) {
-                            if ($online_player instanceof Player)
+                            if ($online_player instanceof Player) {
                                 if ($online_player->getSession()->getFaction() === $player->getSession()->getFaction()) {
                                     $online_player->getEffects()->add(new EffectInstance(VanillaEffects::INVISIBILITY(), 20 * 7, 0));
                                 }
+                            }
                         }
                     }
                     break;
@@ -639,7 +726,7 @@ class HCFListener implements Listener
             $damager = $event->getDamager();
             
             if ($player instanceof Player && $damager instanceof Player) {
-                if($damager->getClass() === null){
+                if ($damager->getClass() === null) {
                     return;
                 }
                 

@@ -44,9 +44,10 @@ class StuckSubCommand implements FactionSubCommand
     {
         if (!$sender instanceof Player)
             return;
+            
         if ($sender->getSession()->getCooldown('faction.stuck') !== null)
             return;
-        $sender->getSession()->addCooldown('faction.stuck',  '&l&3Stuck&r&7: &c', 15);
+        $sender->getSession()->addCooldown('faction.stuck',  '&l&3Stuck&r&7: &c', 45);
         
         $xuid = $sender->getXuid();
         $position = $sender->getPosition();
@@ -66,12 +67,6 @@ class StuckSubCommand implements FactionSubCommand
                 $handler->cancel();
                 return;
             }
-            
-            /*if ($sender->getSession()->getCooldown('spawn.tag') !== null) {
-                if ($s->getCooldown('faction.stuck') !== null) $s->removeCooldown('faction.stuck');
-                $handler->cancel();
-                return;
-            }*/
             
             if ($sender->getSession()->getCooldown('faction.stuck') === null) {
                 $this->teleport($sender);

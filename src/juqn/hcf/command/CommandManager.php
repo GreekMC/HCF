@@ -21,6 +21,7 @@ class CommandManager
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FixCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new GodCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new PvPCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new LogoutCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new RenameCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new AutoFeedCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new TLCommand());

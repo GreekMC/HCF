@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace juqn\hcf\reclaim;
 
+use juqn\hcf\player\Player;
 use pocketmine\item\Item;
 
-/**
- * Class Reclaim
- * @package juqn\hcf\reclaim
- */
 class Reclaim
 {
     
@@ -65,6 +62,20 @@ class Reclaim
     public function setContents(array $contents): void
     {
         $this->contents = $contents;
+    }
+    
+    /**
+     * @param Player $player
+     */
+    public function giveContent(Player $player): void
+    {
+        foreach ($this->getContents() as $item) {
+            if ($player->getInventory()->canAddItem($item)) {
+                $player->getInventory()->addItem($item);
+            } else {
+                $player->dropItem($item);
+            }
+        }
     }
     
     /**

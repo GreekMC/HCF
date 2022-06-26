@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace juqn\hcf\reclaim\command;
 
+use juqn\hcf\HCFLoader;
 use juqn\hcf\reclaim\command\subcommand\CreateSubCommand;
 use juqn\hcf\reclaim\command\subcommand\DeleteSubCommand;
 use juqn\hcf\reclaim\command\subcommand\EditSubCommand;
@@ -42,6 +43,17 @@ class ReclaimCommand extends Command
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
         if (!isset($args[0])) {
+            $reclaimManager = HCFLoader::getInstance()->getReclaimManager();
+            
+            foreach ($reclaimManager->getReclaims() as $reclaim) {
+                if ($player->hasPermission($reclaim->getPermission())) {
+                    if ($player->getSession()->getCooldown($reclaim->getName() . '.reclaim') === null) {
+                        $reclaim->giveContent($sender);
+                    } else {
+                        // message
+                    }
+                }
+            }
             return;
         }
         $subCommand = $this->subCommands[$args[0]] ?? null;
