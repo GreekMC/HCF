@@ -142,6 +142,12 @@ class Player extends BasePlayer
 
         $disconnected?->join($this);
         
+        # Add coordinates
+        $pk = GameRulesChangedPacket::create([
+            'showCoordinates' => new BoolGameRule(true, false)
+        ]);
+        $this->getNetworkSession()->sendDataPacket($pk)
+        
         # Mob
         if ($this->getSession()->isModKilled()) {
             $this->getSession()->setMobKilled(false);
