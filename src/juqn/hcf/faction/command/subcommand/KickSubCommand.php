@@ -40,7 +40,7 @@ class KickSubCommand implements FactionSubCommand
         }
         
         if (HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction())->getTimeRegeneration() !== null) {
-            $sender->sendMessage(TextFormat::colorize('&cYou can\'t use this with regeneration time active!');
+            $sender->sendMessage(TextFormat::colorize('&cYou can\'t use this with regeneration time active!'));
             return;
         }
         
