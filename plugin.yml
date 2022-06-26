@@ -14,6 +14,9 @@ permissions:
   feed.command:
     description: Permission nested for /feed
     default: op
+  near.command:
+    description: Permission nested for /near
+    default: op
   player.feed.command:
     description: Permission for /feed player
     default: op
