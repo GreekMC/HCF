@@ -42,6 +42,16 @@ class PayCommand extends Command
             return;
         }
         $money = intval($args[1]);
+
+        if ($money < 0) {
+            return;
+        }
+
+        if ($sender->getSession()->getBalance() < $money){
+            $sender->sendMessage(TextFormat::colorize("&cYou don\'t have enough money"));
+            return;
+        }
+
         
         if ($sender->getSession()->getBalance() === 0) {
             $sender->sendMessage(TextFormat::colorize('&cYou have no money'));
@@ -49,7 +59,7 @@ class PayCommand extends Command
         }
         $result = $sender->getSession()->getBalance() - $money;
         
-        if ($result < 0) {
+        if ($result > 0) {
             $sender->sendMessage(TextFormat::colorize("&cYou don\'t have enough money"));
             return;
         }
