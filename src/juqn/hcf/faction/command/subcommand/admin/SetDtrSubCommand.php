@@ -29,8 +29,12 @@ class SetDtrSubCommand implements FactionSubCommand
 
         $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
 
-        if (count($args) < 2) {
-            $sender->sendMessage(TextFormat::colorize('&cUse /faction setdtr [string: name]'));
+        if (empty($args[0])) {
+            $sender->sendMessage('&cUse /faction setdtr [string: name] [int: dtr]');
+            return;
+        }
+        if (!is_numeric($args[1])) {
+            $sender->sendMessage('&cUse /faction setdtr [string: name] [int: dtr]');
             return;
         }
         $name = $args[0];
@@ -43,29 +47,15 @@ class SetDtrSubCommand implements FactionSubCommand
                 return;
             }
 
-            if ($player->getName() === $sender->getName()) {
-                $sender->sendMessage(TextFormat::colorize('&cYou cannot focus on yourself'));
-                return;
-            }
-
-            if ($player->getSession()->getFaction() === $faction->getName()) {
-                $sender->sendMessage(TextFormat::colorize('&cYou can\' focus on members of your faction'));
-                return;
-            }
             $factionName = $player->getSession()->getFaction();
         } else {
             if (HCFLoader::getInstance()->getFactionManager()->getFaction($name) === null) {
-                $sender->sendMessage(TextFormat::colorize('&cThere is no faction you\'re trying to focus'));
-                return;
-            }
-
-            if ($name === $sender->getSession()->getFaction()) {
-                $sender->sendMessage(TextFormat::colorize('&cYou can\'t focus on your faction'));
+                $sender->sendMessage(TextFormat::colorize('&cThere is no faction you\'re set the dtr'));
                 return;
             }
             $factionName = $name;
         }
-        $faction->setFocus($factionName);
-        $sender->sendMessage(TextFormat::colorize('&aNow your faction is targeting the faction ' . $factionName));
+        HCFLoader::getInstance()->getFactionManager()->getFaction($factionName)->setDtr($args[1]);
+        $sender->sendMessage(TextFormat::colorize('&aThe DTR of the faction ' . $factionName . ' is now ' . $args[1]));
     }
 }
