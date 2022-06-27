@@ -102,19 +102,19 @@ class FixCommand extends Command
                     return;
                 }
     
-                foreach ($sender->getInventory()->getContents() as $slot => $item) {
+                foreach ($player->getInventory()->getContents() as $slot => $item) {
                     if ($item instanceof Durable && $item->getMeta() > 0) {
                         $newItem = $item->jsonSerialize();
                         $newItem['damage'] = 0;
-                        $sender->getInventory()->setItem($slot, Item::jsonDeserialize($newItem));
+                        $player->getInventory()->setItem($slot, Item::jsonDeserialize($newItem));
                     }
                 }	
 	
-                foreach ($sender->getArmorInventory()->getContents() as $slot => $armor) {
+                foreach ($player->getArmorInventory()->getContents() as $slot => $armor) {
                     if ($armor->getMeta() > 0) {
                         $newArmor = $armor->jsonSerialize();
                         $newArmor['damage'] = 0;
-                        $sender->getArmorInventory()->setItem($slot, Item::jsonDeserialize($newArmor));
+                        $player->getArmorInventory()->setItem($slot, Item::jsonDeserialize($newArmor));
                     }
                 }
                 $sender->sendMessage(TextFormat::colorize('&aYou have fixed the items and the armor to the player ' . $player->getName()));
