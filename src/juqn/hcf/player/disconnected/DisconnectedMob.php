@@ -10,6 +10,7 @@ use JetBrains\PhpStorm\Pure;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 use juqn\hcf\session\Session;
+use juqn\hcf\utils\Timer;
 use pocketmine\entity\Villager;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -69,6 +70,7 @@ class DisconnectedMob extends Villager
         if ($currentTick % 20 === 0) {
             if ($disconnected !== null) {
                 $this->time--;
+                $this->setNameTag(TextFormat::colorize('&7(Combat-Logger)&c ' . $this->getName() . " &7- &c" . Timer::convert((int)$this->time)));
         
                 if ($this->time === 0) {
                     HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($disconnected->getXuid());
