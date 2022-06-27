@@ -42,6 +42,10 @@ class HomeSubCommand implements FactionSubCommand
         
         if ($sender->getSession()->getCooldown('faction.teleport.home') !== null)
             return;
+
+        if ($sender->getSession()->getCooldown('pvp.timer') !== null) {
+            return;
+        }
         
         if ($sender->getCurrentClaim() === 'Spawn') {
             $sender->teleport($faction->getHome());
