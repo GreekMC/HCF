@@ -40,6 +40,7 @@ class FactionListener implements Listener
     
     /**
      * @param PlayerInteractEvent $event
+     * @priority HIGH
      */
     public function handleInteract(PlayerInteractEvent $event): void
     {
