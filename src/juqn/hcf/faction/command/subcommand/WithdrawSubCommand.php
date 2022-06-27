@@ -42,6 +42,10 @@ class WithdrawSubCommand implements FactionSubCommand
 
         $cantidad = $args[0];
 
+        if ($cantidad < 0) {
+            return;
+        }
+
         if (($cantidad) === "all") {
             $sender->sendMessage('§cUse /f withdraw [amount | all]');
             $sender->getSession()->setBalance($sender->getSession()->getBalance() + $faction->getBalance());
@@ -55,9 +59,9 @@ class WithdrawSubCommand implements FactionSubCommand
         }
 
         if($faction->getBalance() >= $cantidad) {
-            $sender->getSession()->setBalance($sender->getSession()->getBalance() + $cantidad);
+            $sender->getSession()->setBalance($sender->getSession()->getBalance() + (int)$cantidad);
             $sender->sendMessage('§aYour new balance is ' . $sender->getSession()->getBalance());
-            $faction->setBalance($faction->getBalance() - $cantidad);
+            $faction->setBalance($faction->getBalance() - (int)$cantidad);
         }else{
             $sender->sendMessage('§cThe amount you entered exceeds your faction balance!');
         }
