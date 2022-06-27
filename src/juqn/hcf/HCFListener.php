@@ -32,6 +32,7 @@ use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\item\Tool;
 use pocketmine\item\VanillaItems;
@@ -402,6 +403,10 @@ class HCFListener implements Listener
 
         if (!$player instanceof Player)
             return;
+
+        if($item instanceof Armor){
+            $event->cancel();
+        }
 
         if ($player->getClass() === null) {
             return;
