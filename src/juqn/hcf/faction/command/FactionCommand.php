@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace juqn\hcf\faction\command;
 
 use juqn\hcf\faction\command\subcommand\AcceptInviteSubCommand;
+use juqn\hcf\faction\command\subcommand\admin\ForceDisbandSubCommand;
 use juqn\hcf\faction\command\subcommand\admin\SetDtrSubCommand;
+use juqn\hcf\faction\command\subcommand\admin\SetPointsSubCommand;
+use juqn\hcf\faction\command\subcommand\admin\SetRegenTimeSubCommand;
 use juqn\hcf\faction\command\subcommand\ChatSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
@@ -79,6 +82,9 @@ class FactionCommand extends Command
         $this->subCommands['unclaim'] = new UnclaimSubCommand;
         $this->subCommands['info'] = new WhoSubCommand();
         $this->subCommands['setdtr'] = new SetDtrSubCommand();
+        $this->subCommands['setpoints'] = new SetPointsSubCommand();
+        $this->subCommands['setregentime'] = new SetRegenTimeSubCommand();
+        $this->subCommands['forcedisband'] = new ForceDisbandSubCommand();
     }
     
     /**

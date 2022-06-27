@@ -11,6 +11,7 @@ use juqn\hcf\kit\classes\HCFClass;
 use juqn\hcf\kit\classes\presets\Bard;
 use juqn\hcf\player\Player;
 
+use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\projectile\Arrow;
@@ -24,6 +25,7 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemConsumeEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\event\player\PlayerItemUseEvent;
@@ -318,7 +320,7 @@ class HCFListener implements Listener
         if ($player instanceof Player) {
             if (HCFLoader::getInstance()->inTag($tag, $player->getName())) {
                 $baseDamage = $event->getBaseDamage();
-                $event->setBaseDamage($baseDamage + 2);
+                $event->setBaseDamage($baseDamage + 1.5);
             }
         }
     }
@@ -356,7 +358,7 @@ class HCFListener implements Listener
 
 
                 $damager->sendMessage("§e[§9Archer Range §e(§c" . (int)$entity->getPosition()->distance($damager->getPosition()) . "§e)] §6Marked player for 10 seconds.");
-                $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+20% damage) for 10 seconds).");
+                $entity->sendMessage("§c§lMarked! §r§eAn archer has shot you and marked you (+15% damage) for 10 seconds).");
                 $entity->setNameTag("§e" . $entity->getName());
 
                 $entity->getSession()->addCooldown('archer.mark', '&l&6Archer Mark&r&7: &r&c', 10);
@@ -368,6 +370,25 @@ class HCFListener implements Listener
                     }
                 }), 20 * 5);
             }
+        }
+    }
+
+    public function handleronInteractBlock(PlayerInteractEvent $event)
+    {
+        $player = $event->getPlayer();
+        $item = $event->getItem();
+
+        if ($player->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 170) {
+            if ($item->getId() === VanillaItems::WATER_BUCKET()->getId()) {
+                $event->cancel();
+            }
+            if ($item->getId() === VanillaItems::LAVA_BUCKET()->getId()) {
+                $event->cancel();
+            }
+        }
+
+        if ($item->getId() === VanillaItems::FLINT_AND_STEEL()->getId()){
+            $event->cancel();
         }
     }
     

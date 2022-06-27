@@ -8,6 +8,15 @@ permissions:
   setdtr.permission:
     description: Permission nested for /f setdtr
     default: op
+  setregentime.permission:
+    description: Permission nested for /f setregentime
+    default: op
+  forcedisband.permission:
+    description: Permission nested for /f setregentime
+    default: op
+  setpoints.permission:
+    description: Permission nested for /f setpoints
+    default: op
   autofeed.command:
     description: Permission nested for /feed
     default: op

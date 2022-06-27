@@ -11,6 +11,7 @@ use juqn\hcf\player\Player;
 use juqn\hcf\utils\Inventories;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\FenceGate;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
@@ -21,6 +22,7 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\VanillaItems;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\WorldException;
 
@@ -85,6 +87,10 @@ class ClaimListener implements Listener
         $player = $event->getPlayer();
         $block = $event->getBlock();
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
+
+        if ($block->getId() === VanillaBlocks::TNT()->getId()){
+            $event->cancel();
+        }
 
         if ($event->isCancelled())
             return;
