@@ -50,10 +50,10 @@ class PayCommand extends Command
         $result = $sender->getSession()->getBalance() - $money;
         
         if ($result < 0) {
-            $sender->sendMessage(TextFormat::colorize('&cYou don't have enough money'));
+            $sender->sendMessage(TextFormat::colorize("&cYou don\'t have enough money"));
             return;
         }
-        $player->getSession()->setBalance($player->getBalance()->getBalance() + $money);
+        $player->getSession()->setBalance($player->getSession()->getBalance() + $money);
         $sender->getSession()->setBalance($result);
         
         $player->sendMessage(TextFormat::colorize('&aYou received $' . $money . ' from ' . $sender->getName()));
