@@ -97,8 +97,8 @@ class FwhoCommand extends Command
             $embed->setDescription('**Faction** 👥' . PHP_EOL . $generalinfo . "**HQ** 📍" . PHP_EOL . $hq . "**Leaders** 👑" . PHP_EOL . $leaders . "**Coleaders** 🛠️" . PHP_EOL . $coliders . "**Captains** 🔨" . PHP_EOL . $captains . "**Members** 👥" . PHP_EOL . $members . "**Balance** 💰" . PHP_EOL . $balance . "**Deaths until Raidable** ♦️" . PHP_EOL . $deathsuntilraidable . "**Time Until Regen** ⏰" . PHP_EOL . $timeuntilregen . "**Points** 🍎" . PHP_EOL . $points . "**KoTH Captures** 🏔️" . PHP_EOL . $hq);
             $embed->setFooter("greekmc.net");
             $msg->addEmbed($embed);
-
             $webHook->send($msg);
+            return;
         }
         $embed->setDescription('**Faction** 👥' . PHP_EOL . $generalinfo . "**HQ** 📍" . PHP_EOL . $hq . "**Leaders** 👑" . PHP_EOL . $leaders . "**Coleaders** 🛠️" . PHP_EOL . $coliders . "**Captains** 🔨" . PHP_EOL . $captains . "**Members** 👥" . PHP_EOL . $members . "**Balance** 💰" . PHP_EOL . $balance . "**Deaths until Raidable** ♦️" . PHP_EOL . $deathsuntilraidable . "**Points** 🍎" . PHP_EOL . $points . "**KoTH Captures** 🏔️" . PHP_EOL . $hq);
         $embed->setFooter("greekmc.net");
