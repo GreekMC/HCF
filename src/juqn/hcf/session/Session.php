@@ -6,6 +6,7 @@ namespace juqn\hcf\session;
 
 use juqn\hcf\HCFLoader;
 use juqn\hcf\kit\classes\HCFClass;
+use pocketmine\Server;
 
 /**
  * Class Session
@@ -217,6 +218,16 @@ class Session
     public function isLogout(): bool
     {
         return $this->logout;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isOnline(): bool
+    {
+        $player = Server::getInstance()->getPlayerExact($this->getName());
+        
+        return $player !== null;
     }
     
     /**

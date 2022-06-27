@@ -52,17 +52,18 @@ class WhoSubCommand implements FactionSubCommand
         }
         $message = '&7&m--------------------------' . PHP_EOL;
         $message .= '&9' . (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getName()). ' &7[' . count(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getOnlineMembers()) . '/' . count(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembers()) . '] &3- &eHQ: &f' . (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome() !== null ? 'X: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorX() . ' Z: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorZ() : 'Not set ');
+        $leaders = 
         $message .=  PHP_EOL . '&eLeader: &f' . implode(', ', array_map(function ($session) {
-            return $session->getName();
+            return ($session->isOnline() ? '&a' : '&c') . $session->getName() . ' &7[' . $session->getKills() . ']';
         }, HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembersByRole(Faction::LEADER))) . PHP_EOL;
         $message .= '&eColeaders: &f' . implode(', ', array_map(function ($session) {
-            return $session->getName();
+            return ($session->isOnline() ? '&a' : '&c') . $session->getName() . ' &7[' . $session->getKills() . ']';
         }, HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembersByRole(Faction::CO_LEADER))) . PHP_EOL;
         $message .= '&eCaptains: &f' . implode(', ', array_map(function ($session) {
-            return $session->getName();
+            return ($session->isOnline() ? '&a' : '&c') . $session->getName() . ' &7[' . $session->getKills() . ']';
         }, HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembersByRole(Faction::CAPTAIN))) . PHP_EOL;
         $message .= '&eMembers: &f' . implode(', ', array_map(function ($session) {
-            return $session->getName();
+            return ($session->isOnline() ? '&a' : '&c') . $session->getName() . ' &7[' . $session->getKills() . ']';
         }, HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembersByRole(Faction::MEMBER))) . PHP_EOL;
         $message .= '&eBalance: &9$' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getBalance() . PHP_EOL;
         $message .= '&eDeaths until Raidable: ' . (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getDtr() >= HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMaxDtr() ? '&a' : (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getDtr() <= 0.00 ? '&c' : '&e')) . round(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getDtr(), 2) . '■' . PHP_EOL;
