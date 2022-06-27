@@ -49,6 +49,6 @@ class SetRegenTimeSubCommand implements FactionSubCommand
             return;
         }
         HCFLoader::getInstance()->getFactionManager()->getFaction($name)->setTimeRegeneration($time * 60);
-        $sender->sendMessage(TextFormat::colorize($name . ' faction regen time is now ' . $time . " minutes"));
+        $sender->sendMessage(TextFormat::colorize("&a" . $name . ' faction regen time is now ' . $time . " minutes"));
     }
 }
