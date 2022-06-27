@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace juqn\hcf\command;
 
+use juqn\hcf\command\discord\FtopCommand;
+use juqn\hcf\command\discord\FwhoCommand;
 use juqn\hcf\HCFLoader;
 
 /**
@@ -31,5 +33,7 @@ class CommandManager
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new TLCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new PayCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FeedCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FwhoCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FtopCommand());
     }
 }

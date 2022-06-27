@@ -5,6 +5,12 @@ api: 4.0.0
 main: juqn\hcf\HCFLoader
 
 permissions:
+  fwho.discord.command:
+    description: Permission nested for /f setdtr
+    default: op
+  ftop.discord.command:
+    description: Permission nested for /f setdtr
+    default: op
   setdtr.permission:
     description: Permission nested for /f setdtr
     default: op
