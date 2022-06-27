@@ -21,7 +21,7 @@ use pocketmine\utils\TextFormat;
  */
 class FwhoCommand extends Command
 {
-    
+
     /**
      * GodCommand construct.
      */
@@ -30,7 +30,7 @@ class FwhoCommand extends Command
         parent::__construct('fwho');
         $this->setPermission('fwho.discord.command');
     }
-    
+
     /**
      * @param CommandSender $sender
      * @param string $commandLabel
@@ -49,7 +49,7 @@ class FwhoCommand extends Command
 
         if ($faction === null) {
 
-            $webHook = new Webhook("https://discord.com/api/webhooks/991050448213520425/WI3NiRcVR-IO1Imw48ngdpXzkDx5NGrigBqKO9tu_w7lmUlGjYQUZGdSS6UQk1JBKS-x");
+            $webHook = new Webhook("https://discord.com/api/webhooks/991109809745174638/J6yK3ZHQ9dY-r6VWJrXHgt9eR09JNlzMzGUibCBE_YoZmSePncxgqKNCN4W8v32KxU2O");
 
             $msg = new Message();
 
@@ -63,7 +63,7 @@ class FwhoCommand extends Command
 
         $generalinfo  = '' . (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getName()). ' [' . count(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getOnlineMembers()) . '/' . count(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembers()) . ']' . PHP_EOL;
 
-        $hq = (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome() !== null ? 'X: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorX() . ' Z: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorZ() : 'Not set ' . PHP_EOL);
+        $hq = (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome() !== null ? 'X: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorX() . ' Z: ' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getHome()->getFloorZ() . PHP_EOL : 'Not set ' . PHP_EOL);
 
         $leaders =  implode(', ', array_map(function ($session) {
                 return ($session->isOnline() ? ' ' : '') . $session->getName() . ' [' . $session->getKills() . ']';
@@ -85,7 +85,7 @@ class FwhoCommand extends Command
         $points = HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getPoints() . PHP_EOL;
         $koths = HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getKothCaptures() . PHP_EOL;
 
-        $webHook = new Webhook("https://discord.com/api/webhooks/991050448213520425/WI3NiRcVR-IO1Imw48ngdpXzkDx5NGrigBqKO9tu_w7lmUlGjYQUZGdSS6UQk1JBKS-x");
+        $webHook = new Webhook("https://discord.com/api/webhooks/991109809745174638/J6yK3ZHQ9dY-r6VWJrXHgt9eR09JNlzMzGUibCBE_YoZmSePncxgqKNCN4W8v32KxU2O");
 
         $msg = new Message();
 

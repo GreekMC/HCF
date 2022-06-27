@@ -21,7 +21,7 @@ use pocketmine\utils\TextFormat;
  */
 class FtopCommand extends Command
 {
-    
+
     /**
      * GodCommand construct.
      */
@@ -45,7 +45,7 @@ class FtopCommand extends Command
         }
         return $points;
     }
-    
+
     /**
      * @param CommandSender $sender
      * @param string $commandLabel
@@ -56,7 +56,7 @@ class FtopCommand extends Command
         if (!$this->testPermission($sender))
             return;
 
-        $webHook = new Webhook("https://discord.com/api/webhooks/991050448213520425/WI3NiRcVR-IO1Imw48ngdpXzkDx5NGrigBqKO9tu_w7lmUlGjYQUZGdSS6UQk1JBKS-x");
+        $webHook = new Webhook("https://discord.com/api/webhooks/991109809745174638/J6yK3ZHQ9dY-r6VWJrXHgt9eR09JNlzMzGUibCBE_YoZmSePncxgqKNCN4W8v32KxU2O");
 
         $msg = new Message();
 
