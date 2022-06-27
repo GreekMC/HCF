@@ -19,6 +19,7 @@ class CommandManager
     public function __construct()
     {
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new ECCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new BalanceCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new BrewerCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FixCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new GodCommand());
@@ -28,6 +29,7 @@ class CommandManager
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new RenameCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new AutoFeedCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new TLCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new PayCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FeedCommand());
     }
 }
