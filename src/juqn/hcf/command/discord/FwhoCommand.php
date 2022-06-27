@@ -77,7 +77,7 @@ class FwhoCommand extends Command
         $members = implode(', ', array_map(function ($session) {
                 return ($session->isOnline() ? ' ' : '') . $session->getName() . ' [' . $session->getKills() . ']';
             }, HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMembersByRole(Faction::MEMBER))) . PHP_EOL;
-        $balance = HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getBalance() . PHP_EOL;
+        $balance = HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getBalance() . " $" . PHP_EOL;
         $deathsuntilraidable = (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getDtr() >= HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getMaxDtr() ? '' : (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getDtr() <= 0.00 ? ' ' : '')) . round(HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getDtr(), 2) . '■' . PHP_EOL;
 
         $timeuntilregen = gmdate('H:i:s', HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getTimeRegeneration()) . PHP_EOL;
