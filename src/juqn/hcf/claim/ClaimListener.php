@@ -223,7 +223,6 @@ class ClaimListener implements Listener
                     }
                 }
             }
-            return;
         }
 
         if ($player->isGod())
