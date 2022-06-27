@@ -153,7 +153,7 @@ class HCFListener implements Listener
 
             # Setup scoretag for team members
             foreach ($faction->getOnlineMembers() as $member)
-                $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . $faction->getDtr() . '■&6]'));
+                $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . round($faction->getDtr(), 2) . '■&6]'));
         }
 
         if ($killer === null) {
