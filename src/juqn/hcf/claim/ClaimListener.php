@@ -242,7 +242,6 @@ class ClaimListener implements Listener
 
             if ($faction !== null && $faction->getDtr() > 0.00) {
                 $event->cancel();
-                $player->sendMessage(TextFormat::colorize('&cYou cannot interact blocks in ' . $claim->getName() . ' territory'));
                 
                 if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                     if ($block instanceof FenceGate) {
