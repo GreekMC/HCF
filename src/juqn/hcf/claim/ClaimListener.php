@@ -12,6 +12,7 @@ use juqn\hcf\utils\Inventories;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\FenceGate;
 use pocketmine\block\VanillaBlocks;
+use pocketmine\block\tile\Sign;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
@@ -171,7 +172,8 @@ class ClaimListener implements Listener
         $block = $event->getBlock();
         /** @var Player $player */
         $player = $event->getPlayer();
-
+        
+        $tile = $player->getWorld()->getTile($block->getPosition());
         $item = $player->getInventory()->getItemInHand();
 
         if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($player->getName())) !== null) {
@@ -230,6 +232,9 @@ class ClaimListener implements Listener
         $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
 
         if ($claim === null)
+            return;
+            
+        if ($block instanceof Sign)
             return;
 
         if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName() && $claim->getType() !== 'spawn') {

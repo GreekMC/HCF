@@ -195,7 +195,7 @@ class HCFListener implements Listener
             if ($player->getCurrentClaim() !== null) {
                 $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
 
-                if ($claim->getType() === 'spawn') {
+                if ($claim !== null && $claim->getType() === 'spawn') {
                     $event->cancel();
 
                     if ($player->getHungerManager()->getFood() !== $player->getHungerManager()->getMaxFood())
