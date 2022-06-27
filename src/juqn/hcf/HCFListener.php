@@ -153,8 +153,7 @@ class HCFListener implements Listener
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction());
             $faction->setPoints($faction->getPoints() - 1);
             $faction->setDtr($faction->getDtr() - 1.0);
-            $faction->announce(TextFormat::colorize("&cMember Death: &f" . $player->getName()));
-            $faction->announce(TextFormat::colorize("&cDTR: &f" . $faction->getDtr()));
+            $faction->announce(TextFormat::colorize("&cMember Death: &f" . $player->getName() . "\n&cDTR: &f" . $faction->getDtr()));
             $faction->setTimeRegeneration(45 * 60);
 
             # Setup scoretag for team members
@@ -299,8 +298,7 @@ class HCFListener implements Listener
 
         if ($player->getSession()->getFaction() !== null) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction());
-            $faction->announce(TextFormat::colorize("&cMember offline: &f" . $player->getName()));
-            $faction->announce(TextFormat::colorize("&cDTR: &f" . $faction->getDtr()));
+            $faction->announce(TextFormat::colorize("&cMember offline: &f" . $player->getName() . "\n&cDTR: &f" . $faction->getDtr()));
         }
         
         if (!$player->getSession()->isLogout()) {
