@@ -329,7 +329,7 @@ class HCFListener implements Listener
         $quitMessage = str_replace('{player}', $player->getName(), HCFLoader::getInstance()->getConfig()->get('quit.message'));
         $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
 
-        if ($player->getSession()->getFaction() !== null) {
+        if ($player->getSession() !== null && $player->getSession()->getFaction() !== null) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction());
             $faction->announce(TextFormat::colorize("&cMember offline: &f" . $player->getName() . "\n&cDTR: &f" . $faction->getDtr()));
         }
