@@ -342,6 +342,7 @@ class Faction
             if ($this->timeRegeneration === -1) {
                 $this->timeRegeneration = null;
                 $this->setDtr(0.01 + (count($this->getMembers()) * 1.00));
+                $this->setRaided(false);
 
                 # Setup scoretag for team members
                 foreach ($this->getOnlineMembers() as $member)
