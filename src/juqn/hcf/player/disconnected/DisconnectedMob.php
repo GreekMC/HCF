@@ -59,9 +59,10 @@ class DisconnectedMob extends Villager
     {
         return 0;
     }
-    
+
     /**
      * @param int $currentTick
+     * @return bool
      */
     public function onUpdate(int $currentTick): bool
     {

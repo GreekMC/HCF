@@ -5,6 +5,9 @@ api: 4.0.0
 main: juqn\hcf\HCFLoader
 
 permissions:
+  setdtr.permission:
+    description: Permission nested for /f setdtr
+    default: op
   autofeed.command:
     description: Permission nested for /feed
     default: op

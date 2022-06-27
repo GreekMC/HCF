@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace juqn\hcf\faction\command;
 
 use juqn\hcf\faction\command\subcommand\AcceptInviteSubCommand;
+use juqn\hcf\faction\command\subcommand\admin\SetDtrSubCommand;
 use juqn\hcf\faction\command\subcommand\ChatSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
@@ -77,6 +78,7 @@ class FactionCommand extends Command
         $this->subCommands['c'] = new ChatSubCommand;
         $this->subCommands['unclaim'] = new UnclaimSubCommand;
         $this->subCommands['info'] = new WhoSubCommand();
+        $this->subCommands['setdtr'] = new SetDtrSubCommand();
     }
     
     /**
