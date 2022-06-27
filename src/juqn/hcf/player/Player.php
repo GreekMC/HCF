@@ -142,8 +142,9 @@ class Player extends BasePlayer
         # Disconnected 
         $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
         $disconnected = $disconnectedManager->getDisconnected($this->getXuid());
-
-        $disconnected?->join($this);
+        
+        if ($disconnected !== null)
+            $disconnected->join($this);
         
         # Add coordinates
         $pk = GameRulesChangedPacket::create([

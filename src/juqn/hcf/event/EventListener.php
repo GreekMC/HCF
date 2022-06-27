@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace juqn\hcf\event;
 
 use juqn\hcf\HCFLoader;
+use juqn\hcf\player\disconnected\DisconnectedMob;
 use juqn\hcf\player\Player;
 
 use pocketmine\event\entity\EntityDamageEvent;
@@ -26,7 +27,7 @@ class EventListener implements Listener
         
         if ($event->isCancelled()) return;
         
-        if ($entity instanceof Player) {
+        if ($entity instanceof Player || $entity instanceof DisconnectedMob) {
             if (HCFLoader::getInstance()->getEventManager()->getSotw()->isActive())
                 $event->cancel();
         }

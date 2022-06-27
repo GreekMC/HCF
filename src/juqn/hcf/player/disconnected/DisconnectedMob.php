@@ -73,11 +73,14 @@ class DisconnectedMob extends Villager
                 $this->time--;
                 $this->setNameTag(TextFormat::colorize('&7(Combat-Logger)&c ' . $this->getName() . " &7- &c" . Timer::convert((int)$this->time)));
         
-                if ($this->time === 0) {
+                if ($this->time <= 0) {
                     HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($disconnected->getXuid());
                     $this->flagForDespawn();
-                    return false;
+                    return true;
                 }
+            } else {
+                $this->flagForDespawn();
+                return true;
             }
         }
         return parent::onUpdate($currentTick);

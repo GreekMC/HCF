@@ -22,6 +22,11 @@ class DisconnectedManager
     public function __construct(
         private array $disconnected = []
     ) {
+        foreach (Server::getInstance()->getWorldManager()->getDefaultWorld()->getEntities() as $entity) {
+            if ($entity instanceof DisconnectedMob)
+                $entity->flagForDespawn();
+        }
+        
         EntityFactory::getInstance()->register(DisconnectedMob::class, function(World $world, CompoundTag $nbt): DisconnectedMob {
 			return new DisconnectedMob(EntityDataHelper::parseLocation($nbt, $world), $nbt);
 		}, ['DisconnectedMob', 'hcf:disconnectedmob'], EntityLegacyIds::VILLAGER);
