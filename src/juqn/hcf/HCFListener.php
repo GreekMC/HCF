@@ -55,6 +55,14 @@ class HCFListener implements Listener
         if ($entity instanceof Player) {
             if ($event->isCancelled()) return;
 
+            if ($entity->getSession()->getCooldown('faction.stuck') !== null) {
+                $entity->getSession()->removeCooldown('faction.stuck');
+            }
+
+            if ($entity->getSession()->getCooldown('faction.teleport.home') !== null) {
+                $entity->getSession()->removeCooldown('faction.teleport.home');
+            }
+
             if ($entity->getSession()->getCooldown('starting.timer')) {
                 $event->cancel();
                 return;

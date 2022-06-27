@@ -95,7 +95,7 @@ class vKitTask extends Task
         
         $chance = rand(0, 100);
         
-        if ($chance <= 5)
+        if ($chance <= 35)
             $this->time = 58 - $this->slot;
         else {
             $times = [56, 55, 54, 53, 52];
