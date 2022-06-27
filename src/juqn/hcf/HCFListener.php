@@ -157,12 +157,12 @@ class HCFListener implements Listener
             
             $faction->setPoints($faction->getPoints() - 1);
             $faction->setDtr($faction->getDtr() - 1.0);
-            $faction->setTimeRegeneration(45 * 60);
+            // $faction->setTimeRegeneration(45 * 60);
             
             $faction->announce(TextFormat::colorize('&cMember Death: &f' . $player->getName() . PHP_EOL . '&cDTR: &f' . $faction->getDtr()));
             
             # Faction Raid
-            if ($faction->getDtr() < 0.00 && !$faction->isRaided) {
+            if ($faction->getDtr() < 0.00 && !$faction->isRaided()) {
                 $faction->setRaided(true);
                 $faction->setPoints($faction->getPoints() - 10);
                 
@@ -177,6 +177,16 @@ class HCFListener implements Listener
                         }
                     }
                 }
+            }
+            
+            # Regen time
+            if (!$faction->isRaided()) {
+                $faction->setTimeRegeneration(35 * 60);
+            } else {
+                $regenTime = $faction->getTimeRegeneration();
+                $value = $regenTime + (5 * 60);
+                
+                $faction->setTimeRegeneration($value < 35 * 60 ? $value : 35 * 60);
             }
             
             # Setup scoretag for team members
