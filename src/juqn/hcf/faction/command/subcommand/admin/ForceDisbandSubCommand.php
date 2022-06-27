@@ -27,7 +27,6 @@ class ForceDisbandSubCommand implements FactionSubCommand
         if (!$sender instanceof Player)
             return;
 
-
         if (!$sender->hasPermission('forcedisband.permission')) {
             return;
         }

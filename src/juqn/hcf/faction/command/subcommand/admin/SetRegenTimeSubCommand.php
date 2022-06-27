@@ -27,8 +27,6 @@ class SetRegenTimeSubCommand implements FactionSubCommand
         if (!$sender instanceof Player)
             return;
 
-        $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
-
         if (!$sender->hasPermission('setregentime.permission')) {
             return;
         }
