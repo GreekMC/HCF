@@ -122,6 +122,7 @@ class HCFListener implements Listener
         $killer = null;
         $itemInHand = null;
         $message = '';
+        if (!$player instanceof Player) return;
 
         if ($last instanceof EntityDamageByEntityEvent || $last instanceof EntityDamageByChildEntityEvent) {
             $damager = $last->getDamager();
@@ -153,12 +154,22 @@ class HCFListener implements Listener
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction());
             $faction->setPoints($faction->getPoints() - 1);
             $faction->setDtr($faction->getDtr() - 1.0);
-            $faction->announce(TextFormat::colorize("&cMember Death: &f" . $player->getName() . "\n&cDTR: &f" . $faction->getDtr()));
+            $faction->announce(TextFormat::colorize('&cMember Death: &f' . $player->getName() . PHP_EOL . '&cDTR: &f' . $faction->getDtr()));
             $faction->setTimeRegeneration(45 * 60);
 
             # Setup scoretag for team members
             foreach ($faction->getOnlineMembers() as $member)
                 $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . round($faction->getDtr(), 2) . '■&6]'));
+
+            /*if ($faction->getDtr() <= 0){
+                $faction->setPoints($faction->getPoints() - 10);
+                $damager = $last->getDamager();
+                if (!$damager instanceof Player) return;
+                if ($damager->getSession()->getFaction() !== null) {
+                    $damagerfaction = HCFLoader::getInstance()->getFactionManager()->getFaction($damager->getSession()->getFaction());
+                    $damagerfaction->setPoints($damagerfaction->getPoints() + 3);
+                }
+            }*/
         }
 
         if ($killer === null) {
