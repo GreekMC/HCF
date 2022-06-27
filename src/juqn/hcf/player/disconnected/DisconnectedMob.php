@@ -28,7 +28,7 @@ class DisconnectedMob extends Villager
     private ?Player $lastHit = null;
     
     /** @var int */
-    private int $time = 60;
+    private int $time = 15;
     
     /**
      * @return Disconnected|null
@@ -111,7 +111,7 @@ class DisconnectedMob extends Villager
                             }
                         }
                         $this->lastHit = $damager;
-                        $this->time = 60;
+                        $this->time = 15;
                         
                         $session->addCooldown('spawn.tag', '&l&cSpawn Tag&r&7: &r&c', 30);
                         $damager->getSession()->addCooldown('spawn.tag', '&l&cSpawn Tag&r&7: &r&c', 30);
