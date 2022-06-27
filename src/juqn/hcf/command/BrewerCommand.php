@@ -66,7 +66,7 @@ class BrewerCommand extends Command
             $tile1->getInventory()->addItem($splash_potion);
             $tile2->getInventory()->addItem($splash_potion);
             $tile3->getInventory()->addItem($splash_potion);
-            $tile4->getInventory()->addItem(VanillaItems::SWIFTNESS_POTION());
+            $tile4->getInventory()->addItem(VanillaItems::STRONG_SWIFTNESS_POTION());
             $tile5->getInventory()->addItem(VanillaItems::LONG_FIRE_RESISTANCE_POTION());
             $tile6->getInventory()->addItem(VanillaItems::LONG_INVISIBILITY_POTION());
         }
