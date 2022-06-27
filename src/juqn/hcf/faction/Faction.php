@@ -40,26 +40,27 @@ class Faction
     /** @var string */
     private string $name;
 
-    /** @var string[] */
-    private array $roles;
-
-    /** @var float */
-    private float $dtr;
     /** @var int */
     private int $balance;
     /** @var int */
     private int $points;
     /** @var int */
     private int $kothCaptures;
+    /** @var float */
+    private float $dtr;
+    
+    /** @var bool */
+    private bool $raided;
+    
+    /** @var string[] */
+    private array $roles;
 
     /** @var string|null */
     private ?string $focus = null;
     /** @var array|null */
     private ?array $rally = null;
-
     /** @var int|null */
     private ?int $timeRegeneration;
-
     /** @var Position|null */
     private ?Position $home = null;
 
@@ -77,6 +78,7 @@ class Faction
         $this->points = (int)$data['points'];
         $this->kothCaptures = (int)$data['kothCaptures'];
         $this->timeRegeneration = (int)$data['timeRegeneration'];
+        $this->raided = $data['raided'] ?? false;
 
         if ($data['home'] !== null)
             $this->home = new Position((int)$data['home']['x'], (int)$data['home']['y'], (int)$data['home']['z'], HCFLoader::getInstance()->getServer()->getWorldManager()->getWorldByName($data['home']['world']));
@@ -150,6 +152,14 @@ class Faction
     public function getKothCaptures(): int
     {
         return $this->kothCaptures;
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isRaided(): bool
+    {
+        return $this->raided;
     }
 
     /**
@@ -231,6 +241,14 @@ class Faction
     public function setKothCaptures(int $value): void
     {
         $this->kothCaptures = $value;
+    }
+    
+    /**
+     * @param bool $value
+     */
+    public function setRaided(bool $value): void
+    {
+        $this->raided = $value;
     }
 
     /**
@@ -344,6 +362,7 @@ class Faction
             'points' => $this->getPoints(),
             'kothCaptures' => $this->getKothCaptures(),
             'timeRegeneration' => $this->getTimeRegeneration(),
+            'raided' => $this->isRaided(),
             'home' => null,
             'claim' => null
         ];

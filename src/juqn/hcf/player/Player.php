@@ -133,7 +133,7 @@ class Player extends BasePlayer
         
         if ($this->getSession()->getFaction() !== null) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($this->getSession()->getFaction());
-            $faction->announce(TextFormat::colorize("&aMember online: &f" . $this->getName() . "\n&aDTR: &f" . $faction->getDtr()));
+            $faction->announce(TextFormat::colorize('&aMember online: &f' . $this->getName() . PHP_EOL . '&aDTR: &f' . $faction->getDtr()));
 
             $this->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' ' . ($faction->getDtr() === (count($faction->getMembers()) + 0.1) ? '&a' : '&c') . $faction->getDtr() . '■&6]'));
         }
