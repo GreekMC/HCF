@@ -88,6 +88,7 @@ class HCFListener implements Listener
 
                     if ($entity->getSession()->getFaction() !== null && $damager->getSession()->getFaction() !== null) {
                         if ($entity->getSession()->getFaction() === $damager->getSession()->getFaction()) {
+                            $damager->sendMessage(TextFormat::colorize("§eYou cannot hurt §2" . $entity->getName() . "§e."));
                             $event->cancel();
                             return;
                         }
