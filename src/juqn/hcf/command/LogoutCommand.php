@@ -50,6 +50,12 @@ class LogoutCommand extends Command
                 $handler->cancel();
                 return;
             }
+
+            if ($s->getCooldown('combat.tag') !== null) {
+                $s->removeCooldown('faction.stuck');
+                $handler->cancel();
+                return;
+            }
             
             if ($position->distance($sender->getPosition()) > 3) {
                 if ($s->getCooldown('logout') !== null) $s->removeCooldown('logout');
