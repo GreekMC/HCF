@@ -171,11 +171,13 @@ class Crate
         $data = [
             'keyId' => $this->getKeyId(),
             'keyFormat' => $this->getKeyFormat(),
-            'nameFormat' => $this->getNameFormat()
+            'nameFormat' => $this->getNameFormat(),
+            'items' => []
         ];
         
-        foreach ($this->getItems() as $slot => $item)
+        foreach ($this->getItems() as $slot => $item) {
             $data['items'][$slot] = $item->jsonSerialize();
+        }
         return $data;
     }
 }

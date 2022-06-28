@@ -38,12 +38,6 @@ class KitManager
             
             if ($data['permission'] !== null) {
                 $this->registerPermission($data['permission']);
-                /*f ($permissionManager->getPermission($data['permission']) !== null) {
-					HCFLoader::getInstance()->getLogger()->error(TextFormat::colorize('The permission of the kit ' . $name . ' already exists, the kit will not be loaded'));
-					continue;
-				}
-				$permissionManager->addPermission(new Permission($data['permission'], 'Permission for the kit ' . $name));
-				$permissionManager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($data['permission'], true);*/
             }
             $this->addKit($name, $data['nameFormat'], $data['permission'], $data['representativeItem'], $data['items'] ?? [], $data['armor'] ?? [], $data['cooldown'] ?? 0, false);
         }

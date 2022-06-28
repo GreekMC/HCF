@@ -231,12 +231,12 @@ class ClaimListener implements Listener
         }
 
         if ($item instanceof EnderpearlItem) {
-            if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+            if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK && $block instanceof FenceGate) {
                 $event->cancel();
                 $session = $player->getSession();
 
                 if ($player->getCurrentClaim() === '§5Citadel§c') {
-                    $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
+                    $player->sendMessage(TextFormat::colorize('&cYou can\'t use this in &5Citadel &cclaim.'));
                     return;
                 }
 

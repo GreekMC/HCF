@@ -166,7 +166,9 @@ class Kit
             'nameFormat' => $this->getNameFormat(),
             'permission' => $this->getPermission(),
             'cooldown' => $this->getCooldown(),
-            'representativeItem' => $this->getRepresentativeItem()?->jsonSerialize()
+            'representativeItem' => $this->getRepresentativeItem()?->jsonSerialize(),
+            'items' => [],
+            'armor' => []
         ];
         
         foreach ($this->getItems() as $slot => $item)

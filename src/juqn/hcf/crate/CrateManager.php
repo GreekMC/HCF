@@ -11,6 +11,7 @@ use juqn\hcf\entity\TextEntity;
 use juqn\hcf\HCFLoader;
 
 use pocketmine\block\tile\TileFactory;
+use pocketmine\item\Item;
 
 /**
  * Class CrateManager
@@ -89,7 +90,7 @@ class CrateManager
      * @param string $keyId
      * @param string $keyFormat
      * @param string $nameFormat
-     * @param array $items
+     * @param Item[] $items
      */
     public function addCrate(string $crateName, string $keyId, string $keyFormat, string $nameFormat, array $items): void
     {

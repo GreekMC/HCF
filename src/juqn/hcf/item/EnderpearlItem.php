@@ -50,14 +50,14 @@ class EnderpearlItem extends PMEnderPearl
      * @param Player $player
      * @param Vector3 $directionVector
      * @return ItemUseResult
-     *
+     */
     public function onClickAir(Player $player, Vector3 $directionVector): ItemUseResult
     {
         if ($player instanceof HCFPlayer) {
             $session = $player->getSession();
 
             if ($player->getCurrentClaim() === '§5Citadel§c'){
-                $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
+                $player->sendMessage(TextFormat::colorize('&cYou can\'t use this in &5Citadel &cclaim.'));
                 return ItemUseResult::FAIL();
             }
 
@@ -72,5 +72,5 @@ class EnderpearlItem extends PMEnderPearl
             return $result;
         }
 		return parent::onClickAir($player, $directionVector);
-	}*/
+	}
 }
