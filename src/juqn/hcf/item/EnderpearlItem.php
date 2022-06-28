@@ -39,10 +39,18 @@ class EnderpearlItem extends PMEnderPearl
     }
     
     /**
+     * @return float
+     */
+    public function getThrowForce(): float
+    {
+        return 2.1;
+    }
+    
+    /**
      * @param Player $player
      * @param Vector3 $directionVector
      * @return ItemUseResult
-     */
+     *
     public function onClickAir(Player $player, Vector3 $directionVector): ItemUseResult
     {
         if ($player instanceof HCFPlayer) {
@@ -64,5 +72,5 @@ class EnderpearlItem extends PMEnderPearl
             return $result;
         }
 		return parent::onClickAir($player, $directionVector);
-	}
+	}*/
 }

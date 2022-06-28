@@ -20,6 +20,7 @@ class CommandManager
      */
     public function __construct()
     {
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new ListCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new ECCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new BalanceCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new BrewerCommand());

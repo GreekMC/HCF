@@ -6,11 +6,14 @@ namespace juqn\hcf;
 
 use CortexPE\DiscordWebhookAPI\Message;
 use CortexPE\DiscordWebhookAPI\Webhook;
+use juqn\hcf\entity\EnderpearlEntity;
+use juqn\hcf\item\EnderpearlItem;
 use juqn\hcf\kit\classes\ClassFactory;
 use juqn\hcf\kit\classes\HCFClass;
 use juqn\hcf\kit\classes\presets\Bard;
 use juqn\hcf\player\Player;
 
+use pocketmine\block\FenceGate;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
@@ -18,6 +21,7 @@ use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\entity\Location;
 use pocketmine\event\entity\ProjectileHitEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Listener;
@@ -421,16 +425,52 @@ class HCFListener implements Listener
             }
         }
     }
-
-    public function handleronInteractBlock(PlayerInteractEvent $event)
+    
+    /**
+     * @param PlayerInteractEvent $event
+     * @priority HIGHEST
+     */
+    public function handleInteract(PlayerInteractEvent $event)
     {
+        $action = $event->getAction();
+        $block = $event->getBlock();
         $player = $event->getPlayer();
         $item = $event->getItem();
+        
+        if (!$player instanceof Player)
+            return;
+            
+        if ($item instanceof EnderpearlItem) {
+            if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK && $block instanceof FenceGate && $block->isOpen()) {
+                $session = $player->getSession();
+                $event->cancel();
+            
+                if ($player->getCurrentClaim() === '§5Citadel§c'){
+                    $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
+                    return;
+                }
+                
+                if ($session->getCooldown('enderpearl') !== null) {
+                    $player->sendMessage(TextFormat::colorize('&cYou have cooldown enderpearl'));
+                    return;
+                }
+            
+                $projectile = new EnderpearlEntity(Location::fromObject($player->getEyePos(), $player->getWorld(), $player->getLocation()->yaw, $player->getLocation()->pitch), $player);
+                $projectile->setMotion($player->getDirectionVector()->multiply($item->getThrowForce()));
+                $projectile->spawnToAll();
+            
+                $item->pop();
+            
+                $session->addCooldown('enderpearl', '&l&eEnderpearl&r&7: &r&c', 15);
+                return;
+            }
+        }
 
         if ($player->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 170) {
             if ($item->getId() === VanillaItems::WATER_BUCKET()->getId()) {
                 $event->cancel();
             }
+            
             if ($item->getId() === VanillaItems::LAVA_BUCKET()->getId()) {
                 $event->cancel();
             }
