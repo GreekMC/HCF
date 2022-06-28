@@ -102,7 +102,7 @@ class InvMenu implements InvMenuTypeIds{
 
 		$session = InvMenuHandler::getPlayerManager()->get($player);
 		$network = $session->getNetwork();
-		if($network->getPending() >= 8){
+		if($network->getPending() >= 1){
 			// Avoid players from spamming InvMenu::send() and other similar
 			// requests and filling up queued tasks in memory.
 			// It would be better if this check were implemented by plugins,
