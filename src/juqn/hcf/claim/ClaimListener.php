@@ -230,31 +230,28 @@ class ClaimListener implements Listener
             }
         }
 
-        if ($item instanceof EnderpearlItem){
+        if ($item instanceof EnderpearlItem) {
             if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                 $event->cancel();
+                $session = $player->getSession();
 
-                if ($block instanceof FenceGate) {
-                    $session = $player->getSession();
-
-                    if ($player->getCurrentClaim() === '§5Citadel§c') {
-                        $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
-                        return;
-                    }
-
-                    if ($session->getCooldown('enderpearl') !== null) {
-                        $player->sendMessage(TextFormat::colorize('&cYou have cooldown enderpearl'));
-                        return;
-                    }
-
-                    $projectile = new EnderpearlEntity(Location::fromObject($player->getEyePos(), $player->getWorld(), $player->getLocation()->yaw, $player->getLocation()->pitch), $player);
-                    $projectile->setMotion($player->getDirectionVector()->multiply($item->getThrowForce()));
-                    $projectile->spawnToAll();
-
-                    $item->pop();
-
-                    $session->addCooldown('enderpearl', '&l&eEnderpearl&r&7: &r&c', 15);
+                if ($player->getCurrentClaim() === '§5Citadel§c') {
+                    $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
+                    return;
                 }
+
+                if ($session->getCooldown('enderpearl') !== null) {
+                    $player->sendMessage(TextFormat::colorize('&cYou have cooldown enderpearl'));
+                    return;
+                }
+
+                $projectile = new EnderpearlEntity(Location::fromObject($player->getEyePos(), $player->getWorld(), $player->getLocation()->yaw, $player->getLocation()->pitch), $player);
+                $projectile->setMotion($player->getDirectionVector()->multiply($item->getThrowForce()));
+                $projectile->spawnToAll();
+
+                $item->pop();
+
+                $session->addCooldown('enderpearl', '&l&eEnderpearl&r&7: &r&c', 15);
             }
         }
 
