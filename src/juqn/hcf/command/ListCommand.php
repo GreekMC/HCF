@@ -26,6 +26,6 @@ class ListCommand extends Command
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args): void
     {
-        $sender->sendMessage(TextFormat::colorize('&7' . PHP_EOL . '&ePlayers playing: ' . PHP_EOL . '&f' . count($sender->getServer()->getOnlinePlayers()) . PHP_EOL . '&e&r'));
+        $sender->sendMessage(TextFormat::colorize('&7' . PHP_EOL . '&ePlayers playing: &f' . count($sender->getServer()->getOnlinePlayers()) . PHP_EOL . '&e&r'));
     }
 }
