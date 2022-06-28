@@ -224,12 +224,12 @@ class Player extends BasePlayer
         $lines[] = TextFormat::colorize('&r&r');
         $lines[] = TextFormat::colorize($lastLine[$this->lastLine]);
         $lines[] = TextFormat::colorize('&7&r');
-        
-        if (count($lines) === 2) {
+
+        if (count($lines) === 4) {
             if ($this->scoreboard->isSpawned()) $this->scoreboard->remove();
             return;
         }
-        
+
         if (!$this->scoreboard->isSpawned())
             $this->scoreboard->init();
         else $this->scoreboard->clear();
