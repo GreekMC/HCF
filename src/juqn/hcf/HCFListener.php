@@ -329,7 +329,9 @@ class HCFListener implements Listener
         /** @var Player */
         $player = $event->getPlayer();
         
-        if (!$player instanceof Player) return;
+        if (!$player instanceof Player) 
+            return;
+            
         $quitMessage = str_replace('{player}', $player->getName(), HCFLoader::getInstance()->getConfig()->get('quit.message'));
         $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
 
@@ -338,9 +340,10 @@ class HCFListener implements Listener
             $faction->announce(TextFormat::colorize("&cMember offline: &f" . $player->getName() . "\n&cDTR: &f" . $faction->getDtr()));
         }
         
-        if (!$player->getSession()->isLogout()) {
+        if ($player->getSession() !== null && !$player->getSession()->isLogout()) {
             if ($player->getCurrentClaim() !== null) {
                 $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
+                
                 if ($claim->getType() !== 'spawn') {
                     $disconnectedManager->addDisconnected($player);
                 }
