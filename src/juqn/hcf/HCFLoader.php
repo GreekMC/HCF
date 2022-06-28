@@ -107,8 +107,8 @@ class HCFLoader extends PluginBase
         $this->entityManager = new EntityManager;
         $this->claimManager = new ClaimManager;
         $this->commandManager = new CommandManager;
-        $this->crateManager = new CrateManager;
         $this->enchantmentManager = new EnchantmentManager;
+        $this->crateManager = new CrateManager;
         $this->eventManager = new EventManager;
         $this->factionManager = new FactionManager;
         $this->itemManager = new ItemManager;
