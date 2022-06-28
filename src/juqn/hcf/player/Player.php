@@ -34,6 +34,8 @@ class Player extends BasePlayer
     
     /** @var int|float  */
     private int|float $lastCheck = -1;
+    /** @var int */
+    private int $lastLine = 0;
     /** @var PlayerScoreboard */
     private PlayerScoreboard $scoreboard;
     /** @var HCFClass|null */
@@ -171,6 +173,7 @@ class Player extends BasePlayer
         $lines = [
             TextFormat::colorize('&7')
         ];
+        $lastLine = [' &7play.greekmc.net', ' &7store.greekmc.net', ' &7discord.gg/greekmc'];
         
         # Events
         if (($sotw = HCFLoader::getInstance()->getEventManager()->getSotw())->isActive())
@@ -218,7 +221,8 @@ class Player extends BasePlayer
                 $lines[] = TextFormat::colorize(' &l&6XYZ&r&7: &e' . $rally[1]->getFloorX() . ', ' . $rally[1]->getFloorY() . ', ' . $rally[1]->getFloorZ());
             }
         }
-        
+        $lines[] = TextFormat::colorize('&r&r');
+        $lines[] = TextFormat::colorize($lastLine[$this->lastLine]);
         $lines[] = TextFormat::colorize('&7&r');
         
         if (count($lines) === 2) {
@@ -243,6 +247,7 @@ class Player extends BasePlayer
         
         if ($update) {
             if ($currentTick % 20 === 0) {
+
                 # Update custom enchants
                 foreach ($this->getArmorInventory()->getContents() as $armor) {
                     foreach ($armor->getEnchantments() as $enchantment) {
@@ -255,7 +260,13 @@ class Player extends BasePlayer
                 
                 # Update scoreboard
                 $this->updateScoreboard();
-
+                
+                # Update last line
+                if ($this->lastLine <= 2)
+                    $this->lastLine = 0;
+                $this->lastLine++;
+                
+                # Update invisibility 
                 $this->loadInvisibility();
 
                 # Class event
