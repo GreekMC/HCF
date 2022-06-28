@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace juqn\hcf\claim;
 
 use juqn\hcf\crate\tile\CrateTile;
+use juqn\hcf\entity\EnderpearlEntity;
 use juqn\hcf\HCFLoader;
+use juqn\hcf\item\EnderpearlItem;
 use juqn\hcf\player\Player;
 
 use juqn\hcf\utils\Inventories;
@@ -13,6 +15,7 @@ use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\FenceGate;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\block\tile\Sign;
+use pocketmine\entity\Location;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
@@ -223,6 +226,34 @@ class ClaimListener implements Listener
                             $player->sendMessage(TextFormat::colorize('&aThe price of your claim is $' . $creator->calculateValue() . '. &7(Type again /f claim to accept or /f claim cancel to cancel)'));
                         }
                     }
+                }
+            }
+        }
+
+        if ($item instanceof EnderpearlItem){
+            if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                $event->cancel();
+
+                if ($block instanceof FenceGate) {
+                    $session = $player->getSession();
+
+                    if ($player->getCurrentClaim() === '§5Citadel§c') {
+                        $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
+                        return;
+                    }
+
+                    if ($session->getCooldown('enderpearl') !== null) {
+                        $player->sendMessage(TextFormat::colorize('&cYou have cooldown enderpearl'));
+                        return;
+                    }
+
+                    $projectile = new EnderpearlEntity(Location::fromObject($player->getEyePos(), $player->getWorld(), $player->getLocation()->yaw, $player->getLocation()->pitch), $player);
+                    $projectile->setMotion($player->getDirectionVector()->multiply($item->getThrowForce()));
+                    $projectile->spawnToAll();
+
+                    $item->pop();
+
+                    $session->addCooldown('enderpearl', '&l&eEnderpearl&r&7: &r&c', 15);
                 }
             }
         }

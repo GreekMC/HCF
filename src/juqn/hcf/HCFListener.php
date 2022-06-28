@@ -439,32 +439,6 @@ class HCFListener implements Listener
         
         if (!$player instanceof Player)
             return;
-            
-        if ($item instanceof EnderpearlItem) {
-            if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK && $block instanceof FenceGate && $block->isOpen()) {
-                $session = $player->getSession();
-                $event->cancel();
-            
-                if ($player->getCurrentClaim() === '§5Citadel§c'){
-                    $player->sendMessage("§cYou can't use this in §5Citadel §cclaim.");
-                    return;
-                }
-                
-                if ($session->getCooldown('enderpearl') !== null) {
-                    $player->sendMessage(TextFormat::colorize('&cYou have cooldown enderpearl'));
-                    return;
-                }
-            
-                $projectile = new EnderpearlEntity(Location::fromObject($player->getEyePos(), $player->getWorld(), $player->getLocation()->yaw, $player->getLocation()->pitch), $player);
-                $projectile->setMotion($player->getDirectionVector()->multiply($item->getThrowForce()));
-                $projectile->spawnToAll();
-            
-                $item->pop();
-            
-                $session->addCooldown('enderpearl', '&l&eEnderpearl&r&7: &r&c', 15);
-                return;
-            }
-        }
 
         if ($player->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 170) {
             if ($item->getId() === VanillaItems::WATER_BUCKET()->getId()) {
