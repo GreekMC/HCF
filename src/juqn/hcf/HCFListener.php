@@ -390,6 +390,11 @@ class HCFListener implements Listener
 
         if ($damager->getClass()->getId() === HCFClass::ARCHER) {
             if ($child instanceof Arrow) {
+
+                if ($entity->getClass()->getId() === HCFClass::ARCHER){
+                    $damager->sendMessage("You can't archer tag someone who has the same class as you!");
+                    return;
+                }
                 if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
                     return;
                 }
@@ -826,6 +831,7 @@ class HCFListener implements Listener
                         $damager->getInventory()->setItemInHand(VanillaItems::AIR());
                         $damager->getEffects()->add(new EffectInstance(VanillaEffects::SLOWNESS(), 20 * 3, 0));
                         $damager->getEffects()->add(new EffectInstance(VanillaEffects::BLINDNESS(), 20 * 3, 3));
+                        $damager->sendMessage("§eYou just gave §b§l" . $player->getName() . " §r§eBackstap his current health is §c§l" . $player->getHealth() . " §r§eHP");
                         $damager->getSession()->addCooldown('rogue.cooldown', '&l&dRogue Cooldown&r&7: &r&c', 10);
                     }
                 }
