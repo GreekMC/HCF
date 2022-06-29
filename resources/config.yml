@@ -12,7 +12,7 @@ kills.webhook: 'https://discord.com/api/webhooks/988949617645338664/CMb1pRadWrrl
 koth.webhook: 'https://discord.com/api/webhooks/988934155163303956/Cax1yf1tDH7fNUmBEyw5nZrK3OiT85SqJ_Uk8YZwCsk0o9hZwIFCNdQUVjWWsb1hRY0N'
 
 # Scoreboard Config
-scoreboard.title: '&l&6HCF &r&7| &f Beta'
+scoreboard.title: '&l&6HCF &r&7| &f Map I'
 
 # Join and quit
 join.message: '&7[&a+&7] &a{player}'
