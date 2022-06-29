@@ -11,6 +11,7 @@ use juqn\hcf\item\EnderpearlItem;
 use juqn\hcf\player\Player;
 
 use juqn\hcf\utils\Inventories;
+use muqsit\invmenu\inventory\SharedInventoryNotifier;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\FenceGate;
 use pocketmine\block\VanillaBlocks;
@@ -228,6 +229,10 @@ class ClaimListener implements Listener
                     }
                 }
             }
+        }
+
+        if ($tile instanceof Sign) {
+            return;
         }
 
         if ($item instanceof EnderpearlItem) {
