@@ -179,10 +179,10 @@ class DisconnectedMob extends Villager
         } else {
             if (!$itemInHand->isNull() && $itemInHand instanceof Tool) {
                 $message = '&c' . $session->getName() . '&4[' . $session->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] &cusing ' . $itemInHand->getName();
-                $webhook = '' . $session->getName() . '[' . $session->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] using ' . $itemInHand->getName();
+                $webhook = '`' . $session->getName() . '[' . $session->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']`';
             } else {
                 $message = '&c' . $session->getName() . '&4[' . $session->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
-                $webhook = $session->getName() . '[' . $session->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
+                $webhook = '`' . $session->getName() . '[' . $session->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']`';
             }
             // Construct a discord webhook with its URL
             $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));

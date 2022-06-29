@@ -120,7 +120,7 @@ class HCFListener implements Listener
     {
         /** @var Player */
         $player = $event->getPlayer();
-        
+
         if (!$player instanceof Player)
             return;
         $last = $player->getLastDamageCause();
@@ -158,65 +158,66 @@ class HCFListener implements Listener
 
         if ($player->getSession()->getFaction() !== null) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($player->getSession()->getFaction());
-            
+
             $faction->setPoints($faction->getPoints() - 1);
             $faction->setDtr($faction->getDtr() - 1.0);
             // $faction->setTimeRegeneration(45 * 60);
-            
+
             $faction->announce(TextFormat::colorize('&cMember Death: &f' . $player->getName() . PHP_EOL . '&cDTR: &f' . $faction->getDtr()));
-            
+
             # Faction Raid
             if ($faction->getDtr() < 0.00 && !$faction->isRaidable()()) {
                 $faction->setRaidable(true);
                 $faction->setPoints($faction->getPoints() - 10);
-                
+
                 if ($killerXuid !== null) {
                     $session = HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid);
-                
+
                     if ($session !== null && $session->getFaction()) {
                         $fac = HCFLoader::getInstance()->getFactionManager()->getFaction($session->getFaction());
-                        
+
                         if ($fac !== null) {
                             $fac->setPoints($fac->getPoints() + 3);
+                            $fac->announce(TextFormat::colorize('&cThe faction &l' . $faction->getName() . ' &r&cis now Rideable!'));
                         }
                     }
+
+                    # Regen time
+                    if (!$faction->isRaidable()) {
+                        $faction->setTimeRegeneration(35 * 60);
+                    } else {
+                        $regenTime = $faction->getTimeRegeneration();
+                        $value = $regenTime + (5 * 60);
+
+                        $faction->setTimeRegeneration($value < 35 * 60 ? $value : 35 * 60);
+                    }
+
+                    # Setup scoretag for team members
+                    foreach ($faction->getOnlineMembers() as $member)
+                        $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . round($faction->getDtr(), 2) . '■&6]'));
+                }
+
+                if ($killer === null) {
+                    $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &edied';
+                    $webhook = $player->getName() . '[' . $player->getSession()->getKills() . '] died';
+                } else {
+                    if (!$itemInHand->isNull() && $itemInHand instanceof Tool) {
+                        $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] &cusing ' . $itemInHand->getName();
+                        $webhook = '`' . $player->getName() . '[' . $player->getSession()->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']`';
+                    } else {
+                        $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
+                        $webhook = '`' . $player->getName() . '[' . $player->getSession()->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']`';
+                    }
+                    // Construct a discord webhook with its URL
+                    $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));
+
+                    // Construct a new Message object
+                    $msg = new Message();
+                    $msg->setContent($webhook);
+                    $webHook->send($msg);
+                    $event->setDeathMessage(TextFormat::colorize($message));
                 }
             }
-            
-            # Regen time
-            if (!$faction->isRaided()) {
-                $faction->setTimeRegeneration(35 * 60);
-            } else {
-                $regenTime = $faction->getTimeRegeneration();
-                $value = $regenTime + (5 * 60);
-                
-                $faction->setTimeRegeneration($value < 35 * 60 ? $value : 35 * 60);
-            }
-            
-            # Setup scoretag for team members
-            foreach ($faction->getOnlineMembers() as $member)
-                $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . round($faction->getDtr(), 2) . '■&6]'));
-        }
-
-        if ($killer === null) {
-            $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &edied';
-            $webhook = $player->getName() . '[' . $player->getSession()->getKills() . '] died';
-        } else {
-            if (!$itemInHand->isNull() && $itemInHand instanceof Tool) {
-                $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . '] &cusing ' . $itemInHand->getName();
-                $webhook = '`' . $player->getName() . '[' . $player->getSession()->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']`';
-            } else {
-                $message = '&c' . $player->getName() . '&4[' . $player->getSession()->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
-                $webhook = '`' . $player->getName() . '[' . $player->getSession()->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']`';
-            }
-            // Construct a discord webhook with its URL
-            $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));
-
-            // Construct a new Message object
-            $msg = new Message();
-            $msg->setContent($webhook);
-            $webHook->send($msg);
-            $event->setDeathMessage(TextFormat::colorize($message));
         }
     }
 
