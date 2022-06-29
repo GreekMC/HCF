@@ -84,6 +84,7 @@ class FwhoCommand extends Command
 
         $points = HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getPoints() . PHP_EOL;
         $koths = HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getKothCaptures() . PHP_EOL;
+        $strikes = HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getStrikes() . PHP_EOL;
 
         $webHook = new Webhook("https://discord.com/api/webhooks/991109809745174638/J6yK3ZHQ9dY-r6VWJrXHgt9eR09JNlzMzGUibCBE_YoZmSePncxgqKNCN4W8v32KxU2O");
 
@@ -94,13 +95,13 @@ class FwhoCommand extends Command
         $embed->setColor(0xFC7308);
 
         if (HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getTimeRegeneration() !== null) {
-            $embed->setDescription('**Faction** 👥' . PHP_EOL . $generalinfo . "**HQ** 📍" . PHP_EOL . $hq . "**Leaders** 👑" . PHP_EOL . $leaders . "**Coleaders** 🛠️" . PHP_EOL . $coliders . "**Captains** 🔨" . PHP_EOL . $captains . "**Members** 👥" . PHP_EOL . $members . "**Balance** 💰" . PHP_EOL . $balance . "**Deaths until Raidable** ♦️" . PHP_EOL . $deathsuntilraidable . "**Time Until Regen** ⏰" . PHP_EOL . $timeuntilregen . "**Points** 🍎" . PHP_EOL . $points . "**KoTH Captures** 🏔️" . PHP_EOL . $hq);
+            $embed->setDescription('**Faction** 👥' . PHP_EOL . $generalinfo . "**HQ** 📍" . PHP_EOL . $hq . "**Leaders** 👑" . PHP_EOL . $leaders . "**Coleaders** 🛠️" . PHP_EOL . $coliders . "**Captains** 🔨" . PHP_EOL . $captains . "**Members** 👥" . PHP_EOL . $members . "**Balance** 💰" . PHP_EOL . $balance . "**Deaths until Raidable** ♦️" . PHP_EOL . $deathsuntilraidable . "**Time Until Regen** ⏰" . PHP_EOL . $timeuntilregen . "**Points** 🍎" . PHP_EOL . $points . "**KoTH Captures** 🏔️" . PHP_EOL . $koths . "**Strikes** 🚨" . PHP_EOL . $strikes);
             $embed->setFooter("greekmc.net");
             $msg->addEmbed($embed);
             $webHook->send($msg);
             return;
         }
-        $embed->setDescription('**Faction** 👥' . PHP_EOL . $generalinfo . "**HQ** 📍" . PHP_EOL . $hq . "**Leaders** 👑" . PHP_EOL . $leaders . "**Coleaders** 🛠️" . PHP_EOL . $coliders . "**Captains** 🔨" . PHP_EOL . $captains . "**Members** 👥" . PHP_EOL . $members . "**Balance** 💰" . PHP_EOL . $balance . "**Deaths until Raidable** ♦️" . PHP_EOL . $deathsuntilraidable . "**Points** 🍎" . PHP_EOL . $points . "**KoTH Captures** 🏔️" . PHP_EOL . $hq);
+        $embed->setDescription('**Faction** 👥' . PHP_EOL . $generalinfo . "**HQ** 📍" . PHP_EOL . $hq . "**Leaders** 👑" . PHP_EOL . $leaders . "**Coleaders** 🛠️" . PHP_EOL . $coliders . "**Captains** 🔨" . PHP_EOL . $captains . "**Members** 👥" . PHP_EOL . $members . "**Balance** 💰" . PHP_EOL . $balance . "**Deaths until Raidable** ♦️" . PHP_EOL . $deathsuntilraidable . "**Points** 🍎" . PHP_EOL . $points . "**KoTH Captures** 🏔️" . PHP_EOL . $koths . "**Strikes** 🚨" . PHP_EOL . $strikes);
         $embed->setFooter("greekmc.net");
         $msg->addEmbed($embed);
 

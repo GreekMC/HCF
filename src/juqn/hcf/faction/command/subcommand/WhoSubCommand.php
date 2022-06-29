@@ -73,6 +73,7 @@ class WhoSubCommand implements FactionSubCommand
         }
         $message .= '&ePoints: &c' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getPoints() . PHP_EOL;
         $message .= '&eKoTH Captures: &c' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getKothCaptures() . PHP_EOL;
+        $message .= '&eStrikes: &c' . HCFLoader::getInstance()->getFactionManager()->getFaction($faction)->getStrikes() . PHP_EOL;
         $message .= '&7&m--------------------------';
 
         $sender->sendMessage(TextFormat::colorize($message));
