@@ -79,7 +79,7 @@ class Faction
         $this->balance = (int)$data['balance'];
         $this->points = (int)$data['points'];
         $this->kothCaptures = (int)$data['kothCaptures'];
-        $this->strikes = (int)$data['strikes'] ?? 0;
+        $this->strikes = intval($data['strikes'] ?? 0);
         $this->timeRegeneration = (int)$data['timeRegeneration'];
         $this->raidable = $data['raided'] ?? false;
 
@@ -362,7 +362,7 @@ class Faction
             if ($this->timeRegeneration === -1) {
                 $this->timeRegeneration = null;
                 $this->setDtr(0.01 + (count($this->getMembers()) * 1.00));
-                $this->setRaided(false);
+                $this->setRaidable(false);
 
                 # Setup scoretag for team members
                 foreach ($this->getOnlineMembers() as $member)

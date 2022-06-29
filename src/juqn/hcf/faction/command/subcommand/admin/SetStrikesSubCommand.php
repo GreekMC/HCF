@@ -60,7 +60,7 @@ class SetStrikesSubCommand implements FactionSubCommand
 
         $embed = new Embed();
         $embed->setTitle("New Faction Strike");
-        $embed->setColor(0x9AD800);
+        $embed->setColor(0x890000);
         $embed->addField("Faction 👥", "{$name}");
         $embed->addField("Strikes 🚨", "{$strikes}", true);
         $embed->addField("Motive 📢", "{$motive}", true);

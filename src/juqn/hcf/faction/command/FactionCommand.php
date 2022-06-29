@@ -9,6 +9,7 @@ use juqn\hcf\faction\command\subcommand\admin\ForceDisbandSubCommand;
 use juqn\hcf\faction\command\subcommand\admin\SetDtrSubCommand;
 use juqn\hcf\faction\command\subcommand\admin\SetPointsSubCommand;
 use juqn\hcf\faction\command\subcommand\admin\SetRegenTimeSubCommand;
+use juqn\hcf\faction\command\subcommand\admin\SetStrikesSubCommand;
 use juqn\hcf\faction\command\subcommand\ChatSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
@@ -85,6 +86,7 @@ class FactionCommand extends Command
         $this->subCommands['setpoints'] = new SetPointsSubCommand();
         $this->subCommands['setregentime'] = new SetRegenTimeSubCommand();
         $this->subCommands['forcedisband'] = new ForceDisbandSubCommand();
+        $this->subCommands['setstrikes'] = new SetStrikesSubCommand();
     }
     
     /**
