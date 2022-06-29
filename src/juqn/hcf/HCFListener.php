@@ -394,10 +394,11 @@ class HCFListener implements Listener
         if ($damager->getClass()->getId() === HCFClass::ARCHER) {
             if ($child instanceof Arrow) {
 
-                if ($entity->getClass()->getId() === HCFClass::ARCHER){
-                    $damager->sendMessage("You can't archer tag someone who has the same class as you!");
+                if ($entity->getClass() !== null && $entity->getClass()->getId() === HCFClass::ARCHER) {
+                    $damager->sendMessage("§cYou can't archer tag someone who has the same class as you!");
                     return;
                 }
+
                 if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
                     return;
                 }
@@ -826,6 +827,14 @@ class HCFListener implements Listener
                 }
                 
                 if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
+                    if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                        $event->cancel();
+                        return;
+                    }
+                    if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                        $event->cancel();
+                        return;
+                    }
                     if ($damager->getViewPos() == $player->getViewPos()) {
                         if ($damager->getSession()->getCooldown('rogue.cooldown') !== null) {
                             return;
