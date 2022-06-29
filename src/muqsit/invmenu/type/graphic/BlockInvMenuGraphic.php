@@ -29,15 +29,7 @@ final class BlockInvMenuGraphic implements PositionedInvMenuGraphic{
 	}
 
 	public function send(Player $player, ?string $name) : void{
-		$network = $player->getNetworkSession();
-		$mappingProtocol = RuntimeBlockMapping::getMappingProtocol($network->getProtocolId());
-
-		$network->sendDataPacket(UpdateBlockPacket::create(
-			BlockPosition::fromVector3($this->position),
-			RuntimeBlockMapping::getInstance()->toRuntimeId($this->block->getFullId(), $mappingProtocol),
-			UpdateBlockPacket::FLAG_NETWORK,
-			UpdateBlockPacket::DATA_LAYER_NORMAL
-		));
+		$player->getNetworkSession()->sendDataPacket(UpdateBlockPacket::create(BlockPosition::fromVector3($this->position), RuntimeBlockMapping::getInstance()->toRuntimeId($this->block->getFullId()), UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL));
 	}
 
 	public function sendInventory(Player $player, Inventory $inventory) : bool{
@@ -47,20 +39,13 @@ final class BlockInvMenuGraphic implements PositionedInvMenuGraphic{
 	public function remove(Player $player) : void{
 		$network = $player->getNetworkSession();
 		$world = $player->getWorld();
-		$blockPosition = BlockPosition::fromVector3($this->position);
 		$runtime_block_mapping = RuntimeBlockMapping::getInstance();
 		$block = $world->getBlockAt($this->position->x, $this->position->y, $this->position->z);
-		$mappingProtocol = RuntimeBlockMapping::getMappingProtocol($network->getProtocolId());
-		$network->sendDataPacket(UpdateBlockPacket::create(
-			$blockPosition,
-			$runtime_block_mapping->toRuntimeId($block->getFullId(), $mappingProtocol),
-			UpdateBlockPacket::FLAG_NETWORK,
-			UpdateBlockPacket::DATA_LAYER_NORMAL
-		), true);
+		$network->sendDataPacket(UpdateBlockPacket::create(BlockPosition::fromVector3($this->position), $runtime_block_mapping->toRuntimeId($block->getFullId()), UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL), true);
 
 		$tile = $world->getTileAt($this->position->x, $this->position->y, $this->position->z);
 		if($tile instanceof Spawnable){
-			$network->sendDataPacket(BlockActorDataPacket::create($blockPosition, $tile->getSerializedSpawnCompound()), true);
+			$network->sendDataPacket(BlockActorDataPacket::create(BlockPosition::fromVector3($this->position), $tile->getSerializedSpawnCompound()), true);
 		}
 	}
 
