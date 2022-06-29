@@ -261,13 +261,6 @@ class Player extends BasePlayer
                 # Update scoreboard
                 $this->updateScoreboard();
                 
-                # Update last line
-                if ($this->lastLine >= 2) {
-                    $this->lastLine = 0;
-                } else {
-                    $this->lastLine++;
-                }
-                
                 # Update invisibility 
                 $this->loadInvisibility();
 
@@ -281,6 +274,16 @@ class Player extends BasePlayer
                             break;
                         }
                     }
+                }
+            }
+            
+            if ($currentTick % 40 === 0) {
+                
+                # Update last line
+                if ($this->lastLine >= 2) {
+                    $this->lastLine = 0;
+                } else {
+                    $this->lastLine++;
                 }
             }
         }
