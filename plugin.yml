@@ -14,6 +14,9 @@ permissions:
   setdtr.permission:
     description: Permission nested for /f setdtr
     default: op
+  setstrikes.permission:
+    description: Permission nested for /f setdtr
+    default: op
   setregentime.permission:
     description: Permission nested for /f setregentime
     default: op
