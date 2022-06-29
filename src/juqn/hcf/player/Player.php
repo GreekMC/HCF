@@ -262,9 +262,11 @@ class Player extends BasePlayer
                 $this->updateScoreboard();
                 
                 # Update last line
-                if ($this->lastLine <= 2)
+                if ($this->lastLine >= 2) {
                     $this->lastLine = 0;
-                $this->lastLine++;
+                } else {
+                    $this->lastLine++;
+                }
                 
                 # Update invisibility 
                 $this->loadInvisibility();
