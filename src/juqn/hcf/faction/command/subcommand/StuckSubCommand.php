@@ -62,7 +62,7 @@ class StuckSubCommand implements FactionSubCommand
                 return;
             }
 
-            if ($s->getCooldown('combat.tag') !== null) {
+            if ($s->getCooldown('spawn.tag') !== null) {
                 $s->removeCooldown('faction.stuck');
                 $handler->cancel();
                 return;
