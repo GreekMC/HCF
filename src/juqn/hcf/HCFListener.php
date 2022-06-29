@@ -446,6 +446,22 @@ class HCFListener implements Listener
                 $event->cancel();
             }
 
+            if ($item->getId() === VanillaItems::DIAMOND_SHOVEL()->getId()) {
+                $event->cancel();
+            }
+            if ($item->getId() === VanillaItems::GOLDEN_SHOVEL()->getId()) {
+                $event->cancel();
+            }
+            if ($item->getId() === VanillaItems::IRON_SHOVEL()->getId()) {
+                $event->cancel();
+            }
+            if ($item->getId() === VanillaItems::STONE_SHOVEL()->getId()) {
+                $event->cancel();
+            }
+            if ($item->getId() === VanillaItems::WOODEN_SHOVEL()->getId()) {
+                $event->cancel();
+            }
+
             if ($item->getId() === VanillaItems::DIAMOND_HOE()->getId()) {
                 $event->cancel();
             }
