@@ -46,11 +46,13 @@ class Faction
     private int $points;
     /** @var int */
     private int $kothCaptures;
+    /** @var int */
+    private int $strikes;
     /** @var float */
     private float $dtr;
     
     /** @var bool */
-    private bool $raided;
+    private bool $raidable;
     
     /** @var string[] */
     private array $roles;
@@ -77,8 +79,9 @@ class Faction
         $this->balance = (int)$data['balance'];
         $this->points = (int)$data['points'];
         $this->kothCaptures = (int)$data['kothCaptures'];
+        $this->strikes = (int)$data['strikes'] ?? 0;
         $this->timeRegeneration = (int)$data['timeRegeneration'];
-        $this->raided = $data['raided'] ?? false;
+        $this->raidable = $data['raided'] ?? false;
 
         if ($data['home'] !== null)
             $this->home = new Position((int)$data['home']['x'], (int)$data['home']['y'], (int)$data['home']['z'], HCFLoader::getInstance()->getServer()->getWorldManager()->getWorldByName($data['home']['world']));
@@ -153,13 +156,22 @@ class Faction
     {
         return $this->kothCaptures;
     }
-    
+
+    /**
+     * @return int
+     */
+    public function getStrikes(): int
+    {
+        return $this->strikes;
+    }
+
+
     /**
      * @return bool
      */
-    public function isRaided(): bool
+    public function isRaidable(): bool
     {
-        return $this->raided;
+        return $this->raidable;
     }
 
     /**
@@ -242,13 +254,21 @@ class Faction
     {
         $this->kothCaptures = $value;
     }
+
+    /**
+     * @param int $value
+     */
+    public function setStrikes(int $value): void
+    {
+        $this->strikes = $value;
+    }
     
     /**
      * @param bool $value
      */
-    public function setRaided(bool $value): void
+    public function setRaidable(bool $value): void
     {
-        $this->raided = $value;
+        $this->raidable = $value;
     }
 
     /**
@@ -362,8 +382,9 @@ class Faction
             'balance' => $this->getBalance(),
             'points' => $this->getPoints(),
             'kothCaptures' => $this->getKothCaptures(),
+            'strikes' => $this->getStrikes(),
             'timeRegeneration' => $this->getTimeRegeneration(),
-            'raided' => $this->isRaided(),
+            'raided' => $this->isRaidable(),
             'home' => null,
             'claim' => null
         ];

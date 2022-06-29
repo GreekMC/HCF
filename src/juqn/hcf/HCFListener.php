@@ -166,8 +166,8 @@ class HCFListener implements Listener
             $faction->announce(TextFormat::colorize('&cMember Death: &f' . $player->getName() . PHP_EOL . '&cDTR: &f' . $faction->getDtr()));
             
             # Faction Raid
-            if ($faction->getDtr() < 0.00 && !$faction->isRaided()) {
-                $faction->setRaided(true);
+            if ($faction->getDtr() < 0.00 && !$faction->isRaidable()()) {
+                $faction->setRaidable(true);
                 $faction->setPoints($faction->getPoints() - 10);
                 
                 if ($killerXuid !== null) {
