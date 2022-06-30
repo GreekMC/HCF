@@ -49,7 +49,7 @@ class SetDtrSubCommand implements FactionSubCommand
         $sender->sendMessage(TextFormat::colorize('&aThe DTR of the faction ' . $name . ' is now ' . $dtr));
         $webHook = new Webhook("https://discord.com/api/webhooks/992183190963888168/MN_PukFcNaIWtUIsBPD96okyemazZnBS8IFI2ov7_VwN2PD-ZgIhxUNWvUUanO06y_gh");
         $msg = new Message();
-        $msg->setContent('`&aThe DTR of the faction ' . $name . ' is now ' . $dtr . ' by staff ' . $sender->getName() . '`');
+        $msg->setContent('The DTR of the faction **' . $name . '** is now **' . $dtr . '** by staff **' . $sender->getName() . '**');
         $webHook->send($msg);
     }
 }

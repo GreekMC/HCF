@@ -49,7 +49,7 @@ class SetRegenTimeSubCommand implements FactionSubCommand
         $sender->sendMessage(TextFormat::colorize("&a" . $name . ' faction regen time is now ' . $time . " minutes"));
         $webHook = new Webhook("https://discord.com/api/webhooks/992183190963888168/MN_PukFcNaIWtUIsBPD96okyemazZnBS8IFI2ov7_VwN2PD-ZgIhxUNWvUUanO06y_gh");
         $msg = new Message();
-        $msg->setContent('`&a' . $name . ' faction regen time is now ' . $time . " minutes" . ' by staff ' . $sender->getName() . '`');
+        $msg->setContent('**' . $name . '** faction regen time is now **' . $time . " minutes**" . ' by staff **' . $sender->getName() . '**');
         $webHook->send($msg);
     }
 }

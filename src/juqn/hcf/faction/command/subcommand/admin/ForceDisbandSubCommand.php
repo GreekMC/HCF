@@ -47,7 +47,7 @@ class ForceDisbandSubCommand implements FactionSubCommand
         $sender->sendMessage(TextFormat::colorize('&aThe ' . $name .' &afaction was disbanded'));
         $webHook = new Webhook("https://discord.com/api/webhooks/992183190963888168/MN_PukFcNaIWtUIsBPD96okyemazZnBS8IFI2ov7_VwN2PD-ZgIhxUNWvUUanO06y_gh");
         $msg = new Message();
-        $msg->setContent('`&aThe ' . $name .' &afaction was disbanded by staff ' . $sender->getName() . '`');
+        $msg->setContent('The **' . $name .'** faction was disbanded by staff **' . $sender->getName() . '**');
         $webHook->send($msg);
     }
 }
