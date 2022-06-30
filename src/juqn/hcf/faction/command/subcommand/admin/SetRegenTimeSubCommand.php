@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace juqn\hcf\faction\command\subcommand\admin;
 
+use CortexPE\DiscordWebhookAPI\Message;
+use CortexPE\DiscordWebhookAPI\Webhook;
 use juqn\hcf\faction\command\FactionSubCommand;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
@@ -45,5 +47,9 @@ class SetRegenTimeSubCommand implements FactionSubCommand
         }
         HCFLoader::getInstance()->getFactionManager()->getFaction($name)->setTimeRegeneration($time * 60);
         $sender->sendMessage(TextFormat::colorize("&a" . $name . ' faction regen time is now ' . $time . " minutes"));
+        $webHook = new Webhook("https://discord.com/api/webhooks/992183190963888168/MN_PukFcNaIWtUIsBPD96okyemazZnBS8IFI2ov7_VwN2PD-ZgIhxUNWvUUanO06y_gh");
+        $msg = new Message();
+        $msg->setContent('`&a' . $name . ' faction regen time is now ' . $time . " minutes" . ' by staff ' . $sender->getName() . '`');
+        $webHook->send($msg);
     }
 }
