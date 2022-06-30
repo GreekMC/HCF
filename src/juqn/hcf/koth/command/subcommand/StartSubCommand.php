@@ -27,9 +27,6 @@ class StartSubCommand implements KothSubCommand
      */
     public function execute(CommandSender $sender, array $args): void
     {
-        if (!$sender instanceof Player)
-            return;
-        
         if (count($args) < 1) {
             $sender->sendMessage(TextFormat::colorize('&c/koth start [string: name]'));
             return;
