@@ -24,9 +24,6 @@ class SetRegenTimeSubCommand implements FactionSubCommand
      */
     public function execute(CommandSender $sender, array $args): void
     {
-        if (!$sender instanceof Player)
-            return;
-
         if (!$sender->hasPermission('setregentime.permission')) {
             return;
         }

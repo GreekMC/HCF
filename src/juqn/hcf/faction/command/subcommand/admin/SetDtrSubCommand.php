@@ -24,9 +24,6 @@ class SetDtrSubCommand implements FactionSubCommand
      */
     public function execute(CommandSender $sender, array $args): void
     {
-        if (!$sender instanceof Player)
-            return;
-
         if (!$sender->hasPermission('setdtr.permission')) {
             return;
         }
