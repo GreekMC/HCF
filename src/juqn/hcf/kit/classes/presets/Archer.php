@@ -21,7 +21,7 @@ class Archer extends HCFClass
 {
     
     /** @var array */
-    private array $archerMark = []
+    private array $archerMark = [];
     
     /**
      * Archer construct.
