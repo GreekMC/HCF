@@ -40,7 +40,7 @@ class KitManager
         # Register classes
         ClassFactory::init();
         # Register listener
-        HCFLoader::getInstance()->getPluginManager()->registerEvents(new KitListener(), HCFLoader::getInstance());
+        HCFLoader::getInstance()->getServer()->getPluginManager()->registerEvents(new KitListener(), HCFLoader::getInstance());
     }
     
     /**
