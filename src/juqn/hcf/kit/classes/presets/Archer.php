@@ -108,7 +108,7 @@ class Archer extends HCFClass
                 $damager->sendMessage(TextFormat::colorize('&e[&9Archer Range &e(&c' . intva($entity->getPosition()->distance($damager->getPosition())) . '&e)] &6Marked player for 10 seconds.'));
                 
                 $entity->sendMessage(TextFormat::colorize('&c&lMarked! &r&eAn archer has shot you and marked you (+15% damage) for 10 seconds).'));
-                $entity->setNameTag(TextFormat::colorize('&e' . $entity->getName()))
+                $entity->setNameTag(TextFormat::colorize('&e' . $entity->getName()));
                 $entity->getSession()->addCooldown('archer.mark', '&l&6Archer Mark&r&7: &r&c', 10);
                 $this->archerMark[$entity->getName()] = time() + 10;
                 
