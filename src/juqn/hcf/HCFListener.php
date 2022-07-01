@@ -58,46 +58,49 @@ class HCFListener implements Listener
 
         if ($entity instanceof Player) {
             if ($event->isCancelled()) return;
-
-            if ($entity->getSession()->getCooldown('starting.timer')) {
-                $event->cancel();
-                return;
-            }
-
-            if ($entity->getSession()->getCooldown('pvp.timer') !== null) {
-                if ($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK || $cause === EntityDamageEvent::CAUSE_PROJECTILE) {
+            
+            if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($entity->getSession()->getCooldown('starting.timer')) {
                     $event->cancel();
                     return;
                 }
-            }
 
-            if ($entity->getCurrentClaim() === 'Spawn') {
-                $event->cancel();
-                return;
+                if ($entity->getSession()->getCooldown('pvp.timer') !== null) {
+                    if ($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK || $cause === EntityDamageEvent::CAUSE_PROJECTILE) {
+                        $event->cancel();
+                        return;
+                    }
+                }
+
+                if ($entity->getCurrentClaim() === 'Spawn') {
+                    $event->cancel();
+                    return;
+                }
             }
 
             if ($event instanceof EntityDamageByEntityEvent || $event instanceof EntityDamageByChildEntityEvent) {
                 $damager = $event->getDamager();
 
                 if ($damager instanceof Player) {
-                    if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
-                        $event->cancel();
-                        return;
-                    }
-                    
-                    if ($damager->getCurrentClaim() === 'Spawn') {
-                        $event->cancel();
-                        return;
-                    }
-
-                    if ($entity->getSession()->getFaction() !== null && $damager->getSession()->getFaction() !== null) {
-                        if ($entity->getSession()->getFaction() === $damager->getSession()->getFaction()) {
-                            $damager->sendMessage(TextFormat::colorize("§eYou cannot hurt §2" . $entity->getName() . "§e."));
+                    if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                        if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
                             $event->cancel();
                             return;
                         }
-                    }
+                    
+                        if ($damager->getCurrentClaim() === 'Spawn') {
+                            $event->cancel();
+                            return;
+                        }
 
+                        if ($entity->getSession()->getFaction() !== null && $damager->getSession()->getFaction() !== null) {
+                            if ($entity->getSession()->getFaction() === $damager->getSession()->getFaction()) {
+                                $damager->sendMessage(TextFormat::colorize("§eYou cannot hurt §2" . $entity->getName() . "§e."));
+                                $event->cancel();
+                                return;
+                            }
+                        }
+                    }
                     $entity->getSession()->addCooldown('spawn.tag', '&l&cSpawn Tag&r&7: &r&c', 30);
                     $damager->getSession()->addCooldown('spawn.tag', '&l&cSpawn Tag&r&7: &r&c', 30);
                 }
@@ -229,14 +232,16 @@ class HCFListener implements Listener
 
         if ($player instanceof Player) {
             if ($player->getCurrentClaim() !== null) {
-                $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
+                if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                    $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
+                
+                    if ($claim !== null && $claim->getType() === 'spawn') {
+                        $event->cancel();
 
-                if ($claim !== null && $claim->getType() === 'spawn') {
-                    $event->cancel();
-
-                    if ($player->getHungerManager()->getFood() !== $player->getHungerManager()->getMaxFood())
-                        $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
-                    return;
+                        if ($player->getHungerManager()->getFood() !== $player->getHungerManager()->getMaxFood())
+                            $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
+                        return;
+                    }
                 }
             }
 
@@ -398,16 +403,18 @@ class HCFListener implements Listener
                     $damager->sendMessage("§cYou can't archer tag someone who has the same class as you!");
                     return;
                 }
+                
+                if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                    if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                        return;
+                    }
 
-                if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
-                    return;
-                }
-
-                if ($damager->getCurrentClaim() === 'Spawn') {
-                    return;
-                }
-                if ($damager->getSession()->getFaction() === $entity->getSession()->getFaction()) {
-                    return;
+                    if ($damager->getCurrentClaim() === 'Spawn') {
+                        return;
+                    }
+                    if ($damager->getSession()->getFaction() === $entity->getSession()->getFaction()) {
+                        return;
+                    }
                 }
 
 
@@ -508,12 +515,14 @@ class HCFListener implements Listener
         }
 
         if ($player->getClass()->getId() === HCFClass::ROGUE) {
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
+            if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                    return;
+                }
             
-            if ($player->getCurrentClaim() === 'Spawn') {
-                return;
+                if ($player->getCurrentClaim() === 'Spawn') {
+                    return;
+                }
             }
 
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
@@ -541,12 +550,14 @@ class HCFListener implements Listener
         }
 
         if ($player->getClass()->getId() === HCFClass::ARCHER) {
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
+            if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                    return;
+                }
             
-            if ($player->getCurrentClaim() === 'Spawn') {
-                return;
+                if ($player->getCurrentClaim() === 'Spawn') {
+                    return;
+                }
             }
             
             if ($item->getId() === VanillaItems::SUGAR()->getId()) {
@@ -579,12 +590,14 @@ class HCFListener implements Listener
                 return;
             }
             
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
+            if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                    return;
+                }
             
-            if ($player->getCurrentClaim() === 'Spawn') {
-                return;
+                if ($player->getCurrentClaim() === 'Spawn') {
+                    return;
+                }
             }
 
             switch ($item->getId()) {
@@ -733,12 +746,14 @@ class HCFListener implements Listener
         }
 
         if ($player->getClass()->getId() === HCFClass::BARD) {
-            if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                return;
-            }
+            if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                    return;
+                }
             
-            if ($player->getCurrentClaim() === 'Spawn') {
-                return;
+                if ($player->getCurrentClaim() === 'Spawn') {
+                    return;
+                }
             }
 
             switch ($item->getId()) {
@@ -859,14 +874,18 @@ class HCFListener implements Listener
                 }
                 
                 if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
-                    if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
-                        $event->cancel();
-                        return;
+                    if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                        if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
+                            $event->cancel();
+                            return;
+                        }
+                        
+                        if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
+                            $event->cancel();
+                            return;
+                        }
                     }
-                    if ($player->getSession()->getCooldown('starting.timer') !== null || $player->getSession()->getCooldown('pvp.timer') !== null) {
-                        $event->cancel();
-                        return;
-                    }
+                    
                     if ($damager->getViewPos() == $player->getViewPos()) {
                         if ($damager->getSession()->getCooldown('rogue.cooldown') !== null) {
                             return;
