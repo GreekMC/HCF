@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace juqn\hcf\kit\classes;
 
 use juqn\hcf\player\Player;
-
 use pocketmine\entity\effect\EffectInstance;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
+use pocketmine\event\player\PlayerItemHeldEvent;
+use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\item\Item;
 
-/**
- * Class HCFClass
- * @package juqn\hcf\kit\classes
- */
 abstract class HCFClass
 {
     
@@ -72,6 +71,34 @@ abstract class HCFClass
     public function getId(): int
     {
         return $this->id;
+    }
+    
+    /**
+     * @param EntityDamageEvent $event
+     */
+    public function handleDamage(EntityDamageEvent $event): void
+    {
+    }
+    
+    /**
+     * @param EntityDamageByChildEntityEvent $event
+     */
+    public function handleDamageByChildEntity(EntityDamageByChildEntityEvent $event): void
+    {
+    }
+    
+    /**
+     * @param PlayerItemHeldEvent $event
+     */
+    public function handleItemHeld(PlayerItemHeldEvent $event): void
+    {
+    }
+    
+    /**
+     * @param PlayerItemUseEvent $event
+     */
+    public function handleItemUse(PlayerItemUseEvent $event): void
+    {
     }
     
     /**

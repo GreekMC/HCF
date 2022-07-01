@@ -10,10 +10,6 @@ use juqn\hcf\kit\classes\presets\Mage;
 use juqn\hcf\kit\classes\presets\Miner;
 use juqn\hcf\kit\classes\presets\Rogue;
 
-/**
- * Class ClassFactory
- * @package juqn\hcf\kit\classes
- */
 class ClassFactory
 {
 

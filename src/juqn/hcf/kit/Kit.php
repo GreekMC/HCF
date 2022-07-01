@@ -7,10 +7,6 @@ namespace juqn\hcf\kit;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class Kit
- * @package juqn\hcf\kit
- */
 class Kit
 {
     

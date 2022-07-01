@@ -7,7 +7,7 @@ namespace juqn\hcf\kit;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\kit\classes\ClassFactory;
 use juqn\hcf\kit\command\KitCommand;
-
+use pocketmine\event\Event;
 use pocketmine\item\Item;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
@@ -15,10 +15,6 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class KitManager
- * @package juqn\hcf\kit
- */
 class KitManager
 {
     
@@ -43,12 +39,29 @@ class KitManager
         }
         # Register classes
         ClassFactory::init();
+        # Register listener
+        HCFLoader::getInstance()->getPluginManager()->registerEvents(new KitListener(), HCFLoader::getInstance());
     }
     
-    public function registerPermission(string $permission): void {
+    /**
+     * @param string $permission
+     */
+    public function registerPermission(string $permission): void
+    {
         $manager = PermissionManager::getInstance();
         $manager->addPermission(new Permission($permission));
         $manager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission, true);
+    }
+    
+    /**
+     * @param string $method
+     * @param Event $event
+     */
+    public function callEvent(string $method, Event $event): void
+    {
+        foreach (ClassFactory::getClasses() as $class) {
+            $class->$method($event);
+        }
     }
     
     /**

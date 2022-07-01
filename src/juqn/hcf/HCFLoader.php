@@ -36,6 +36,7 @@ use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\ClosureTask;
+use pocketmine\utils\TextFormat;
 use pocketmine\world\World;
 
 /**
@@ -84,10 +85,6 @@ class HCFLoader extends PluginBase
     private ShopManager $shopManager;
     /** @var vKitManager */
     private vKitManager $vKitManager;
-
-    private array $tags = [
-        'ArcherMark' => []
-    ];
     
     protected function onLoad(): void
     {
@@ -119,12 +116,12 @@ class HCFLoader extends PluginBase
         $this->sessionManager = new SessionManager;
         $this->shopManager = new ShopManager;
         $this->vKitManager = new vKitManager;
-
+        
         # Register listener
         $this->getServer()->getPluginManager()->registerEvents(new HCFListener(), $this);
         
-        # Network
-        $this->getServer()->getNetwork()->setName("§r§l§6Greek §r§7| §r§fHCF");
+        # Network MOTD
+        $this->getServer()->getNetwork()->setName(TextFormat::colorize('&r&l&6Greek &r&7| &r&fHCF'));
         
         # Unregister command
         $commands = [
@@ -321,18 +318,5 @@ class HCFLoader extends PluginBase
     public function getvKitManager(): vKitManager
     {
         return $this->vKitManager;
-    }
-
-    public function inTag(string $type, string $player): bool
-    {
-        if (isset($this->tags[$type]) && isset($this->tags[$type][$player])) {
-            return $this->tags[$type][$player] > time();
-        }
-        return false;
-    }
-
-    public function setTag(string $type, string $player, int $time): void
-    {
-        $this->tags[$type][$player] = time() + $time;
     }
 }
