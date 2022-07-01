@@ -221,6 +221,12 @@ class HCFListener implements Listener
         $webHook->send($msg);
         
         $event->setDeathMessage(TextFormat::colorize($message));
+        
+        # Deathban
+        if (HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+            $player->getSession()->setDeathban(true);
+            $player->kick(TextFormat::colorize('&r&c&lYOU DIED&r' . PHP_EOL . '&cNow you have deathban'));
+        }
     }
 
     /**
@@ -305,7 +311,12 @@ class HCFListener implements Listener
         $player = $event->getPlayer();
         $session = HCFLoader::getInstance()->getSessionManager()->getSession($player->getXuid());
 
-        if ($session === null)
+        if ($session === null) {
+            if (HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                $event->setKickMessage(TextFormat::colorize('&r&c&lYOU ARE DEAD&r' . PHP_EOL . '&cYou can\'t play until the eotw is over'));
+                $event->cancel();
+                return;
+            }
             HCFLoader::getInstance()->getSessionManager()->addSession($player->getXuid(), [
                 'name' => $player->getName(),
                 'faction' => null,
@@ -320,7 +331,15 @@ class HCFListener implements Listener
                     'highestKillStreak' => 0
                 ]
             ]);
-        else {
+        } else {
+            if (HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($session->hasDeathban()) {
+                    $event->setKickMessage(TextFormat::colorize('&r&c&lYOU ARE DEAD&r' . PHP_EOL . '&cYou can\'t play until the eotw is over'));
+                    $event->cancel();
+                    return;
+                }
+            }
+
             if ($player->getName() !== $session->getName())
                 $session->setName($player->getName());
         }
