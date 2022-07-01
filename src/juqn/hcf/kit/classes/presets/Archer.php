@@ -12,6 +12,7 @@ use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
+use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
 use pocketmine\scheduler\ClosureTask;
