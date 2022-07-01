@@ -1,5 +1,5 @@
 name: HCF
-version: 0.1
+version: 0.2
 author: JuqnGOOD
 api: 4.0.0
 main: juqn\hcf\HCFLoader
