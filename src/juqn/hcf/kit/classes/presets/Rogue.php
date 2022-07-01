@@ -66,6 +66,14 @@ class Rogue extends HCFClass
                     return;
                 
                 if ($damager->getClass()->getId() === HCFClass::ROGUE && $damager->getInventory()->getItemInHand()->getId() === VanillaItems::GOLDEN_SWORD()->getId()) {
+                    if ($damager->getCurrentClaim() === 'Spawn'){
+                        return;
+                    }
+
+                    if ($entity->getCurrentClaim() === 'Spawn'){
+                        return;
+                    }
+
                     if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
                         $event->cancel();
                         return;
