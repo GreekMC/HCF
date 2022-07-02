@@ -153,7 +153,10 @@ class ClaimCreator extends Claim
         return $this->getWorld() !== '-1' && $this->getMinX() !== -1 && $this->getMaxX() !== -1 && $this->getMinY() !== -1 && $this->getMaxY() !== -1 && $this->getMinZ() !== -1 && $this->getMaxZ() !== -1;
     }
 
-    public function deleteCorners(): void
+    /**
+     * @param Player $player
+     */
+    public function deleteCorners(Player $player): void
     {
         $first = $this->getFirst();
 
