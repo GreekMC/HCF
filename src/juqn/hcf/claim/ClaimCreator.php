@@ -158,7 +158,7 @@ class ClaimCreator extends Claim
         if ($first !== null) {
             for ($y = $first->getFloorY(); $y <= 127; $y++) {
                 $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                new Position($first->getFloorX(), $y, $first->getFloorZ()), 
+                                                                                                                                                new Position($first->getFloorX(), $y, $first->getFloorZ(), $first->getWorld()), 
                                                                                                                                                 VanillaBlocks::AIR()));
             }
         }
@@ -167,7 +167,7 @@ class ClaimCreator extends Claim
         if ($second !== null) {
             for ($y = $second->getFloorY(); $y <= 127; $y++) {
                 $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                new Position($second->getFloorX(), $y, $second->getFloorZ()), 
+                                                                                                                                                new Position($second->getFloorX(), $y, $second->getFloorZ(), $second->getWorld()), 
                                                                                                                                                 VanillaBlocks::AIR()));
             }
         }
@@ -183,7 +183,7 @@ class ClaimCreator extends Claim
         if ($first) {
             for ($y = $position->getFloorY(); $y <= 127; $y++) {
                 $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ()),
+                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ(), $position->getWorld()),
                                                                                                                                                     $y % 3 === 0 ? VanillaBlocks::EMERALD() : VanillaBlocks::GLASS()));
             }
         } else {
@@ -192,13 +192,13 @@ class ClaimCreator extends Claim
             if ($second !== null && !$second->equals($position)) {
                 for ($y = $second->getFloorY(); $y <= 127; $y++) {
                     $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($second->getFloorX(), $y, $second->getFloorZ()), 
+                                                                                                                                                    new Position($second->getFloorX(), $y, $second->getFloorZ(), $second->getWorld()), 
                                                                                                                                                     VanillaBlocks::AIR()));
                 }
             }
             for ($y = $position->getFloorY(); $y <= 127; $y++) {
                 $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ()),
+                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ(), $position->getWorld()),
                                                                                                                                                     $y % 3 === 0 ? VanillaBlocks::EMERALD() : VanillaBlocks::GLASS()));
             }
         }
