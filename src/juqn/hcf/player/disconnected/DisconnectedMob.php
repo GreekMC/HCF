@@ -6,7 +6,6 @@ namespace juqn\hcf\player\disconnected;
 
 use CortexPE\DiscordWebhookAPI\Message;
 use CortexPE\DiscordWebhookAPI\Webhook;
-use JetBrains\PhpStorm\Pure;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 use juqn\hcf\session\Session;
@@ -16,6 +15,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\Item;
 use pocketmine\item\Tool;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
@@ -36,6 +36,19 @@ class DisconnectedMob extends Villager
     public function getDisconnected(): ?Disconnected
     {
         return $this->disconnected;
+    }
+    
+    /**
+     * @param CompoundTag $nbt
+     */
+    protected function initEntity(CompoundTag $nbt): void
+    {
+        parent::initEntity($nbt);
+        
+        if ($this->getDisconnected() === null) {
+            $this->flagForDespawn();
+            return;
+        }
     }
     
     /**
@@ -66,24 +79,27 @@ class DisconnectedMob extends Villager
      */
     public function onUpdate(int $currentTick): bool
     {
+        $hasUpdate = parent::onUpdate($currentTick);
         $disconnected = $this->getDisconnected();
         
-        if ($currentTick % 20 === 0) {
-            if ($disconnected !== null) {
-                $this->time--;
-                $this->setNameTag(TextFormat::colorize('&7(Combat-Logger)&c ' . $this->getName() . " &7- &c" . Timer::convert((int)$this->time)));
+        if ($hasUpdate) {
+            if ($currentTick % 20 === 0) {
+                if ($disconnected !== null) {
+                    $this->time--;
+                    $this->setNameTag(TextFormat::colorize('&7(Combat-Logger)&c ' . $disconnect->getName() . ' &7- &c' . Timer::convert($this->time)));
         
-                if ($this->time <= 0) {
-                    HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($disconnected->getXuid());
+                    if ($this->time <= 0) {
+                        HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($disconnected->getXuid());
+                        $this->flagForDespawn();
+                        return true;
+                    }
+                } else {
                     $this->flagForDespawn();
                     return true;
                 }
-            } else {
-                $this->flagForDespawn();
-                return true;
             }
         }
-        return parent::onUpdate($currentTick);
+        return $hasUpdate;
     }
     
     /**
@@ -98,10 +114,25 @@ class DisconnectedMob extends Villager
             $session = $disconnected->getSession();
             
             if ($session !== null) {
+                if ($cause !== EntityDamageEvent::CAUSE_ENTITY_ATTACK) {
+                    $event->cancel();
+                    return;
+                }
+                
                 if ($source instanceof EntityDamageByEntityEvent) {
                     $damager = $source->getDamager();
 
                     if ($damager instanceof Player) {
+                        if ($damager->getName() === $session->getName()) {
+                            $event->cancel();
+                            return;
+                        }
+                        
+                        if ($damager->getCurrentClaim() === 'Spawn') {
+                            $event->cancel();
+                            return;
+                        }
+                    
                         if ($damager->getSession()->getCooldown('starting.timer') !== null || $damager->getSession()->getCooldown('pvp.timer') !== null) {
                             $source->cancel();
                             return;
@@ -159,15 +190,44 @@ class DisconnectedMob extends Villager
         $session->removeCooldown('spawn.tag');
         $session->addDeath();
         $session->setKillStreak(0);
-
         $session->addCooldown('pvp.timer', '&l&aPvP Timer&r&7: &r&c', 60 * 60, true);
 
         if ($session->getFaction() !== null) {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($session->getFaction());
+            
             $faction->setPoints($faction->getPoints() - 1);
             $faction->setDtr($faction->getDtr() - 1.0);
-            $faction->setTimeRegeneration(45 * 60);
+            $faction->announce(TextFormat::colorize('&cMember Death: &f' . $player->getName() . PHP_EOL . '&cDTR: &f' . $faction->getDtr()));
+            
+            # Faction Raid
+            if ($faction->getDtr() < 0.00 && !$faction->isRaidable()) {
+                $faction->setRaidable(true);
+                $faction->setPoints($faction->getPoints() - 10);
 
+                if ($killerXuid !== null) {
+                    $session = HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid);
+
+                    if ($session !== null && $session->getFaction()) {
+                        $fac = HCFLoader::getInstance()->getFactionManager()->getFaction($session->getFaction());
+
+                        if ($fac !== null) {
+                            $fac->setPoints($fac->getPoints() + 3);
+                            $fac->announce(TextFormat::colorize('&cThe faction &l' . $faction->getName() . ' &r&cis now Rideable!'));
+                        }
+                    }
+                }
+            }
+            
+            # Regen time
+            if (!$faction->isRaidable()) {
+               $faction->setTimeRegeneration(35 * 60);
+            } else {
+                $regenTime = $faction->getTimeRegeneration();
+                $value = $regenTime + (5 * 60);
+
+                $faction->setTimeRegeneration($value < 35 * 60 ? $value : 35 * 60);
+            }
+            
             # Setup scoretag for team members
             foreach ($faction->getOnlineMembers() as $member)
                 $member->setScoreTag(TextFormat::colorize('&6[&c' . $faction->getName() . ' &c' . $faction->getDtr() . '■&6]'));
@@ -184,15 +244,15 @@ class DisconnectedMob extends Villager
                 $message = '&c' . $session->getName() . '&4[' . $session->getKills() . '] &ewas slain by &c' . $killer . '&4[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']';
                 $webhook = '`' . $session->getName() . '[' . $session->getKills() . '] was slain by ' . $killer . '[' . HCFLoader::getInstance()->getSessionManager()->getSession($killerXuid)->getKills() . ']`';
             }
-            // Construct a discord webhook with its URL
-            $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));
-
-            // Construct a new Message object
-            $msg = new Message();
-            $msg->setContent($webhook);
-            $webHook->send($msg);
-            Server::getInstance()->broadcastMessage(TextFormat::colorize($message));
         }
+        // Construct a discord webhook with its URL
+        $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('kills.webhook'));
+
+        // Construct a new Message object
+        $msg = new Message();
+        $msg->setContent($webhook);
+        $webHook->send($msg);
+        Server::getInstance()->broadcastMessage(TextFormat::colorize($message));
     }
     
     /**

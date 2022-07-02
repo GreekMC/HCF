@@ -16,6 +16,7 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerExhaustEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemConsumeEvent;
+use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -347,6 +348,19 @@ class HCFListener implements Listener
                 return;
             }
             $player->getSession()->addCooldown('apple.enchanted', '&l&6Gapple&r&7: &r&c', 3600);
+        }
+    }
+    
+    /**
+     * @param PlayerItemUseEvent $event
+     */
+    public function handleItemUse(PlayerItemUseEvent $event): void
+    {
+        $item = $event->getItem();
+        
+        if ($item instanceof Armor) {
+            $event->cancel();
+            return;
         }
     }
 

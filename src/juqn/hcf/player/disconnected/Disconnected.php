@@ -124,10 +124,9 @@ class Disconnected
             $player->setHealth($mob->getHealth());
             
             $mob->flagForDespawn();
-            
-            HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($player->getXuid());
         } else {
             $player->teleport($this->getLocation());
         }
+        HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($player->getXuid());
     }
 }
