@@ -198,10 +198,10 @@ class ClaimListener implements Listener
 
                 if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
                     if ($creator->getFirst() === null) {
-                        $creator->calculate($block->getPosition());
+                        $creator->calculate($block->getPosition(), $player);
                         $player->sendMessage(TextFormat::colorize('&aYou have selected the first position. Now select the second position'));
                     } else {
-                        $result = $creator->calculate($block->getPosition(), false);
+                        $result = $creator->calculate($block->getPosition(), $player, false);
 
                         if (!$result) {
                             $player->sendMessage(TextFormat::colorize('&cERROR: The position was not selected in the same world'));

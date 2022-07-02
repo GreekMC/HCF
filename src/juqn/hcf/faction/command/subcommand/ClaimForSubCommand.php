@@ -49,6 +49,7 @@ class ClaimForSubCommand implements FactionSubCommand
                     $sender->sendMessage(TextFormat::colorize('&cYou have not selected the claim'));
                     return;
                 }
+                $creator->deleteCorners();
                 HCFLoader::getInstance()->getClaimManager()->createClaim($creator->getName(), $creator->getType(), $creator->getMinX(), $creator->getMaxX(), $creator->getMinZ(), $creator->getMaxZ(), $creator->getWorld());
                 $sender->sendMessage(TextFormat::colorize('&aYou have made the claim of the opclaim ' . $creator->getName()));
                 HCFLoader::getInstance()->getClaimManager()->removeCreator($sender->getName());
@@ -69,6 +70,7 @@ class ClaimForSubCommand implements FactionSubCommand
         
         if ($claimName === 'cancel') {
             if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($sender->getName())) !== null && $creator->getType() === $this->claims[$creator->getName()]) {
+                $creator->deleteCorners();
                 HCFLoader::getInstance()->getClaimManager()->removeCreator($sender->getName());
                 $sender->sendMessage(TextFormat::colorize('&cYou have canceled the claim'));
             } else

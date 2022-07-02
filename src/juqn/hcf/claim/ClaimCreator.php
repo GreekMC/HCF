@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace juqn\hcf\claim;
 
 use juqn\hcf\HCFLoader;
+use pocketmine\block\Block;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\protocol\types\BlockPosition;
+use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
+use pocketmine\player\Player;
 use pocketmine\world\Position;
 
 /**
@@ -66,14 +72,19 @@ class ClaimCreator extends Claim
     
     /**
      * @param Position $position
+     * @param Player|null $player
      * @param bool $first
      * @return bool
      */
-    public function calculate(Position $position, bool $first = true): bool
+    public function calculate(Position $position, ?Player $player = null, bool $first = true): bool
     {
-        if ($first)
+        if ($first) {
+            if ($player !== null) $this->createCorner($player, $position, $first);
             $this->first = $position;
-        else $this->second = $position;
+        } else {
+            if ($player !== null) $this->createCorner($player, $position, $first);
+            $this->second = $position;
+        }
         
         if ($this->first !== null && $this->second !== null) {
             $this->minX = min($this->first->getFloorX(), $this->second->getFloorX());
@@ -138,5 +149,70 @@ class ClaimCreator extends Claim
     public function isValid(): bool
     {
         return $this->getWorld() !== '-1' && $this->getMinX() !== -1 && $this->getMaxX() !== -1 && $this->getMinY() !== -1 && $this->getMaxY() !== -1 && $this->getMinZ() !== -1 && $this->getMaxZ() !== -1;
+    }
+    
+    public function deleteCorners(): void
+    {
+        $first = $this->getFirst();
+        
+        if ($first !== null) {
+            for ($y = $first->getFloorY(); $y <= 127; $y++) {
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
+                                                                                                                                                new Position($first->getFloorX(), $y, $first->getFloorZ()), 
+                                                                                                                                                VanillaBlocks::AIR()));
+            }
+        }
+        $second = $this->getSecond();
+        
+        if ($second !== null) {
+            for ($y = $second->getFloorY(); $y <= 127; $y++) {
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
+                                                                                                                                                new Position($second->getFloorX(), $y, $second->getFloorZ()), 
+                                                                                                                                                VanillaBlocks::AIR()));
+            }
+        }
+    }
+    
+    /**
+     * @param Player $player
+     * @param Position $position
+     * @param bool $first
+     */
+    private function createCorner(Player $player, Position $position, bool $first = true): void
+    {
+        if ($first) {
+            for ($y = $position->getFloorY(); $y <= 127; $y++) {
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
+                                                                                                                                                    new Position($positon->getFloorX(), $y, $position->getFloorZ()), 
+                                                                                                                                                    $y % 3 === 0 ? VanillaBlocks::EMERALD() : VanillaBlocks::GLASS()));
+            }
+        } else {
+            $second = $this->getSecond();
+            
+            if ($second !== null && !$second->equals($position)) {
+                for ($y = $second->getFloorY(); $y <= 127; $y++) {
+                    $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
+                                                                                                                                                    new Position($second->getFloorX(), $y, $second->getFloorZ()), 
+                                                                                                                                                    VanillaBlocks::AIR()));
+                }
+            }
+            for ($y = $position->getFloorY(); $y <= 127; $y++) {
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
+                                                                                                                                                    new Position($positon->getFloorX(), $y, $position->getFloorZ()), 
+                                                                                                                                                    $y % 3 === 0 ? VanillaBlocks::EMERALD() : VanillaBlocks::GLASS()));
+            }
+        }
+    }
+    
+    /**
+     * @param Block $block
+     * @return UpdateBlockPacket
+     */
+    private function sendFakeBlock(Position $position, Block $block): UpdateBlockPacket
+    {
+        $pos = BlockPosition::fromVector3($position->asVector3());
+        $block = RuntimeBlockMapping::getInstance()->fromRuntimeId($block)->getFullId());
+        $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+        return $pk;
     }
 }

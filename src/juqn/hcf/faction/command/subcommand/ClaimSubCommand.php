@@ -50,6 +50,7 @@ class ClaimSubCommand implements FactionSubCommand
                 $sender->sendMessage(TextFormat::colorize('&cYour faction does not have enough money to pay the claim'));
                 return;
             }
+            $creator->deleteCorners();
             HCFLoader::getInstance()->getClaimManager()->createClaim($creator->getName(), $creator->getType(), $creator->getMinX(), $creator->getMaxX(), $creator->getMinZ(), $creator->getMaxZ(), $creator->getWorld());
             $sender->sendMessage(TextFormat::colorize('&aYou have successfully claimed'));
             HCFLoader::getInstance()->getClaimManager()->removeCreator($sender->getName());
@@ -66,6 +67,7 @@ class ClaimSubCommand implements FactionSubCommand
         if (count($args) >= 1) {
             if ($args[0] === 'cancel') {
                 if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($sender->getName())) !== null && $creator->getType() === 'faction') {
+                    $creator->deleteCorners();
                     HCFLoader::getInstance()->getClaimManager()->removeCreator($sender->getName());
                     $sender->sendMessage(TextFormat::colorize('&cYou have canceled the claim'));
                 } else
