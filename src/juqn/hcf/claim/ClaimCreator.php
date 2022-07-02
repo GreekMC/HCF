@@ -211,7 +211,7 @@ class ClaimCreator extends Claim
     private function sendFakeBlock(Position $position, Block $block): UpdateBlockPacket
     {
         $pos = BlockPosition::fromVector3($position->asVector3());
-        $block = RuntimeBlockMapping::getInstance()->fromRuntimeId((int)$block)->getFullId();
+        $block = RuntimeBlockMapping::getInstance()->fromRuntimeId($block->getFullId());
         $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
         return $pk;
     }
