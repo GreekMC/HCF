@@ -23,10 +23,9 @@ class DisconnectedManager
         private array $disconnected = []
     ) {
         EntityFactory::getInstance()->register(DisconnectedMob::class, function(World $world, CompoundTag $nbt): DisconnectedMob {
-			return new DisconnectedMob(EntityDataHelper::parseLocation($nbt, $world), $nbt);
-		}, ['DisconnectedMob', 'hcf:disconnectedmob'], EntityLegacyIds::VILLAGER);
-		
-		$this->despawnMobs();
+            return new DisconnectedMob(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ['DisconnectedMob', 'hcf:disconnectedmob'], EntityLegacyIds::VILLAGER);
+        $this->despawnMobs();
     }
     
     public function onDisable(): void

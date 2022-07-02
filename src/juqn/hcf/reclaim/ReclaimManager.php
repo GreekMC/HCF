@@ -32,13 +32,7 @@ class ReclaimManager
             $permissionManager = PermissionManager::getInstance();
             
             if ($data['permission'] !== null) {
-                $this->registerPermission($data['permission']);     
-                /*if ($permissionManager->getPermission($data['permission']) !== null) {
-					HCFLoader::getInstance()->getLogger()->error(TextFormat::colorize('The permission of the kit ' . $name . ' already exists, the kit will not be loaded'));
-					continue;
-				}
-				$permissionManager->addPermission(new Permission($data['permission'], 'Permission for the reclaim ' . $name));
-				$permissionManager->getPermission(DefaultPermissions::ROOT_USER)->addChild($data['permission'], true);*/
+                $this->registerPermission($data['permission']);
             }
             $this->createReclaim($name, $data['permission'], (int) $data['time'], $data['contents']);
         }
@@ -46,7 +40,11 @@ class ReclaimManager
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new ReclaimCommand());
     }
     
-    public function registerPermission(string $permission): void {
+    /**
+     * @param string $permission
+     */
+    public function registerPermission(string $permission): void
+    {
         $manager = PermissionManager::getInstance();
         $manager->addPermission(new Permission($permission));
         $manager->getPermission(DefaultPermissions::ROOT_OPERATOR)->addChild($permission, true);
