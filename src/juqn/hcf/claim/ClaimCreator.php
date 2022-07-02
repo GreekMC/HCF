@@ -183,7 +183,7 @@ class ClaimCreator extends Claim
         if ($first) {
             for ($y = $position->getFloorY(); $y <= 127; $y++) {
                 $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($positon->getFloorX(), $y, $position->getFloorZ()), 
+                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ()),
                                                                                                                                                     $y % 3 === 0 ? VanillaBlocks::EMERALD() : VanillaBlocks::GLASS()));
             }
         } else {
@@ -198,7 +198,7 @@ class ClaimCreator extends Claim
             }
             for ($y = $position->getFloorY(); $y <= 127; $y++) {
                 $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($positon->getFloorX(), $y, $position->getFloorZ()), 
+                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ()),
                                                                                                                                                     $y % 3 === 0 ? VanillaBlocks::EMERALD() : VanillaBlocks::GLASS()));
             }
         }
@@ -211,7 +211,7 @@ class ClaimCreator extends Claim
     private function sendFakeBlock(Position $position, Block $block): UpdateBlockPacket
     {
         $pos = BlockPosition::fromVector3($position->asVector3());
-        $block = RuntimeBlockMapping::getInstance()->fromRuntimeId($block)->getFullId());
+        $block = RuntimeBlockMapping::getInstance()->fromRuntimeId((int)$block)->getFullId();
         $pk = UpdateBlockPacket::create($pos, $block, UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
         return $pk;
     }
