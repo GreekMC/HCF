@@ -24,7 +24,7 @@ class ClaimSubCommand implements FactionSubCommand
             return;
         
         if ($sender->getSession()->getFaction() === null) {
-            $sender->sendMessage(TextFormat::colorize('&cYou don\' have a faction'));
+            $sender->sendMessage(TextFormat::colorize('&cYou don\'t have a faction'));
             return;
         }
         $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
@@ -59,7 +59,7 @@ class ClaimSubCommand implements FactionSubCommand
             return;
         }
         
-        if (count($args) >= 1) {
+        if (count($args) !== 0) {
             if ($args[0] === 'cancel') {
                 if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($sender->getName())) !== null && $creator->getType() === 'faction') {
                     $creator->deleteCorners($sender);

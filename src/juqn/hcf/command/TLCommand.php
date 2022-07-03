@@ -37,7 +37,7 @@ class TLCommand extends Command
             return;
 
         if ($sender->getSession()->getFaction() === null) {
-            $sender->sendMessage(TextFormat::colorize('&cYou don\' have a faction'));
+            $sender->sendMessage(TextFormat::colorize('&cYou don\'t have a faction'));
             return;
         }
 

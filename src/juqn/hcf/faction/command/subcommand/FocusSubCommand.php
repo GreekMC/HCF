@@ -28,7 +28,7 @@ class FocusSubCommand implements FactionSubCommand
             return;
         
         if ($sender->getSession()->getFaction() === null) {
-            $sender->sendMessage(TextFormat::colorize('&cYou don\' have a faction'));
+            $sender->sendMessage(TextFormat::colorize('&cYou don\'t have a faction'));
             return;
         }
         $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
