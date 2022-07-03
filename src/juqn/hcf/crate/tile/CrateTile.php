@@ -89,14 +89,16 @@ class CrateTile extends Chest
             $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
             
             if ($crate !== null) {
-                $this->setDirty(true);
                 $nbt = $this->saveNBT();
+
                 $id = explode(':', $crate->getKeyId());
-                $itemMeta = isset($id[1]) ? (int) $id[1] : 0;
-                $item = ItemFactory::getInstance()->get((int) $id[0], $itemMeta);
+                $itemMeta = isset($id[1]) ? intval($id[1]) : 0;
+                $item = ItemFactory::getInstance()->get(intval($id[0]), $itemMeta);
+                
                 $this->text = new TextEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 1.8, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $nbt);
                 $this->text->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
                 $this->text->spawnToAll();
+                
                 $this->floatingitem = new CustomItemEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 3.2, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $item);
                 $this->floatingitem->setPickupDelay(-1);
                 $this->floatingitem->spawnToAll();
