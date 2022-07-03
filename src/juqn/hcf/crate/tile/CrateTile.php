@@ -85,7 +85,7 @@ class CrateTile extends Chest
     
     private function createText(): void
     {
-        if ($this->text === null && $this->crateName !== null) {
+        if ($this->floatingitem === null && $this->text === null && $this->crateName !== null) {
             $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
             
             if ($crate !== null) {
@@ -111,12 +111,6 @@ class CrateTile extends Chest
     {
         parent::writeSaveData($nbt);
         $nbt->setString('crate_name', $this->getCrateName());
-
-        if ($this->text !== null)
-            $this->text->flagForDespawn();
-        
-        if ($this->floatingitem !== null)
-            $this->floatingitem->flagForDespawn();
     }
     
     /**
