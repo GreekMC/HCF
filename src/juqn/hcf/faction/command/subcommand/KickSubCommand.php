@@ -79,20 +79,6 @@ class KickSubCommand implements FactionSubCommand
                 return;
             }
         }
-        /*if (!$player instanceof Player) {
-            $sender->sendMessage(TextFormat::colorize('&cPlayer not found!'));
-            return;
-        }
-        
-        if ($player->getId() === $sender->getId()) {
-            $sender->sendMessage(TextFormat::colorize('&cYou can\'t kick yourself'));
-            return;
-        }
-        
-        if ($player->getSession()->getFaction() !== $faction->getName()) {
-            $sender->sendMessage(TextFormat::colorize('&cThe player is not a member'));
-            return;
-        }*/
         
         if ($faction->getRole($sender->getXuid()) === Faction::CO_LEADER) {
             if ($faction->getRole($session->getXuid()) === Faction::LEADER || $faction->getRole($session->getXuid()) === Faction::CO_LEADER) {

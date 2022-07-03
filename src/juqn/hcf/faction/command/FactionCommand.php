@@ -22,6 +22,7 @@ use juqn\hcf\faction\command\subcommand\HomeSubCommand;
 use juqn\hcf\faction\command\subcommand\InviteSubCommand;
 use juqn\hcf\faction\command\subcommand\KickSubCommand;
 use juqn\hcf\faction\command\subcommand\LeaveSubCommand;
+use juqn\hcf\faction\command\subcommand\PromoteSubCommand;
 use juqn\hcf\faction\command\subcommand\RallySubCommand;
 use juqn\hcf\faction\command\subcommand\SetHomeSubCommand;
 use juqn\hcf\faction\command\subcommand\StuckSubCommand;
@@ -81,12 +82,13 @@ class FactionCommand extends Command
         $this->subCommands['chat'] = new ChatSubCommand;
         $this->subCommands['c'] = new ChatSubCommand;
         $this->subCommands['unclaim'] = new UnclaimSubCommand;
-        $this->subCommands['info'] = new WhoSubCommand();
-        $this->subCommands['setdtr'] = new SetDtrSubCommand();
-        $this->subCommands['setpoints'] = new SetPointsSubCommand();
-        $this->subCommands['setregentime'] = new SetRegenTimeSubCommand();
-        $this->subCommands['forcedisband'] = new ForceDisbandSubCommand();
-        $this->subCommands['setstrikes'] = new SetStrikesSubCommand();
+        $this->subCommands['info'] = new WhoSubCommand;
+        $this->subCommands['setdtr'] = new SetDtrSubCommand;
+        $this->subCommands['setpoints'] = new SetPointsSubCommand;
+        $this->subCommands['setregentime'] = new SetRegenTimeSubCommand;
+        $this->subCommands['forcedisband'] = new ForceDisbandSubCommand;
+        $this->subCommands['setstrikes'] = new SetStrikesSubCommand;
+        $this->subCommands['promote'] = new PromoteSubCommand;
     }
     
     /**
