@@ -86,7 +86,7 @@ class DisconnectedMob extends Villager
             if ($currentTick % 20 === 0) {
                 if ($disconnected !== null) {
                     $this->time--;
-                    $this->setNameTag(TextFormat::colorize('&7(Combat-Logger)&c ' . $disconnect->getName() . ' &7- &c' . Timer::convert($this->time)));
+                    $this->setNameTag(TextFormat::colorize('&7(Combat-Logger)&c ' . $disconnected->getName() . ' &7- &c' . Timer::convert($this->time)));
         
                     if ($this->time <= 0) {
                         HCFLoader::getInstance()->getDisconnectedManager()->removeDisconnected($disconnected->getXuid());
@@ -115,7 +115,7 @@ class DisconnectedMob extends Villager
             
             if ($session !== null) {
                 if ($cause !== EntityDamageEvent::CAUSE_ENTITY_ATTACK) {
-                    $event->cancel();
+                    $source->cancel();
                     return;
                 }
                 
@@ -124,12 +124,12 @@ class DisconnectedMob extends Villager
 
                     if ($damager instanceof Player) {
                         if ($damager->getName() === $session->getName()) {
-                            $event->cancel();
+                            $source->cancel();
                             return;
                         }
                         
                         if ($damager->getCurrentClaim() === 'Spawn') {
-                            $event->cancel();
+                            $source->cancel();
                             return;
                         }
                     
@@ -197,7 +197,7 @@ class DisconnectedMob extends Villager
             
             $faction->setPoints($faction->getPoints() - 1);
             $faction->setDtr($faction->getDtr() - 1.0);
-            $faction->announce(TextFormat::colorize('&cMember Death: &f' . $player->getName() . PHP_EOL . '&cDTR: &f' . $faction->getDtr()));
+            $faction->announce(TextFormat::colorize('&cMember Death: &f' . $session->getName() . PHP_EOL . '&cDTR: &f' . $faction->getDtr()));
             
             # Faction Raid
             if ($faction->getDtr() < 0.00 && !$faction->isRaidable()) {

@@ -15,10 +15,6 @@ use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
 use pocketmine\world\World;
 
-/**
- * Class FactionListener
- * @package juqn\hcf\faction
- */
 class FactionListener implements Listener
 {
     

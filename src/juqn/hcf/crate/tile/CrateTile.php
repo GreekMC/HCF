@@ -111,6 +111,12 @@ class CrateTile extends Chest
     {
         parent::writeSaveData($nbt);
         $nbt->setString('crate_name', $this->getCrateName());
+
+        if ($this->text !== null)
+            $this->text->flagForDespawn();
+        
+        if ($this->floatingitem !== null)
+            $this->floatingitem->flagForDespawn();
     }
     
     /**

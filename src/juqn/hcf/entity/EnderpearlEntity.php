@@ -129,7 +129,7 @@ class EnderpearlEntity extends Throwable
 			$this->getOwningEntity()->attack(new EntityDamageEvent($this->getOwningEntity(), EntityDamageEvent::CAUSE_FALL, 2));
 			$this->getWorld()->addSound($this->getOwningEntity()->getPosition(), new EndermanTeleportSound());
 		}
-		$this->kill();
+		$this->flagForDespawn();
 	}
 
 	protected function onHitBlock(Block $blockHit, RayTraceResult $hitResult): void
@@ -174,14 +174,14 @@ class EnderpearlEntity extends Throwable
 				}
 
 				if (!isset($blockBack)) {
-					$this->kill();
+					$this->flagForDespawn();
 					return;
 				}
 
 				if ($blockBack->getId() === BlockLegacyIds::AIR && $blockBack->getPosition()->getWorld()->getBlock($blockBack->getPosition()->add(0, 1, 0))->getId() === BlockLegacyIds::AIR) {
 					$this->getWorld()->addSound($this->getOwningEntity()->getPosition(), new EndermanTeleportSound());
 					$this->getOwningEntity()->teleport($blockBack->getPosition());
-					$this->kill();
+					$this->flagForDespawn();
 				} else {
 					$this->teleportAt();
 				}
@@ -189,7 +189,7 @@ class EnderpearlEntity extends Throwable
 				$this->teleportAt();
 			}
 		} else {
-			$this->kill();
+			$this->flagForDespawn();
 		}
 	}
 
@@ -224,11 +224,11 @@ class EnderpearlEntity extends Throwable
 	protected function teleportAt(): void
 	{
 		if (!$this->getOwningEntity() instanceof Player || !$this->getOwningEntity()->isOnline()) {
-			$this->kill();
+			$this->flagForDespawn();
 			return;
 		}
 		if ($this->getOwningEntity() instanceof Player && $this->isFence()) {
-			$this->kill();
+			$this->flagForDespawn();
 			$this->getOwningEntity()->sendTip(TextFormat::YELLOW . "Your EnderPearl was returned, to avoid glitching");
 			return;
 		}
@@ -242,7 +242,7 @@ class EnderpearlEntity extends Throwable
 				$this->getOwningEntity()->attack(new EntityDamageEvent($this->getOwningEntity(), EntityDamageEvent::CAUSE_FALL, 2));
 
 				$this->getWorld()->addSound($this->getOwningEntity()->getPosition(), new EndermanTeleportSound());
-				$this->kill();
+				$this->flagForDespawn();
 				return;
 			}
 
@@ -255,7 +255,7 @@ class EnderpearlEntity extends Throwable
 			$this->getWorld()->addSound($this->getOwningEntity()->getPosition(), new EndermanTeleportSound());
 
 		}
-		$this->kill();
+		$this->flagForDespawn();
 	}
 
 	public function isFence(): bool

@@ -6,14 +6,9 @@ namespace juqn\hcf\faction\command\subcommand;
 
 use juqn\hcf\faction\command\FactionSubCommand;
 use juqn\hcf\HCFLoader;
-
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class TopSubCommand
- * @package juqn\hcf\faction\command\subcommand
- */
 class TopSubCommand implements FactionSubCommand
 {
     

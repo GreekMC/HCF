@@ -16,11 +16,13 @@ class PromoteSubCommand implements FactionSubCommand
 
     /**
      * @param CommandSender $sender
-     * @param string $commandLabel
      * @param array $args
      */
-    public function execute(CommandSender $sender, string $commandLabel, array $args): void
+    public function execute(CommandSender $sender, array $args): void
     {
+        if (!$sender instanceof Player)
+            return;
+
         if ($sender->getSession()->getFaction() === null) {
             $sender->sendMessage(TextFormat::colorize('&cYou don\'t have a faction'));
             return;
@@ -28,7 +30,7 @@ class PromoteSubCommand implements FactionSubCommand
         $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($sender->getSession()->getFaction());
 
         if (!in_array($faction->getRole($sender->getXuid()), [Faction::LEADER, Faction::CO_LEADER])) {
-            $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader, co-leader or captain of the invite member'));
+            $sender->sendMessage(TextFormat::colorize('&cYou aren\'t the leader or co-leader of the invite member'));
             return;
         }
 

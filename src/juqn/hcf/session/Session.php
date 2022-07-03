@@ -207,7 +207,7 @@ class Session
     /**
      * @return bool
      */
-    public function isModKilled(): bool
+    public function isMobKilled(): bool
     {
         return $this->mobkilled;
     }

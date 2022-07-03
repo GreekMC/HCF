@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace juqn\hcf\claim;
 
-use juqn\hcf\crate\tile\CrateTile;
 use juqn\hcf\entity\EnderpearlEntity;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\item\EnderpearlItem;
 use juqn\hcf\player\Player;
 
-use juqn\hcf\utils\Inventories;
-use muqsit\invmenu\inventory\SharedInventoryNotifier;
-use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\FenceGate;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\block\tile\Sign;
@@ -26,8 +22,6 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\item\ItemFactory;
-use pocketmine\item\VanillaItems;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\WorldException;
 
@@ -144,13 +138,16 @@ class ClaimListener implements Listener
             if ($claim->getType() == 'spawn') {
                 $event->cancel();
                 $entity->sendMessage(TextFormat::colorize('&cYou have Spawn Tag. You cannot teleport to this location'));
+                return;
             }
         } elseif ($entity->getSession()->getCooldown('pvp.timer') !== null) {
             if ($claim->getType() === 'faction' && $entity->getSession()->getFaction() !== $claim->getName()) {
                 $event->cancel();
                 $entity->sendMessage(TextFormat::colorize('&cYou have PvP Timer. You cannot teleport to this location'));
+                return;
             }
         }
+        $entity->setCurrentClaim($claim->getName());
     }
 
     /**
@@ -176,8 +173,6 @@ class ClaimListener implements Listener
         $block = $event->getBlock();
         /** @var Player $player */
         $player = $event->getPlayer();
-        
-        $tile = $player->getWorld()->getTile($block->getPosition());
         $item = $player->getInventory()->getItemInHand();
 
         if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($player->getName())) !== null) {
@@ -229,10 +224,6 @@ class ClaimListener implements Listener
                     }
                 }
             }
-        }
-
-        if ($tile instanceof Sign) {
-            return;
         }
 
         if ($item instanceof EnderpearlItem) {

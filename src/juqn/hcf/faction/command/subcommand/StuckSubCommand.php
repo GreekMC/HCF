@@ -7,12 +7,10 @@ namespace juqn\hcf\faction\command\subcommand;
 use juqn\hcf\faction\command\FactionSubCommand;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
-
 use pocketmine\command\CommandSender;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\world\Position;
-use pocketmine\utils\TextFormat;
 
 class StuckSubCommand implements FactionSubCommand
 {

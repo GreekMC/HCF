@@ -9,15 +9,9 @@ use CortexPE\DiscordWebhookAPI\Message;
 use CortexPE\DiscordWebhookAPI\Webhook;
 use juqn\hcf\faction\command\FactionSubCommand;
 use juqn\hcf\HCFLoader;
-use juqn\hcf\player\Player;
-
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class SetStrikesSubCommand
- * @package juqn\hcf\faction\command\subcommand\admin
- */
 class SetStrikesSubCommand implements FactionSubCommand
 {
 

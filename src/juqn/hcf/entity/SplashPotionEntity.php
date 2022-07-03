@@ -67,7 +67,7 @@ class SplashPotionEntity extends \pocketmine\entity\projectile\SplashPotion
         if ($this->willLinger())
             return;
 		
-        foreach ($this->getWorld()->getNearbyEntities($this->boundingBox->expandedCopy(3, 3, 3), $this) as $entity) {
+        foreach ($this->getWorld()->getNearbyEntities($this->boundingBox->expandedCopy(2, 3, 2), $this) as $entity) {
             if ($entity instanceof Player and $entity->isAlive()) {
                 $distanceMultiplier = 0.580 * 1.75;
 				

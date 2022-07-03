@@ -11,10 +11,6 @@ use juqn\hcf\player\Player;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class RallySubCommand
- * @package juqn\hcf\faction\command\subcommand
- */
 class RallySubCommand implements FactionSubCommand
 {
     

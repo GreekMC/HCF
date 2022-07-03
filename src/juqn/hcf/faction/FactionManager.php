@@ -8,10 +8,6 @@ use juqn\hcf\faction\command\FactionCommand;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
 
-/**
- * Class FactionManager
- * @package juqn\hcf\faction
- */
 class FactionManager
 {
     
@@ -101,6 +97,12 @@ class FactionManager
     public function removeFaction(string $name): void
     {
         unset($this->factions[$name]);
-        @unlink(HCFLoader::getInstance()->getDataFolder() . 'factions' . DIRECTORY_SEPARATOR . $name . '.json');
+        $result = unlink(HCFLoader::getInstance()->getDataFolder() . 'database' . DIRECTORY_SEPARATOR . 'factions' . DIRECTORY_SEPARATOR . $name . '.json');
+
+        if ($result) {
+            HCFLoader::getInstance()->getLogger()->debug('Faction ' . $name . ' file deleted successfully');
+        } else {
+            HCFLoader::getInstance()->getLogger()->debug('Error for deleted faction ' . $name . ' file');
+        }
     }
 }

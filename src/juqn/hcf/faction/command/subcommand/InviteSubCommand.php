@@ -8,14 +8,9 @@ use juqn\hcf\faction\command\FactionSubCommand;
 use juqn\hcf\faction\Faction;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
-
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class InviteSubCommand
- * @package juqn\hcf\faction\command\subcommand
- */
 class InviteSubCommand implements FactionSubCommand
 {
     

@@ -6,10 +6,6 @@ namespace juqn\hcf\faction;
 
 use juqn\hcf\player\Player;
 
-/**
- * Class FactionInvite
- * @package juqn\hcf\faction
- */
 class FactionInvite
 {
     

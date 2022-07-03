@@ -53,7 +53,7 @@ class FocusSubCommand implements FactionSubCommand
             }
             
             if ($player->getSession()->getFaction() === $faction->getName()) {
-                $sender->sendMessage(TextFormat::colorize('&cYou can\' focus on members of your faction'));
+                $sender->sendMessage(TextFormat::colorize('&cYou can\'t focus on members of your faction'));
                 return;
             }
             $factionName = $player->getSession()->getFaction();

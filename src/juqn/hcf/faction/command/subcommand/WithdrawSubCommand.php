@@ -7,14 +7,9 @@ namespace juqn\hcf\faction\command\subcommand;
 use juqn\hcf\faction\command\FactionSubCommand;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
-
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class RallySubCommand
- * @package juqn\hcf\faction\command\subcommand
- */
 class WithdrawSubCommand implements FactionSubCommand
 {
 

@@ -14,6 +14,7 @@ use juqn\hcf\faction\command\subcommand\ChatSubCommand;
 use juqn\hcf\faction\command\subcommand\CreateSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimForSubCommand;
 use juqn\hcf\faction\command\subcommand\ClaimSubCommand;
+use juqn\hcf\faction\command\subcommand\DemoteSubCommand;
 use juqn\hcf\faction\command\subcommand\DepositSubCommand;
 use juqn\hcf\faction\command\subcommand\DisbandSubCommand;
 use juqn\hcf\faction\command\subcommand\FocusSubCommand;
@@ -36,10 +37,6 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class FactionCommand
- * @package juqn\hcf\faction\command
- */
 class FactionCommand extends Command
 {
     
@@ -89,6 +86,7 @@ class FactionCommand extends Command
         $this->subCommands['forcedisband'] = new ForceDisbandSubCommand;
         $this->subCommands['setstrikes'] = new SetStrikesSubCommand;
         $this->subCommands['promote'] = new PromoteSubCommand;
+        $this->subCommands['demote'] = new DemoteSubCommand;
     }
     
     /**

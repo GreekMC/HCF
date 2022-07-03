@@ -6,10 +6,6 @@ namespace juqn\hcf\faction\command;
 
 use pocketmine\command\CommandSender;
 
-/**
- * Interface FactionSubCommand
- * @package juqn\hcf\faction\command
- */
 interface FactionSubCommand
 {
     

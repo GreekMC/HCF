@@ -7,15 +7,10 @@ namespace juqn\hcf\faction;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\session\Session;
 use juqn\hcf\player\Player;
-
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
 
-/**
- * Class Faction
- * @package juqn\hcf\faction
- */
 class Faction
 {
 
@@ -389,15 +384,16 @@ class Faction
             'claim' => null
         ];
 
-        if ($this->getHome() !== null)
+        if ($this->getHome() !== null) {
             $data['home'] = [
                 'x' => $this->getHome()->getFloorX(),
                 'y' => $this->getHome()->getFloorY(),
                 'z' => $this->getHome()->getFloorZ(),
                 'world' => $this->getHome()->getWorld()->getFolderName()
             ];
+        }
 
-        if (($claim = HCFLoader::getInstance()->getClaimManager()->getClaim($this->getName())) !== null)
+        if (($claim = HCFLoader::getInstance()->getClaimManager()->getClaim($this->getName())) !== null) {
             $data['claim'] = [
                 'minX' => $claim->getMinX(),
                 'maxX' => $claim->getMaxX(),
@@ -405,6 +401,7 @@ class Faction
                 'maxZ' => $claim->getMaxZ(),
                 'world' => $claim->getWorld()
             ];
+        }
         return $data;
     }
 }

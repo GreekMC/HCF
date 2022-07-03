@@ -7,6 +7,7 @@ namespace juqn\hcf;
 use CortexPE\DiscordWebhookAPI\Message;
 use CortexPE\DiscordWebhookAPI\Webhook;
 use juqn\hcf\player\Player;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
@@ -21,6 +22,10 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\item\Armor;
+use pocketmine\item\Bucket;
+use pocketmine\item\FlintSteel;
+use pocketmine\item\Hoe;
+use pocketmine\item\Shovel;
 use pocketmine\item\Tool;
 use pocketmine\item\VanillaItems;
 use pocketmine\utils\TextFormat;
@@ -156,6 +161,10 @@ class HCFListener implements Listener
         
         if ($player->getSession()->getCooldown('spawn.tag') !== null)
             $player->getSession()->removeCooldown('spawn.tag');
+        $spawnClaim = HCFLoader::getInstance()->getClaimManager()->getClaim('Spawn');
+
+        if ($spawnClaim !== null && $spawnClaim->getType() === 'spawn')
+            $player->setCurrentClaim($spawnClaim->getName());
         $player->getSession()->addDeath();
         $player->getSession()->setKillStreak(0);
         $player->getSession()->addCooldown('pvp.timer', '&l&aPvP Timer&r&7: &r&c', 60 * 60, true);
@@ -268,57 +277,25 @@ class HCFListener implements Listener
             return;
 
         if ($player->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 170) {
-            if ($item->getId() === VanillaItems::WATER_BUCKET()->getId()) {
+            if ($item instanceof Bucket) {
                 $event->cancel();
+                return;
             }
 
-            if ($item->getId() === VanillaItems::DIAMOND_SHOVEL()->getId()) {
+            if ($item instanceof Shovel) {
                 $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::GOLDEN_SHOVEL()->getId()) {
-                $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::IRON_SHOVEL()->getId()) {
-                $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::STONE_SHOVEL()->getId()) {
-                $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::WOODEN_SHOVEL()->getId()) {
-                $event->cancel();
+                return;
             }
 
-            if ($item->getId() === VanillaItems::DIAMOND_HOE()->getId()) {
+            if ($item instanceof Hoe) {
                 $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::GOLDEN_HOE()->getId()) {
-                $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::IRON_HOE()->getId()) {
-                $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::STONE_HOE()->getId()) {
-                $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::WOODEN_HOE()->getId()) {
-                $event->cancel();
-            }
-            
-            if ($item->getId() === VanillaItems::LAVA_BUCKET()->getId()) {
-                $event->cancel();
+                return;
             }
         }
 
-        if ($item->getId() === VanillaItems::FLINT_AND_STEEL()->getId()){
+        if ($item instanceof FlintSteel) {
             $event->cancel();
+            return;
         }
     }
 
@@ -416,7 +393,6 @@ class HCFListener implements Listener
         
         if (!$player instanceof Player) 
             return;
-            
         $quitMessage = str_replace('{player}', $player->getName(), HCFLoader::getInstance()->getConfig()->get('quit.message'));
         $disconnectedManager = HCFLoader::getInstance()->getDisconnectedManager();
 

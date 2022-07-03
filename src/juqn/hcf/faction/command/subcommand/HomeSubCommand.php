@@ -7,16 +7,11 @@ namespace juqn\hcf\faction\command\subcommand;
 use juqn\hcf\faction\command\FactionSubCommand;
 use juqn\hcf\HCFLoader;
 use juqn\hcf\player\Player;
-
 use pocketmine\command\CommandSender;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class HomeSubCommand
- * @package juqn\hcf\faction\command\subcommand
- */
 class HomeSubCommand implements FactionSubCommand
 {
     

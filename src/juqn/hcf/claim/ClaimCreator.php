@@ -162,18 +162,14 @@ class ClaimCreator extends Claim
 
         if ($first !== null) {
             for ($y = $first->getFloorY(); $y <= 127; $y++) {
-                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                new Position($first->getFloorX(), $y, $first->getFloorZ(), $first->getWorld()),
-                    BlockFactory::getInstance()->get(0, 0)));
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(new Position($first->getFloorX(), $y, $first->getFloorZ(), $first->getWorld()), BlockFactory::getInstance()->get(0, 0)));
             }
         }
         $second = $this->getSecond();
 
         if ($second !== null) {
             for ($y = $second->getFloorY(); $y <= 127; $y++) {
-                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                new Position($second->getFloorX(), $y, $second->getFloorZ(), $second->getWorld()),
-                    BlockFactory::getInstance()->get(0, 0)));
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(new Position($second->getFloorX(), $y, $second->getFloorZ(), $second->getWorld()), BlockFactory::getInstance()->get(0, 0)));
             }
         }
     }
@@ -187,24 +183,18 @@ class ClaimCreator extends Claim
     {
         if ($first) {
             for ($y = $position->getFloorY(); $y <= 127; $y++) {
-                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ(), $position->getWorld()),
-                                                                                                                                                    $y % 3 === 0 ? BlockFactory::getInstance()->get(BlockLegacyIds::EMERALD_BLOCK, 0) : BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0)));
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(new Position($position->getFloorX(), $y, $position->getFloorZ(), $position->getWorld()), $y % 3 === 0 ? BlockFactory::getInstance()->get(BlockLegacyIds::EMERALD_BLOCK, 0) : BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0)));
             }
         } else {
             $second = $this->getSecond();
 
             if ($second !== null && !$second->equals($position)) {
                 for ($y = $second->getFloorY(); $y <= 127; $y++) {
-                    $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($second->getFloorX(), $y, $second->getFloorZ(), $second->getWorld()),
-                        BlockFactory::getInstance()->get(0, 0)));
+                    $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(new Position($second->getFloorX(), $y, $second->getFloorZ(), $second->getWorld()), BlockFactory::getInstance()->get(0, 0)));
                 }
             }
             for ($y = $position->getFloorY(); $y <= 127; $y++) {
-                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(
-                                                                                                                                                    new Position($position->getFloorX(), $y, $position->getFloorZ(), $position->getWorld()),
-                                                                                                                                                    $y % 3 === 0 ? BlockFactory::getInstance()->get(BlockLegacyIds::EMERALD_BLOCK, 0) : BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0)));
+                $player->getNetworkSession()->sendDataPacket($this->sendFakeBlock(new Position($position->getFloorX(), $y, $position->getFloorZ(), $position->getWorld()), $y % 3 === 0 ? BlockFactory::getInstance()->get(BlockLegacyIds::EMERALD_BLOCK, 0) : BlockFactory::getInstance()->get(BlockLegacyIds::GLASS, 0)));
             }
         }
     }

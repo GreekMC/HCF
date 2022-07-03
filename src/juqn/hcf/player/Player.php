@@ -10,8 +10,6 @@ use juqn\hcf\kit\classes\ClassFactory;
 use juqn\hcf\kit\classes\HCFClass;
 use juqn\hcf\session\Session;
 use juqn\hcf\utils\Timer;
-
-use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\Location;
 use pocketmine\network\mcpe\protocol\SetActorDataPacket;
@@ -154,7 +152,7 @@ class Player extends BasePlayer
         $this->getNetworkSession()->sendDataPacket($pk);
         
         # Mob
-        if ($this->getSession()->isModKilled()) {
+        if ($this->getSession()->isMobKilled()) {
             $this->getSession()->setMobKilled(false);
             $this->getInventory()->clearAll();
             $this->getArmorInventory()->clearAll();
@@ -292,20 +290,22 @@ class Player extends BasePlayer
 
     public function loadInvisibility() : void
     {
-        if (!$this->getEffects()->has(VanillaEffects::INVISIBILITY())) return;
+        if (!$this->getEffects()->has(VanillaEffects::INVISIBILITY()))
+            return;
         $metadata = clone $this->getNetworkProperties();
         $metadata->setGenericFlag(EntityMetadataFlags::INVISIBLE, false);
         $pk2 = new SetActorDataPacket();
         $pk2->actorRuntimeId = $this->getId();
         $pk2->metadata = $metadata->getAll();
+
         foreach ($this->getViewers() as $viewer) {
-            if ($viewer instanceof Player)
-                if ($viewer->getSession()->getFaction() === null) {
+            if ($viewer instanceof self) {
+                if ($viewer->getSession()->getFaction() === null)
                     continue;
-                }
-                if ($viewer->getSession()->getFaction() === $this->getSession()->getFaction()) {
+
+                if ($viewer->getSession()->getFaction() === $this->getSession()->getFaction())
                     $viewer->getNetworkSession()->sendDataPacket($pk2);
-                }
+            }
         }
     }
     
