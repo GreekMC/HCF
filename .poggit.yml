@@ -1,7 +1,7 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/GreekMC/HCF
 build-by-default: true
 branches:
-- dev
+- 2.0
 projects:
   HCF:
     path: ""
