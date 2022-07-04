@@ -26,7 +26,7 @@ The plugin, as said at the beginning, is extremely complete and contains the fol
   - Classes kit (Archer, Bard, Mage, Miner, Rogue)
   
 ## Contributions
-The main developer was [@SukyDE](https://github.com/SukyDE) who was in charge of the development
+The main developer was [@JkqzDev](https://github.com/JkqzDev) who was in charge of the development
 
 ## Servers that have access
 These servers have paid the core for private use
