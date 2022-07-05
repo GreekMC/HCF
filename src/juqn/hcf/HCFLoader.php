@@ -153,7 +153,7 @@ class HCFLoader extends PluginBase
                     }
                 }
             }
-        }), 2 * 60 * 20);
+        }), 5 * 60 * 20);
         $this->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (): void {
             # Koth
             if (($kothName = $this->getKothManager()->getKothActive()) !== null) {

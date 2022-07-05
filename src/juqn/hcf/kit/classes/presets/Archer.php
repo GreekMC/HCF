@@ -22,7 +22,7 @@ class Archer extends HCFClass
 {
     
     /** @var array */
-    private array $archerMark = [];
+    public array $archerMark = [];
     
     /**
      * Archer construct.
@@ -106,7 +106,7 @@ class Archer extends HCFClass
                     
                 if ($damager->getSession()->getFaction() === $entity->getSession()->getFaction())
                     return;
-                $damager->sendMessage(TextFormat::colorize('&e[&9Archer Range &e(&c' . intva($entity->getPosition()->distance($damager->getPosition())) . '&e)] &6Marked player for 10 seconds.'));
+                $damager->sendMessage(TextFormat::colorize('&e[&9Archer Range &e(&c' . intval($entity->getPosition()->distance($damager->getPosition())) . '&e)] &6Marked player for 10 seconds.'));
                 
                 $entity->sendMessage(TextFormat::colorize('&c&lMarked! &r&eAn archer has shot you and marked you (+15% damage) for 10 seconds).'));
                 $entity->setNameTag(TextFormat::colorize('&e' . $entity->getName()));

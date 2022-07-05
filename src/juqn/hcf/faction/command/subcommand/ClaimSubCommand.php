@@ -34,29 +34,31 @@ class ClaimSubCommand implements FactionSubCommand
             return;
         }
         
-        if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($sender->getName())) !== null && $creator->getType() === 'faction') {
-            if (!$creator->isValid()) {
-                $sender->sendMessage(TextFormat::colorize('&cYou have not selected the claim'));
-                return;
-            }
-            $balance = $faction->getBalance() - $creator->calculateValue();
-            
-            if ($balance < 0) {
-                $sender->sendMessage(TextFormat::colorize('&cYour faction does not have enough money to pay the claim'));
-                return;
-            }
-            $creator->deleteCorners($sender);
-            HCFLoader::getInstance()->getClaimManager()->createClaim($creator->getName(), $creator->getType(), $creator->getMinX(), $creator->getMaxX(), $creator->getMinZ(), $creator->getMaxZ(), $creator->getWorld());
-            $sender->sendMessage(TextFormat::colorize('&aYou have successfully claimed'));
-            HCFLoader::getInstance()->getClaimManager()->removeCreator($sender->getName());
-            
-            foreach ($sender->getInventory()->getContents() as $slot => $i) {
-                if ($i->getId() === 294 && $i->getNamedTag()->getTag('claim_type')) {
-                    $sender->getInventory()->clear($slot);
-                    break;
+        if (count($args) < 1) {
+            if (($creator = HCFLoader::getInstance()->getClaimManager()->getCreator($sender->getName())) !== null && $creator->getType() === 'faction') {
+                if (!$creator->isValid()) {
+                    $sender->sendMessage(TextFormat::colorize('&cYou have not selected the claim'));
+                    return;
                 }
+                $balance = $faction->getBalance() - $creator->calculateValue();
+            
+                if ($balance < 0) {
+                    $sender->sendMessage(TextFormat::colorize('&cYour faction does not have enough money to pay the claim'));
+                    return;
+                }
+                $creator->deleteCorners($sender);
+                HCFLoader::getInstance()->getClaimManager()->createClaim($creator->getName(), $creator->getType(), $creator->getMinX(), $creator->getMaxX(), $creator->getMinZ(), $creator->getMaxZ(), $creator->getWorld());
+                $sender->sendMessage(TextFormat::colorize('&aYou have successfully claimed'));
+                HCFLoader::getInstance()->getClaimManager()->removeCreator($sender->getName());
+            
+                foreach ($sender->getInventory()->getContents() as $slot => $i) {
+                    if ($i->getId() === 294 && $i->getNamedTag()->getTag('claim_type')) {
+                        $sender->getInventory()->clear($slot);
+                        break;
+                    }
+                }
+                return;
             }
-            return;
         }
         
         if (count($args) !== 0) {

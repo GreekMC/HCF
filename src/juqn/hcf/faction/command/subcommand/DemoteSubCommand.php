@@ -71,6 +71,7 @@ class DemoteSubCommand implements FactionSubCommand
         }
 
         if ($faction->getRole($session->getXuid()) === Faction::MEMBER) {
+            $sender->sendMessage(TextFormat::colorize('&cYou can\'t demote a member'));
             return;
         }
         $roles = [
@@ -80,9 +81,15 @@ class DemoteSubCommand implements FactionSubCommand
 
         if ($faction->getRole($sender->getXuid()) === Faction::CO_LEADER) {
             if ($faction->getRole($session->getXuid()) === Faction::LEADER || $faction->getRole($session->getXuid()) === Faction::CO_LEADER) {
+                $sender->sendMessage(TextFormat::colorize('&cYou can\'t demote this player '));
                 return;
             }
         }
         $faction->addRole($session->getXuid(), $roles[$faction->getRole($session->getXuid())]);
+        
+        $sender->sendMessage(TextFormat::colorize('&cYou demoted member ' . $session->getName()));
+        
+        if ($p !== null && $p->isOnline())
+            $p->sendMessage(TextFormat::colorize('&cYou were demoted in your faction '));
     }
 }

@@ -97,12 +97,15 @@ class FactionManager
     public function removeFaction(string $name): void
     {
         unset($this->factions[$name]);
-        $result = unlink(HCFLoader::getInstance()->getDataFolder() . 'database' . DIRECTORY_SEPARATOR . 'factions' . DIRECTORY_SEPARATOR . $name . '.json');
+        
+        if (file_exists(HCFLoader::getInstance()->getDataFolder() . 'database' . DIRECTORY_SEPARATOR . 'factions' . DIRECTORY_SEPARATOR . $name . '.json')) {
+            $result = unlink(HCFLoader::getInstance()->getDataFolder() . 'database' . DIRECTORY_SEPARATOR . 'factions' . DIRECTORY_SEPARATOR . $name . '.json');
 
-        if ($result) {
-            HCFLoader::getInstance()->getLogger()->debug('Faction ' . $name . ' file deleted successfully');
-        } else {
-            HCFLoader::getInstance()->getLogger()->debug('Error for deleted faction ' . $name . ' file');
+            if ($result) {
+                HCFLoader::getInstance()->getLogger()->debug('Faction ' . $name . ' file deleted successfully');
+            } else {
+                HCFLoader::getInstance()->getLogger()->debug('Error for deleted faction ' . $name . ' file');
+            }
         }
     }
 }

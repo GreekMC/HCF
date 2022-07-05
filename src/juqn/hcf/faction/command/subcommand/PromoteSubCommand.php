@@ -76,10 +76,15 @@ class PromoteSubCommand implements FactionSubCommand
 
         if ($faction->getRole($sender->getXuid()) === Faction::CO_LEADER) {
             if ($faction->getRole($session->getXuid()) === Faction::LEADER || $faction->getRole($session->getXuid()) === Faction::CO_LEADER) {
+                $sender->sendMessage(TextFormat::colorize('&cYou can\'t promote this member'));
                 return;
             }
         }
         $faction->addRole($session->getXuid(), $roles[$faction->getRole($session->getXuid())]);
-        // Messages
+        
+        $sender->sendMessage(TextFormat::colorize('&aYou have promoted member ' . $session->getName()));
+        
+        if ($p !== null && $p->isOnline())
+            $p->sendMessage(TextFormat::colorize('&aYou were promoted to ' . $faction->getRole($session->getXuid())));
     }
 }
