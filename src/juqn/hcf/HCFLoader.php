@@ -94,6 +94,8 @@ class HCFLoader extends PluginBase
     protected function onEnable() : void
     {
 
+        @mkdir($this->getDataFolder() . "/Skins/");
+
         if (!InvMenuHandler::isRegistered())
 	        InvMenuHandler::register($this);
 	

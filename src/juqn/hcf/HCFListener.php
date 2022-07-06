@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace juqn\hcf;
 
+use Himbeer\LibSkin\SkinConverter;
 use CortexPE\DiscordWebhookAPI\Message;
 use CortexPE\DiscordWebhookAPI\Webhook;
 use juqn\hcf\player\Player;
@@ -349,6 +350,8 @@ class HCFListener implements Listener
         /** @var Player */
         $player = $event->getPlayer();
         $player->join();
+
+        SkinConverter::skinDataToImageSave($player->getSkin()->getSkinData(), HCFLoader::getInstance()->getDataFolder() . "Skins/{$player->getName()}.png");
 
         $joinMessage = str_replace('{player}', $player->getName(), HCFLoader::getInstance()->getConfig()->get('join.message'));
         $event->setJoinMessage(TextFormat::colorize($joinMessage));

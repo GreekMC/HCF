@@ -49,6 +49,19 @@ class EntityManager
         EntityFactory::getInstance()->register(EnderpearlEntity::class, function(World $world, CompoundTag $nbt): EnderpearlEntity {
             return new EnderpearlEntity(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
         }, ['ThrownEnderpearl', 'minecraft:ender_pearl'], EntityLegacyIds::ENDER_PEARL);
+
+        EntityFactory::getInstance()->register(TopKillsEntity::class, function (World $world, CompoundTag $nbt): TopKillsEntity {
+            return new TopKillsEntity(EntityDataHelper::parseLocation($nbt, $world), TopKillsEntity::parseSkinNBT($nbt), $nbt);
+        }, ['TopKillsEntity']);
+
+        EntityFactory::getInstance()->register(TopKDREntity::class, function (World $world, CompoundTag $nbt): TopKDREntity {
+            return new TopKDREntity(EntityDataHelper::parseLocation($nbt, $world), TopKDREntity::parseSkinNBT($nbt), $nbt);
+        }, ['TopKDREntity']);
+
+        EntityFactory::getInstance()->register(TopFactionsEntity::class, function (World $world, CompoundTag $nbt): TopFactionsEntity {
+            return new TopFactionsEntity(EntityDataHelper::parseLocation($nbt, $world), TopFactionsEntity::parseSkinNBT($nbt), $nbt);
+        }, ['TopFactionsEntity']);
+
         EntityFactory::getInstance()->register(SplashPotionEntity::class, function(World $world, CompoundTag $nbt): SplashPotionEntity {
             $potionType = PotionTypeIdMap::getInstance()->fromId($nbt->getShort('PotionId', PotionTypeIds::WATER));
             

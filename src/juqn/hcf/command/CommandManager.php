@@ -36,5 +36,6 @@ class CommandManager
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FeedCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FwhoCommand());
         HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new FtopCommand());
+        HCFLoader::getInstance()->getServer()->getCommandMap()->register('HCF', new LeaderboardsCommands());
     }
 }
