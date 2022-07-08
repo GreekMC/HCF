@@ -59,14 +59,14 @@ class StartSubCommand implements KothSubCommand
 
             $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
 
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼&3◼&7◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼&3◼&7◼◼ &r&6[KingOfTheHill]"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼◼◼&7◼◼◼ &r&9" . $koth->getName() . " &ehas started in &6" . $koth->getCoords() . "!"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼&3◼&7◼◼ &r&6[KingOfTheHill] &eWin the event and get &9x"  . $koth->getKeyCount()  . " ". $koth->getKey() . " Key&e!"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼◼&3◼&7◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼◼&3◼&7◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill]"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3███&7███ &r&9" . $koth->getName() . " &ehas started in &6" . $koth->getCoords() . "!"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill] &eWin the event and get &9x"  . $koth->getKeyCount()  . " ". $koth->getKey() . " Key&e!"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
 
 
             $msg = new Message();
@@ -89,14 +89,14 @@ class StartSubCommand implements KothSubCommand
 
             $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
 
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼&5◼◼◼◼&7◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼ &r&6[Citadel]"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼ &r&ehas started in &6" . $koth->getCoords() . "!"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼ &r&6&eWin the event and get &9x"  . $koth->getKeyCount()  . " ". $koth->getKey() . " Key&e!"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼&5◼◼◼◼&7◼"));
-            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7██&5████&7█"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&6[Citadel]"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&ehas started in &6" . $koth->getCoords() . "!"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&6&eWin the event and get &9x"  . $koth->getKeyCount()  . " ". $koth->getKey() . " Key&e!"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7██&5████&7█"));
+            HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
 
 
             $msg = new Message();
