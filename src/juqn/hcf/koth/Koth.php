@@ -244,14 +244,14 @@ class Koth
                     $msg->addEmbed($embed);
 
                     $webHook->send($msg);
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill]"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3███&7███ &r&9" . $this->getName() . " &ehas been controlled by &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e!"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7██&3█&7██ &r&6[KingOfTheHill] &eAwarded &9" . $this->getKey() . " Key&e to &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e."));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&3█&7███&3█&7█"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼◼&3◼&7◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼&3◼&7◼◼ &r&6[KingOfTheHill]"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼◼◼&7◼◼◼ &r&9" . $this->getName() . " &ehas been controlled by &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e!"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼&3◼&7◼◼ &r&6[KingOfTheHill] &eAwarded &9" . $this->getKey() . " Key&e to &6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e."));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼◼&3◼&7◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&3◼&7◼◼◼&3◼&7◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
 
                 } else {
                     $webHook = new Webhook(HCFLoader::getInstance()->getConfig()->get('koth.webhook'));
@@ -270,14 +270,14 @@ class Koth
                     $msg->addEmbed($embed);
 
                     $webHook->send($msg);
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7██&5████&7█"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&6[Citadel]"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&econtrolled by"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████ &r&6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e!"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7█&5█&7█████"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7██&5████&7█"));
-                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7███████"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼&5◼◼◼◼&7◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼ &r&6[Citadel]"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼ &r&econtrolled by"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼ &r&6[&e" . $this->capturer->getSession()->getFaction() . "&6]" . $this->capturer->getName() . "&e!"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼&5◼&7◼◼◼◼◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼&5◼◼◼◼&7◼"));
+                    HCFLoader::getInstance()->getServer()->broadcastMessage(TextFormat::colorize("&7◼◼◼◼◼◼◼"));
 
                 }
                 $this->progress = $this->time;
