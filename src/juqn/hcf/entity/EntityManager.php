@@ -46,8 +46,8 @@ class EntityManager
             return new TextEntity(EntityDataHelper::parseLocation($nbt, $world), $nbt);
         }, ['TextEntity', 'minecraft:textentity']);
 
-        EntityFactory::getInstance()->register(EnderpearlEntity::class, function(World $world, CompoundTag $nbt): EnderpearlEntity {
-            return new EnderpearlEntity(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        EntityFactory::getInstance()->register(EnderPearlEntity::class, function (World $world, CompoundTag $nbt): EnderPearlEntity {
+            return new EnderPearlEntity(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
         }, ['ThrownEnderpearl', 'minecraft:ender_pearl'], EntityLegacyIds::ENDER_PEARL);
 
         EntityFactory::getInstance()->register(TopKillsEntity::class, function (World $world, CompoundTag $nbt): TopKillsEntity {

@@ -7,10 +7,14 @@ namespace juqn\hcf;
 use Himbeer\LibSkin\SkinConverter;
 use CortexPE\DiscordWebhookAPI\Message;
 use CortexPE\DiscordWebhookAPI\Webhook;
+use juqn\hcf\entity\EnderpearlEntity;
 use juqn\hcf\player\Player;
+use pocketmine\block\FenceGate;
+use pocketmine\block\SnowLayer;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerCreationEvent;
@@ -29,10 +33,14 @@ use pocketmine\item\Hoe;
 use pocketmine\item\Shovel;
 use pocketmine\item\Tool;
 use pocketmine\item\VanillaItems;
+use pocketmine\math\AxisAlignedBB;
+use pocketmine\math\Facing;
 use pocketmine\utils\TextFormat;
 
 class HCFListener implements Listener
 {
+
+    protected bool $ignoreRevert = false;
     
     /**
      * @param EntityDamageEvent $event
@@ -416,5 +424,79 @@ class HCFListener implements Listener
             }
         }
         $event->setQuitMessage(TextFormat::colorize($quitMessage));
+    }
+    /**
+     * @param ProjectileHitBlockEvent $ev
+     *
+     * @priority LOW
+     */
+    public function onProjectileHitBlock(ProjectileHitBlockEvent $ev): void {
+        $proj = $ev->getEntity();
+        if(!$proj instanceof EnderPearlEntity) return;
+        $owr = $proj->getOwningEntity();
+        if(!$owr instanceof Player) return;
+        $hRes = $ev->getRayTraceResult();
+        $insideBlock = $proj->getWorld()->getBlock($hVec = $hRes->getHitVector());
+        if(!EnderPearlEntity::canPass($insideBlock)) return;
+        if($insideBlock instanceof FenceGate && $insideBlock->isOpen()) return;
+        $blockPos = $insideBlock->getPosition();
+        HCFLoader::getInstance()->getLogger()->debug("Pearl inside block: {$insideBlock->getName()} ({$blockPos->x}:{$blockPos->y}:{$blockPos->z})");
+
+        $this->ignoreRevert = true;
+        $owr->sendTip("§cBe careful you can glitch!");
+        $owr->getInventory()->addItem(VanillaItems::ENDER_PEARL());
+        $this->ignoreRevert = false;
+
+        $proj->setOwningEntity(null);
+    }
+
+    /**
+     * @param ProjectileHitBlockEvent $ev
+     *
+     * @priorty HIGH
+     */
+    public function onProjectileHitBlock2(ProjectileHitBlockEvent $ev): void {
+        $proj = $ev->getEntity();
+        if(!$proj instanceof EnderPearlEntity) return;
+        $p = $proj->getOwningEntity();
+        if(!$p instanceof Player) return;
+        $res = $ev->getRayTraceResult();
+        $vec = $res->getHitVector();
+        $b = $ev->getBlockHit();
+
+        if($b instanceof SnowLayer) {
+            $vec->y += ($b->getLayers() / 8);
+            $res->hitFace = Facing::UP;
+        }
+
+        // overwrite TP position to the hit side, offset by 0.5 (center of block)
+        $side = $b->getSide($res->hitFace)->getPosition();
+        $vec->x = $side->x + 0.5;
+        $vec->y = $side->y;
+        $vec->z = $side->z + 0.5;
+
+        $height = $p->size->getHeight();
+        $halfWidth = $p->size->getWidth() / 2;
+        $aaBB = new AxisAlignedBB(
+            $vec->x - $halfWidth,
+            $vec->y,
+            $vec->z - $halfWidth,
+            $vec->x + $halfWidth,
+            $vec->y + $height,
+            $vec->z + $halfWidth
+        );
+        if($res->hitFace === Facing::DOWN) { // pearling up
+            $aaBB->minY = $aaBB->maxY = $vec->y;
+            $aaBB->minY -= $height;
+            $vec->y -= $height;
+        }
+
+        if(!$p->isCreative()) {
+            /*$m = $this->getManager()->getModule(EnderPearlCooldown::class);
+            if($m instanceof EnderPearlCooldown && $m->isInCooldown($p)){
+                $m->removeCooldown($p);
+            }*/
+            $p->getInventory()->addItem(VanillaItems::ENDER_PEARL());
+        }
     }
 }
