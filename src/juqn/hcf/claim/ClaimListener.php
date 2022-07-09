@@ -9,6 +9,7 @@ use juqn\hcf\HCFLoader;
 use juqn\hcf\item\EnderpearlItem;
 use juqn\hcf\player\Player;
 
+use pocketmine\block\BaseSign;
 use pocketmine\block\FenceGate;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\block\tile\Sign;
@@ -226,6 +227,9 @@ class ClaimListener implements Listener
             }
         }
 
+        if ($block instanceof BaseSign){
+            return;
+        }
         if ($item instanceof EnderpearlItem) {
             if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK && $block instanceof FenceGate) {
                 $event->cancel();
