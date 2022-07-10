@@ -68,7 +68,7 @@ class CrateTile extends Chest
                 $itemPos = $this->getPosition()->add(0.5, 3.2, 0.5);
                 
                 if (!isset($crate->floatingTexts[$textPos->__toString()])) {
-                    $crate->floatingTexts[$textPos->__toString()] = new TextEntity(new Location($textPos->getX(), $textPos->getY(), $textPos->getZ(), $textPos->getWorld(), 0.0, 0.0), $nbt);
+                    $crate->floatingTexts[$textPos->__toString()] = new TextEntity(new Location($textPos->getX(), $textPos->getY(), $textPos->getZ(), $this->getPosition()->getWorld(), 0.0, 0.0), $nbt);
                     $crate->floatingTexts[$textPos->__toString()]->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
                     $crate->floatingTexts[$textPos->__toString()]->spawnToAll();
                 }
@@ -78,7 +78,7 @@ class CrateTile extends Chest
                     $itemMeta = isset($id[1]) ? intval($id[1]) : 0;
                     $item = ItemFactory::getInstance()->get(intval($id[0]), $itemMeta);
                     
-                    $crate->floatingItems[$itemPos->__toString()] = new CustomItemEntity(new Location($itemPos->getX(), $itemPos->getY(), $itemPos->getZ(), $itemPos->getWorld(), 0.0, 0.0), $item);
+                    $crate->floatingItems[$itemPos->__toString()] = new CustomItemEntity(new Location($itemPos->getX(), $itemPos->getY(), $itemPos->getZ(), $this->getPosition()->getWorld(), 0.0, 0.0), $item);
                     $crate->floatingItems[$itemPos->__toString()]->setPickupDelay(-1);
                     $crate->floatingItems[$itemPos->__toString()]->spawnToAll();
                 }
@@ -174,7 +174,7 @@ class CrateTile extends Chest
                             $itemMeta = isset($id[1]) ? (int) $id[1] : 0;
                             $item = ItemFactory::getInstance()->get((int) $id[0], $itemMeta);
                             
-                            $crate->floatingItems[$itemPos->__toString()] = new CustomItemEntity(new Location($itemPos->getX(), $itemPos->getY(), $itemPos->getZ(), $itemPos->getWorld(), 0.0, 0.0), $item);
+                            $crate->floatingItems[$itemPos->__toString()] = new CustomItemEntity(new Location($itemPos->getX(), $itemPos->getY(), $itemPos->getZ(), $this->getPosition()->getWorld(), 0.0, 0.0), $item);
                             $crate->floatingItems[$itemPos->__toString()]->setPickupDelay(-1);
                             $crate->floatingItems[$itemPos->__toString()]->spawnToAll();
                         }

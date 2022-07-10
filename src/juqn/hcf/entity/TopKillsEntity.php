@@ -22,6 +22,7 @@ use pocketmine\utils\TextFormat;
 
 class TopKillsEntity extends Human
 {
+    
     public $canCollide = false;
     protected $gravity = 0.0;
     protected $immobile = true;
@@ -61,7 +62,7 @@ class TopKillsEntity extends Human
     /**
      * @return array
      */
-    #[Pure] private function getKills(): array
+    private function getKills(): array
     {
         $kills = [];
 
@@ -78,22 +79,26 @@ class TopKillsEntity extends Human
      * @throws \JsonException
      * @throws \Exception
      */
-    public function onUpdate(int $currentTick): bool{
-        $data = $this->getKills();
-        arsort($data);
-        for ($i = 0; $i < 1; $i++) {
-            $position = $i + 1;
-            $players = array_keys($data);
-            $kills = array_values($data);
-
-            if (isset($players[$i]))
-                $this->setNameTag("§b§l#1 Kills \n§r§f" . $players[$i] . "\n§o§7/leaderboards kills");
-            $skinData = SkinConverter::imageToSkinDataFromPngPath(HCFLoader::getInstance()->getDataFolder() . "Skins/{$players[$i]}.png");
-            $this->setSkin(new Skin("top_kills_skin", $skinData));
+    public function onUpdate(int $currentTick): bool
+    {
+        if ($currentTick % 2400 === 0) {
+            $data = $this->getKills();
+            arsort($data);
+            
+            $player = array_keys($data);
+            
+            if (isset($player[0])) {
+                $this->setNameTagAlwaysVisible(true);
+                $this->setNameTag(TextFormat::colorize('&a&l#1 Kills&r' . PHP_EOL . '&f' . $player[0] . PHP_EOL . '&o&7/leaderboards kills'));
+                
+                $skinData = SkinConverter::imageToSkinDataFromPngPath(HCFLoader::getInstance()->getDataFolder() . 'Skins/' . $player[0] . '.png');
+                $this->setSkin(new Skin('top_kdr_skin', $skinData));
+            }
         }
-        $this->setNameTagAlwaysVisible(true);
         $nearest = $this->location->world->getNearestEntity($this->location, 8, Player::class);
-        if($nearest === null) return parent::onUpdate($currentTick);
+        
+        if ($nearest === null)
+            return parent::onUpdate($currentTick);
         $this->lookAt($nearest->getEyePos());
         return parent::onUpdate($currentTick);
     }
@@ -108,7 +113,6 @@ class TopKillsEntity extends Human
         if (!$source instanceof EntityDamageByEntityEvent) {
             return;
         }
-
         $damager = $source->getDamager();
 
         if (!$damager instanceof Player) {

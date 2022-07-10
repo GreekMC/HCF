@@ -22,6 +22,7 @@ use pocketmine\utils\TextFormat;
 
 class TopKDREntity extends Human
 {
+    
     public $canCollide = false;
     protected $gravity = 0.0;
     protected $immobile = true;
@@ -61,20 +62,15 @@ class TopKDREntity extends Human
     /**
      * @return array
      */
-    #[Pure] private function getKDR(): array
+    private function getKDR(): array
     {
         $kdr = [];
 
         foreach (HCFLoader::getInstance()->getSessionManager()->getSessions() as $session) {
-            if ($session->getKills() === 0){
-                $kdr[$session->getName()] = 0;
-                return $kdr;
-            }
-            if ($session->getDeaths() === 0){
-                $kdr[$session->getName()] = 0;
-                return $kdr;
-            }
-            $kdr[$session->getName()] = round($session->getKills() / $session->getDeaths(), 1);
+            if ($session->getDeaths() === 0)
+                $kdr[$session->getName()] = 0.0;
+            else
+                $kdr[$session->getName()] = round($session->getKills() / $session->getDeaths(), 1);
         }
         return $kdr;
     }
@@ -86,22 +82,26 @@ class TopKDREntity extends Human
      * @throws \JsonException
      * @throws \Exception
      */
-    public function onUpdate(int $currentTick): bool{
-        $data = $this->getKDR();
-        arsort($data);
-        for ($i = 0; $i < 1; $i++) {
-            $position = $i + 1;
-            $players = array_keys($data);
-            $kills = array_values($data);
-
-            if (isset($players[$i]))
-                $this->setNameTag("§a§l#1 KDR \n§r§f" . $players[$i] . "\n§o§7/leaderboards kdr");
-            $skinData = SkinConverter::imageToSkinDataFromPngPath(HCFLoader::getInstance()->getDataFolder() . "Skins/{$players[$i]}.png");
-            $this->setSkin(new Skin("top_kdr_skin", $skinData));
+    public function onUpdate(int $currentTick): bool
+    {
+        if ($currentTick % 2400 === 0) {
+            $data = $this->getKDR();
+            arsort($data);
+            
+            $player = array_keys($data);
+            
+            if (isset($player[0])) {
+                $this->setNameTagAlwaysVisible(true);
+                $this->setNameTag(TextFormat::colorize('&a&l#1 KDR&r' . PHP_EOL . '&f' . $player[0] . PHP_EOL . '&o&7/leaderboards kdr'));
+                
+                $skinData = SkinConverter::imageToSkinDataFromPngPath(HCFLoader::getInstance()->getDataFolder() . 'Skins/' . $player[0] . '.png');
+                $this->setSkin(new Skin('top_kdr_skin', $skinData));
+            }
         }
-        $this->setNameTagAlwaysVisible(true);
         $nearest = $this->location->world->getNearestEntity($this->location, 8, Player::class);
-        if($nearest === null) return parent::onUpdate($currentTick);
+        
+        if ($nearest === null)
+            return parent::onUpdate($currentTick);
         $this->lookAt($nearest->getEyePos());
         return parent::onUpdate($currentTick);
     }
@@ -116,7 +116,6 @@ class TopKDREntity extends Human
         if (!$source instanceof EntityDamageByEntityEvent) {
             return;
         }
-
         $damager = $source->getDamager();
 
         if (!$damager instanceof Player) {

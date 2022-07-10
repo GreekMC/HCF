@@ -31,12 +31,13 @@ class EntityManager
     {
         EntityFactory::getInstance()->register(CustomItemEntity::class, function(World $world, CompoundTag $nbt) : ItemEntity{
             $itemTag = $nbt->getCompoundTag("Item");
-            if($itemTag === null){
+            
+            if ($itemTag === null) {
                 throw new SavedDataLoadingException("Expected \"Item\" NBT tag not found");
             }
-
             $item = Item::nbtDeserialize($itemTag);
-            if($item->isNull()){
+            
+            if ($item->isNull()) {
                 throw new SavedDataLoadingException("Item is invalid");
             }
             return new CustomItemEntity(Helper::parseLocation($nbt, $world), $item, $nbt);

@@ -23,31 +23,29 @@ use pocketmine\utils\TextFormat;
 
 class TopFactionsEntity extends Human
 {
+    
     public $canCollide = false;
     protected $gravity = 0.0;
     protected $immobile = true;
 
-    /** @var int|null */
-
     /**
      * @param Player $player
-     *
      * @return TopFactionsEntity
      */
     public static function create(Player $player): self
     {
         $nbt = CompoundTag::create()
-            ->setTag("Pos", new ListTag([
+            ->setTag('Pos', new ListTag([
                 new DoubleTag($player->getLocation()->x),
                 new DoubleTag($player->getLocation()->y),
                 new DoubleTag($player->getLocation()->z)
             ]))
-            ->setTag("Motion", new ListTag([
+            ->setTag('Motion', new ListTag([
                 new DoubleTag($player->getMotion()->x),
                 new DoubleTag($player->getMotion()->y),
                 new DoubleTag($player->getMotion()->z)
             ]))
-            ->setTag("Rotation", new ListTag([
+            ->setTag('Rotation', new ListTag([
                 new FloatTag($player->getLocation()->yaw),
                 new FloatTag($player->getLocation()->pitch)
             ]));
@@ -81,19 +79,23 @@ class TopFactionsEntity extends Human
      * @throws \JsonException
      * @throws \Exception
      */
-    public function onUpdate(int $currentTick): bool{
-        $data = $this->getFactions();
-        arsort($data);
-        for ($i = 0; $i < 1; $i++) {
+    public function onUpdate(int $currentTick): bool
+    {
+        if ($currentTick % 2400 === 0) {
+            $data = $this->getFactions();
+            arsort($data);
+            
             $faction = array_keys($data);
-
-            if (isset($players[$i]))
-                $this->setNameTag("§e§l#1 Factions \n§r§f" . $faction[$i] . "\n§o§7/f top");
-            #Agregar que se ponga la skin del lider de la faction.
+            
+            if (isset($faction[0])) {
+                $this->setNameTagAlwaysVisible(true);
+                $this->setNameTag(TextFormat::colorize('&e&l#1 Factions \n&r&f' . $faction[0] . PHP_EOL . '&o&7/f top'));
+            }
         }
-        $this->setNameTagAlwaysVisible(true);
         $nearest = $this->location->world->getNearestEntity($this->location, 8, Player::class);
-        if($nearest === null) return parent::onUpdate($currentTick);
+        
+        if ($nearest === null)
+            return parent::onUpdate($currentTick);
         $this->lookAt($nearest->getEyePos());
         return parent::onUpdate($currentTick);
     }
@@ -108,7 +110,6 @@ class TopFactionsEntity extends Human
         if (!$source instanceof EntityDamageByEntityEvent) {
             return;
         }
-
         $damager = $source->getDamager();
 
         if (!$damager instanceof Player) {

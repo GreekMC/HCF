@@ -53,7 +53,7 @@ class CrateManager
                 $text->close();
             }
             
-            foreach ($create->floatingItems as $item) {
+            foreach ($crate->floatingItems as $item) {
                 $item->close();
             }
         }

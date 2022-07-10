@@ -17,7 +17,7 @@ use pocketmine\math\Facing;
 use pocketmine\math\RayTraceResult;
 use pocketmine\math\Vector3;
 
-class EnderpearlEntity extends EnderPearl {
+class EnderPearlEntity extends EnderPearl {
 
     protected $gravity = 0.03, $drag = 0.01;
 
