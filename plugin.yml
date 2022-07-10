@@ -161,3 +161,6 @@ permissions:
   enderchest.permission:
     description: Permission for big enderchest 
     default: op
+  clearentities.command:
+    description: Puta
+    default: op

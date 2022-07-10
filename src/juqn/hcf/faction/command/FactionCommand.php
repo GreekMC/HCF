@@ -23,6 +23,7 @@ use juqn\hcf\faction\command\subcommand\HomeSubCommand;
 use juqn\hcf\faction\command\subcommand\InviteSubCommand;
 use juqn\hcf\faction\command\subcommand\KickSubCommand;
 use juqn\hcf\faction\command\subcommand\LeaveSubCommand;
+use juqn\hcf\faction\command\subcommand\ListSubCommand;
 use juqn\hcf\faction\command\subcommand\PromoteSubCommand;
 use juqn\hcf\faction\command\subcommand\RallySubCommand;
 use juqn\hcf\faction\command\subcommand\SetHomeSubCommand;
@@ -87,6 +88,7 @@ class FactionCommand extends Command
         $this->subCommands['setstrikes'] = new SetStrikesSubCommand;
         $this->subCommands['promote'] = new PromoteSubCommand;
         $this->subCommands['demote'] = new DemoteSubCommand;
+        $this->subCommands['list'] = new ListSubCommand;
     }
     
     /**

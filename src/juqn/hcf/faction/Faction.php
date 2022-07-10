@@ -20,7 +20,8 @@ class Faction
         'North Road' => 'road',
         'South Road' => 'road',
         'East Road' => 'road',
-        'West Road' => 'road'
+        'West Road' => 'road',
+        '§5Citadel§c' => 'citadel'
     ];
 
     /** @var string */
@@ -85,6 +86,14 @@ class Faction
             $type = self::$types[$name] ?? 'faction';
             HCFLoader::getInstance()->getClaimManager()->createClaim($name, $type, $data['claim']['minX'], $data['claim']['maxX'], $data['claim']['minZ'], $data['claim']['maxZ'], $data['claim']['world']);
         }
+    }
+    
+    /**
+     * @return string[]
+     */
+    static public function getTypes(): array
+    {
+        return self::$types;
     }
 
     /**
