@@ -23,20 +23,13 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class CrateTile
- * @package juqn\hcf\crate\tile
- */
+
 class CrateTile extends Chest
 {
 
     /** @var string|null */
     private ?string $crateName;
-    /** @var TextEntity|null */
-    private ?TextEntity $text = null;
-    /** @var CustomItemEntity|null */
-    private ?CustomItemEntity $floatingitem = null;
-
+    
     /**
      * @return string|null
      */
@@ -44,28 +37,7 @@ class CrateTile extends Chest
     {
         return $this->crateName;
     }
-
-    /**
-     * @return TextEntity|null
-     */
-    public function getText(): ?TextEntity
-    {
-        return $this->text;
-    }
-
-    public function getFloatingItem(): CustomItemEntity
-    {
-        return $this->floatingitem;
-    }
-
-    /**
-     * @param CustomItemEntity $itemEntity
-     */
-    public function setFloatingItem(CustomItemEntity $itemEntity): void
-    {
-        $this->floatingitem = $itemEntity;
-    }
-
+    
     /**
      * @param string|null $crateName
      */
@@ -85,23 +57,31 @@ class CrateTile extends Chest
 
     private function createText(): void
     {
-        if ($this->floatingitem === null && $this->text === null && $this->crateName !== null) {
-            $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
-
+        $crateName = $this->crateName;
+        
+        if ($crateName !== null) {
+            $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($crateName);
+            
             if ($crate !== null) {
                 $nbt = $this->saveNBT();
-
-                $id = explode(':', $crate->getKeyId());
-                $itemMeta = isset($id[1]) ? intval($id[1]) : 0;
-                $item = ItemFactory::getInstance()->get(intval($id[0]), $itemMeta);
-
-                $this->text = new TextEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 1.8, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $nbt);
-                $this->text->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
-                $this->text->spawnToAll();
-
-                $this->floatingitem = new CustomItemEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 3.2, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $item);
-                $this->floatingitem->setPickupDelay(-1);
-                $this->floatingitem->spawnToAll();
+                $textPos = $this->getPosition()->add(0.5, 1.8, 0.5);
+                $itemPos = $this->getPosition()->add(0.5, 3.2, 0.5);
+                
+                if (!isset($crate->floatingTexts[$textPos->__toString()])) {
+                    $crate->floatingTexts[$textPos->__toString()] = new TextEntity(new Location($textPos->getX(), $textPos->getY(), $textPos->getZ(), $textPos->getWorld(), 0.0, 0.0), $nbt);
+                    $crate->floatingTexts[$textPos->__toString()]->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
+                    $crate->floatingTexts[$textPos->__toString()]->spawnToAll();
+                }
+                
+                if (!isset($crate->floatingItems[$itemPos->__toString()])) {
+                    $id = explode(':', $crate->getKeyId());
+                    $itemMeta = isset($id[1]) ? intval($id[1]) : 0;
+                    $item = ItemFactory::getInstance()->get(intval($id[0]), $itemMeta);
+                    
+                    $crate->floatingItems[$itemPos->__toString()] = new CustomItemEntity(new Location($itemPos->getX(), $itemPos->getY(), $itemPos->getZ(), $itemPos->getWorld(), 0.0, 0.0), $item);
+                    $crate->floatingItems[$itemPos->__toString()]->setPickupDelay(-1);
+                    $crate->floatingItems[$itemPos->__toString()]->spawnToAll();
+                }
             }
         }
     }
@@ -113,16 +93,6 @@ class CrateTile extends Chest
     {
         parent::writeSaveData($nbt);
         $nbt->setString('crate_name', $this->getCrateName());
-
-        if ($this->text !== null) {
-            $this->text->kill();
-            $this->text = null;
-        }
-
-        if ($this->floatingitem !== null) {
-            $this->floatingitem->kill();
-            $this->floatingitem = null;
-        }
     }
 
     /**
@@ -133,6 +103,15 @@ class CrateTile extends Chest
         parent::readSaveData($nbt);
         $this->crateName = $nbt->getString('crate_name');
         $this->createText();
+    }
+    
+    /**
+     * @param CompoundTag $nbt
+     */
+    public function addAdditionalSpawnData(CompoundTag $nbt): void
+    {
+        parent::addAdditionalSpawnData($nbt);
+        $nbt->setString(self::TAG_ID, 'Chest');
     }
 
     /**
@@ -180,14 +159,33 @@ class CrateTile extends Chest
                     $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
 
                     if ($crate !== null) {
-                        $id = explode(':', $crate->getKeyId());
+                        $textPos = $this->getPosition()->add(0.5, 1.8, 0.5);
+                        $itemPos = $this->getPosition()->add(0.5, 3.2, 0.5);
+                        
+                        if (isset($crate->floatingTexts[$textPos->__toString()])) {
+                            $crate->floatingTexts[$textPos->__toString()]->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
+                        }
+                        
+                        if (isset($crate->floatingItems[$itemPos->__toString()])) {
+                            $crate->floatingItems[$itemPos->__toString()]->close();
+                            unset($crate->floatingTexts[$itemPos->__toString()]);
+                            
+                            $id = explode(':', $crate->getKeyId());
+                            $itemMeta = isset($id[1]) ? (int) $id[1] : 0;
+                            $item = ItemFactory::getInstance()->get((int) $id[0], $itemMeta);
+                            
+                            $crate->floatingItems[$itemPos->__toString()] = new CustomItemEntity(new Location($itemPos->getX(), $itemPos->getY(), $itemPos->getZ(), $itemPos->getWorld(), 0.0, 0.0), $item);
+                            $crate->floatingItems[$itemPos->__toString()]->setPickupDelay(-1);
+                            $crate->floatingItems[$itemPos->__toString()]->spawnToAll();
+                        }
+                        /*$id = explode(':', $crate->getKeyId());
                         $itemMeta = isset($id[1]) ? (int) $id[1] : 0;
                         $item = ItemFactory::getInstance()->get((int) $id[0], $itemMeta);
                         $this->getText()->setNameTag(TextFormat::colorize("\n" . $crate->getNameFormat() . "\n&fLeft click for reward\n". "&fRight click to open\n" . "&r\n" . "&7play.greekmc.net\n" . ""));
                         $this->floatingitem->close();
                         $this->floatingitem = new CustomItemEntity(new Location($this->getPosition()->getX() + 0.5, $this->getPosition()->getY() + 3.2, $this->getPosition()->getZ() + 0.5, $this->getPosition()->getWorld(), 0.0, 0.0), $item);
                         $this->floatingitem->setPickupDelay(-1);
-                        $this->floatingitem->spawnToAll();
+                        $this->floatingitem->spawnToAll();*/
                         $player->sendMessage(TextFormat::colorize('&aThe text of the crate ' . $this->getCrateName() . ' has been updated'));
                     } else $player->sendMessage(TextFormat::colorize('&cThere is no crate that is defined in the Tile'));
                 }
@@ -206,10 +204,22 @@ class CrateTile extends Chest
                     $crate = HCFLoader::getInstance()->getCrateManager()->getCrate($this->getCrateName());
 
                     if ($crate !== null) {
-                        if ($this->getText() !== null && $this->getFloatingItem() !== null){
+                        $textPos = $this->getPosition()->add(0.5, 1.8, 0.5);
+                        $itemPos = $this->getPosition()->add(0.5, 3.2, 0.5);
+                        
+                        if (isset($crate->floatingTexts[$textPos->__toString()])) {
+                            $crate->floatingTexts[$textPos->__toString()]->close();
+                            unset($crate->floatingTexts[$textPos->__toString()]);
+                        }
+                        
+                        if (isset($crate->floatingItems[$itemPos->__toString()])) {
+                            $crate->floatingItems[$itemPos->__toString()]->close();
+                            unset($crate->floatingTexts[$itemPos->__toString()]);
+                        }
+                        /*f ($this->getText() !== null && $this->getFloatingItem() !== null){
                             $this->getText()->close();
                             $this->getFloatingItem()->close();
-                        }
+                        }*/
                     }
                 }
                 $player->sendMessage(TextFormat::colorize('&cThe tile has been removed'));

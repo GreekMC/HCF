@@ -30,8 +30,6 @@ class CrateManager
      */
     public function __construct()
     {
-        # Unregister entities
-        $this->despawnEntities();
         # Register tile
         TileFactory::getInstance()->register(CrateTile::class);
         # Register handler
@@ -50,10 +48,13 @@ class CrateManager
     
     private function despawnEntities(): void
     {
-        foreach (HCFLoader::getInstance()->getServer()->getWorldManager()->getWorlds() as $world) {
-            foreach ($world->getEntities() as $entity) {
-                if ($entity instanceof TextEntity) $entity->flagForDespawn();
-                if ($entity instanceof CustomItemEntity) $entity->flagForDespawn();
+        foreach ($this->crates as $crate) {
+            foreach ($crate->floatingTexts as $text) {
+                $text->close();
+            }
+            
+            foreach ($create->floatingItems as $item) {
+                $item->close();
             }
         }
     }

@@ -227,9 +227,9 @@ class ClaimListener implements Listener
             }
         }
 
-        if ($block instanceof BaseSign){
+        if ($block instanceof BaseSign)
             return;
-        }
+        
         if ($item instanceof EnderpearlItem) {
             if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK && $block instanceof FenceGate) {
                 $event->cancel();
@@ -262,20 +262,18 @@ class ClaimListener implements Listener
         if ($claim === null)
             return;
             
-        if (!$block instanceof Sign) {
-            if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName() && $claim->getType() !== 'spawn') {
-                $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
+        if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName() && $claim->getType() !== 'spawn') {
+            $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
 
-                if ($faction !== null && $faction->getDtr() > 0.00) {
-                    $event->cancel();
-                
-                    if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
-                        if ($block instanceof FenceGate) {
-                            $distance = $player->getPosition()->distance($block->getPosition());
+            if ($faction !== null && $faction->getDtr() > 0.00) {
+                $event->cancel();
+            
+                if ($action === PlayerInteractEvent::RIGHT_CLICK_BLOCK) {
+                    if ($block instanceof FenceGate) {
+                        $distance = $player->getPosition()->distance($block->getPosition());
 
-                            if ($distance <= 3 && !$block->isOpen()) {
-                                $player->setMotion($player->getDirectionVector()->multiply(-1.5));
-                            }
+                        if ($distance <= 3 && !$block->isOpen()) {
+                            $player->setMotion($player->getDirectionVector()->multiply(-1.2));
                         }
                     }
                 }

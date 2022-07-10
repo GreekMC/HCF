@@ -425,20 +425,29 @@ class HCFListener implements Listener
         }
         $event->setQuitMessage(TextFormat::colorize($quitMessage));
     }
+    
     /**
      * @param ProjectileHitBlockEvent $ev
-     *
      * @priority LOW
      */
-    public function onProjectileHitBlock(ProjectileHitBlockEvent $ev): void {
+    public function onProjectileHitBlock(ProjectileHitBlockEvent $ev): void
+    {
         $proj = $ev->getEntity();
-        if(!$proj instanceof EnderPearlEntity) return;
+        
+        if (!$proj instanceof EnderPearlEntity)
+            return;
         $owr = $proj->getOwningEntity();
-        if(!$owr instanceof Player) return;
+        
+        if (!$owr instanceof Player)
+            return;
         $hRes = $ev->getRayTraceResult();
         $insideBlock = $proj->getWorld()->getBlock($hVec = $hRes->getHitVector());
-        if(!EnderPearlEntity::canPass($insideBlock)) return;
-        if($insideBlock instanceof FenceGate && $insideBlock->isOpen()) return;
+        
+        if (!EnderPearlEntity::canPass($insideBlock))
+            return;
+            
+        if ($insideBlock instanceof FenceGate && $insideBlock->isOpen())
+            return;
         $blockPos = $insideBlock->getPosition();
         HCFLoader::getInstance()->getLogger()->debug("Pearl inside block: {$insideBlock->getName()} ({$blockPos->x}:{$blockPos->y}:{$blockPos->z})");
 
@@ -449,22 +458,27 @@ class HCFListener implements Listener
 
         $proj->setOwningEntity(null);
     }
+    
 
     /**
      * @param ProjectileHitBlockEvent $ev
-     *
      * @priorty HIGH
      */
-    public function onProjectileHitBlock2(ProjectileHitBlockEvent $ev): void {
+    public function onProjectileHitBlock2(ProjectileHitBlockEvent $ev): void
+    {
         $proj = $ev->getEntity();
-        if(!$proj instanceof EnderPearlEntity) return;
+        
+        if (!$proj instanceof EnderPearlEntity)
+            return;
         $p = $proj->getOwningEntity();
-        if(!$p instanceof Player) return;
+        
+        if (!$p instanceof Player)
+            return;
         $res = $ev->getRayTraceResult();
         $vec = $res->getHitVector();
         $b = $ev->getBlockHit();
 
-        if($b instanceof SnowLayer) {
+        if ($b instanceof SnowLayer) {
             $vec->y += ($b->getLayers() / 8);
             $res->hitFace = Facing::UP;
         }
@@ -485,18 +499,14 @@ class HCFListener implements Listener
             $vec->y + $height,
             $vec->z + $halfWidth
         );
-        if($res->hitFace === Facing::DOWN) { // pearling up
+        
+        if ($res->hitFace === Facing::DOWN) { // pearling up
             $aaBB->minY = $aaBB->maxY = $vec->y;
             $aaBB->minY -= $height;
             $vec->y -= $height;
         }
 
-        if(!$p->isCreative()) {
-            /*$m = $this->getManager()->getModule(EnderPearlCooldown::class);
-            if($m instanceof EnderPearlCooldown && $m->isInCooldown($p)){
-                $m->removeCooldown($p);
-            }*/
+        if (!$p->isCreative())
             $p->getInventory()->addItem(VanillaItems::ENDER_PEARL());
-        }
     }
 }

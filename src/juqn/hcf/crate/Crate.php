@@ -9,10 +9,6 @@ use pocketmine\item\ItemFactory;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class Crate
- * @package juqn\hcf
- */
 class Crate
 {
     
@@ -26,6 +22,11 @@ class Crate
 	private string $nameFormat;
 	/** @var Item[] */
     private array $items;
+    
+    /** @var array */
+    public array $floatingTexts = [];
+    /** @var array */
+    public array $floatingItems = [];
     
     /**
      * Crate construct.
