@@ -18,6 +18,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerBucketEmptyEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -72,11 +73,37 @@ class ClaimListener implements Listener
 
             if ($faction !== null && $faction->getDtr() > 0.00) {
                 $event->cancel();
-                $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
+                $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in &e' . $claim->getName() . 's &cterritory'));
             }
         }
     }
 
+    public function hadleItemInterect(PlayerBucketEmptyEvent $event): void
+    {
+        /** @var Player $player */
+        $player = $event->getPlayer();
+        $block = $event->getBlockClicked();
+        $claim = HCFLoader::getInstance()->getClaimManager()->insideClaim($block->getPosition());
+
+        if ($event->isCancelled())
+            return;
+
+        if ($player->isGod())
+            return;
+
+        if ($claim === null) {
+            if ($block->getPosition()->distance($player->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn()->asVector3()) < 400)
+                $event->cancel();
+            return;
+        }
+
+        if (in_array($claim->getType(), ['spawn', 'road', 'koth', 'citadel', 'conquest'])) {
+            $event->cancel();
+            $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in this area'));
+            return;
+        }
+
+    }
     /**
      * @param BlockPlaceEvent $event
      * @throws WorldException
@@ -115,7 +142,7 @@ class ClaimListener implements Listener
 
             if ($faction !== null && $faction->getDtr() > 0.00) {
                 $event->cancel();
-                $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in ' . $claim->getName() . ' territory'));
+                $player->sendMessage(TextFormat::colorize('&cYou cannot place blocks in &e' . $claim->getName() . 's &cterritory'));
             }
         }
     }
