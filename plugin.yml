@@ -23,6 +23,9 @@ permissions:
   forcedisband.permission:
     description: Permission nested for /f setregentime
     default: op
+  disbandall.permission:
+    description: Permission nested for /f disbandall
+    default: op
   setpoints.permission:
     description: Permission nested for /f setpoints
     default: op

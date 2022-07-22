@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace juqn\hcf\faction\command;
 
 use juqn\hcf\faction\command\subcommand\AcceptInviteSubCommand;
+use juqn\hcf\faction\command\subcommand\admin\DisbandAllSubCommand;
 use juqn\hcf\faction\command\subcommand\admin\ForceDisbandSubCommand;
 use juqn\hcf\faction\command\subcommand\admin\SetDtrSubCommand;
 use juqn\hcf\faction\command\subcommand\admin\SetPointsSubCommand;
@@ -89,6 +90,7 @@ class FactionCommand extends Command
         $this->subCommands['promote'] = new PromoteSubCommand;
         $this->subCommands['demote'] = new DemoteSubCommand;
         $this->subCommands['list'] = new ListSubCommand;
+        $this->subCommands['disbandall'] = new DisbandAllSubCommand;
     }
     
     /**

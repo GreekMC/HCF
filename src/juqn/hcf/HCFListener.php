@@ -53,22 +53,24 @@ class HCFListener implements Listener
 
         if ($entity instanceof Player) {
             if ($event->isCancelled()) return;
-
-            if ($entity->getSession()->getCooldown('starting.timer')) {
-                $event->cancel();
-                return;
-            }
-
-            if ($entity->getSession()->getCooldown('pvp.timer') !== null) {
-                if ($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK || $cause === EntityDamageEvent::CAUSE_PROJECTILE) {
+            
+            if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($entity->getSession()->getCooldown('starting.timer')) {
                     $event->cancel();
                     return;
                 }
-            }
 
-            if ($entity->getCurrentClaim() === 'Spawn') {
-                $event->cancel();
-                return;
+                if ($entity->getSession()->getCooldown('pvp.timer') !== null) {
+                    if ($cause === EntityDamageEvent::CAUSE_ENTITY_ATTACK || $cause === EntityDamageEvent::CAUSE_PROJECTILE) {
+                        $event->cancel();
+                        return;
+                    }
+                }
+
+                if ($entity->getCurrentClaim() === 'Spawn') {
+                    $event->cancel();
+                    return;
+                }
             }
 
             if ($event instanceof EntityDamageByEntityEvent || $event instanceof EntityDamageByChildEntityEvent) {
@@ -174,6 +176,12 @@ class HCFListener implements Listener
 
         if ($spawnClaim !== null && $spawnClaim->getType() === 'spawn')
             $player->setCurrentClaim($spawnClaim->getName());
+            
+        if (HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+            $player->getSession()->setDeathban(true);
+            $player->getSession()->setLogout(true);
+            $player->kick(TextFormat::colorize('&cYOU HAVE DEATHBAN'));
+        }
         $player->getSession()->addDeath();
         $player->getSession()->setKillStreak(0);
         $player->getSession()->addCooldown('pvp.timer', '&l&aPvP Timer&r&7: &r&c', 60 * 60, true);
@@ -373,7 +381,13 @@ class HCFListener implements Listener
         $player = $event->getPlayer();
         $session = HCFLoader::getInstance()->getSessionManager()->getSession($player->getXuid());
 
-        if ($session === null)
+        if ($session === null) {
+            if (HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                $event->setKickMessage(TextFormat::colorize('&cYOU HAVE DEATHBAN'));
+                $event->cancel();
+                return;
+            }
+            
             HCFLoader::getInstance()->getSessionManager()->addSession($player->getXuid(), [
                 'name' => $player->getName(),
                 'faction' => null,
@@ -388,7 +402,15 @@ class HCFListener implements Listener
                     'highestKillStreak' => 0
                 ]
             ]);
-        else {
+        } else {
+            if (HCFLoader::getInstance()->getEventManager()->getEotw()->isActive()) {
+                if ($session->hasDeathban()) {
+                    $event->setKickMessage(TextFormat::colorize('&cYOU HAVE DEATHBAN'));
+                    $event->cancel();
+                    return;
+                }
+            }
+            
             if ($player->getName() !== $session->getName())
                 $session->setName($player->getName());
         }

@@ -50,6 +50,8 @@ class Session
     private bool $mobkilled = false;
     /** @var bool */
     private bool $logout = false;
+    /** @var bool */
+    private bool $deathban = false;
     
     /**
      * Session construct.
@@ -202,6 +204,14 @@ class Session
     public function hasFactionChat(): bool
     {
         return $this->factionchat;
+    }
+    
+    /**
+     * @param bool
+     */
+    public function hasDeathban(): bool
+    {
+        return $this->deathban;
     }
 
     /**
@@ -363,6 +373,14 @@ class Session
     public function setFactionChat(bool $value): void
     {
         $this->factionchat = $value;
+    }
+    
+    /**
+     * @param bool $value
+     */
+    public function setDeathban(bool $value): void
+    {
+        $this->deathban = $value;
     }
 
     /**

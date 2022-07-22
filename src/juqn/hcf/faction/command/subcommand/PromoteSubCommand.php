@@ -73,6 +73,10 @@ class PromoteSubCommand implements FactionSubCommand
             Faction::MEMBER => Faction::CAPTAIN,
             Faction::CAPTAIN => Faction::CO_LEADER
         ];
+        
+        if ($faction->getRole($session->getXuid()) === Faction::CO_LEADER) {
+            return;
+        }
 
         if ($faction->getRole($sender->getXuid()) === Faction::CO_LEADER) {
             if ($faction->getRole($session->getXuid()) === Faction::LEADER || $faction->getRole($session->getXuid()) === Faction::CO_LEADER) {
