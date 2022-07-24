@@ -10,6 +10,7 @@ use juqn\hcf\player\Player;
 use pocketmine\command\CommandSender;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;
+use pocketmine\Server;
 use pocketmine\world\Position;
 
 class StuckSubCommand implements FactionSubCommand
@@ -42,6 +43,11 @@ class StuckSubCommand implements FactionSubCommand
     {
         if (!$sender instanceof Player)
             return;
+
+        if ($sender->getWorld() !== Server::getInstance()->getWorldManager()->getDefaultWorld())
+        {
+            return;
+        }
             
         if ($sender->getSession()->getCooldown('faction.stuck') !== null)
             return;
