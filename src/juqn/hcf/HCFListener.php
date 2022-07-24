@@ -437,7 +437,10 @@ class HCFListener implements Listener
         if ($player->getSession() !== null && !$player->getSession()->isLogout()) {
             if ($player->getCurrentClaim() !== null) {
                 $claim = HCFLoader::getInstance()->getClaimManager()->getClaim($player->getCurrentClaim());
-                
+
+                if ($claim === null) {
+                    $disconnectedManager->addDisconnected($player);
+                }
                 if ($claim->getType() !== 'spawn') {
                     $disconnectedManager->addDisconnected($player);
                 }
