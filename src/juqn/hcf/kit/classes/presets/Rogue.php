@@ -81,6 +81,13 @@ class Rogue extends HCFClass
                         $event->cancel();
                         return;
                     }
+                    if ($entity->getSession()->getFaction() !== null && $damager->getSession()->getFaction() !== null) {
+                        if ($entity->getSession()->getFaction() === $damager->getSession()->getFaction()) {
+                            $damager->sendMessage(TextFormat::colorize("§eYou cannot hurt §2" . $entity->getName() . "§e."));
+                            $event->cancel();
+                            return;
+                        }
+                    }
                     
                     if ($damager->getViewPos() == $entity->getViewPos()) {
                         if ($damager->getSession()->getCooldown('rogue.cooldown') !== null)
