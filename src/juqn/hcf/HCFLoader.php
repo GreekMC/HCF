@@ -168,6 +168,7 @@ class HCFLoader extends PluginBase
             # Events
             $this->getEventManager()->getSotw()->update();
             $this->getEventManager()->getEotw()->update();
+            $this->getEventManager()->getPurge()->update();
                 
             # Sessions
             foreach ($this->getSessionManager()->getSessions() as $session)
