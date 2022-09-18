@@ -19,6 +19,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerBucketEmptyEvent;
+use pocketmine\event\player\PlayerBucketFillEvent;
 use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -78,7 +79,7 @@ class ClaimListener implements Listener
         }
     }
 
-    public function hadleItemInterect(PlayerBucketEmptyEvent $event): void
+    public function hadleItemInterect(PlayerBucketFillEvent $event): void
     {
         /** @var Player $player */
         $player = $event->getPlayer();
