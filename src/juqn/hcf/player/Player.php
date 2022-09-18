@@ -178,6 +178,9 @@ class Player extends BasePlayer
             $lines[] = TextFormat::colorize(' ' . $sotw->getFormat() . Timer::format($sotw->getTime()));
        if (($eotw = HCFLoader::getInstance()->getEventManager()->getEotw())->isActive())
            $lines[] = TextFormat::colorize(' ' . $eotw->getFormat() . Timer::format($eotw->getTime()));
+
+        if (($purge = HCFLoader::getInstance()->getEventManager()->getPurge())->isActive())
+            $lines[] = TextFormat::colorize(' ' . $purge->getFormat() . Timer::format($purge->getTime()));
         
         # Koth
         if (($kothName = HCFLoader::getInstance()->getKothManager()->getKothActive()) !== null) {

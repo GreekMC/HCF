@@ -289,6 +289,9 @@ class ClaimListener implements Listener
 
         if ($claim === null)
             return;
+
+        if (HCFLoader::getInstance()->getEventManager()->getPurge()->isActive())
+            return;
             
         if (!HCFLoader::getInstance()->getEventManager()->getEotw()->isActive() && $player->getSession()->getFaction() !== $claim->getName() && $claim->getType() !== 'spawn') {
             $faction = HCFLoader::getInstance()->getFactionManager()->getFaction($claim->getName());
