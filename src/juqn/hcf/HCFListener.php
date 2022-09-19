@@ -451,10 +451,10 @@ class HCFListener implements Listener
         $event->setQuitMessage(TextFormat::colorize($quitMessage));
     }
     
-    /**
+    /*
      * @param ProjectileHitBlockEvent $ev
      * @priority LOW
-     */
+
     public function onProjectileHitBlock(ProjectileHitBlockEvent $ev): void
     {
         $proj = $ev->getEntity();
@@ -482,13 +482,13 @@ class HCFListener implements Listener
         $this->ignoreRevert = false;
 
         $proj->setOwningEntity(null);
-    }
+    }*/
     
 
-    /**
+    /*
      * @param ProjectileHitBlockEvent $ev
      * @priorty HIGH
-     */
+
     public function onProjectileHitBlock2(ProjectileHitBlockEvent $ev): void
     {
         $proj = $ev->getEntity();
@@ -533,5 +533,5 @@ class HCFListener implements Listener
 
         if (!$p->isCreative())
             $p->getInventory()->addItem(VanillaItems::ENDER_PEARL());
-    }
+    }*/
 }
